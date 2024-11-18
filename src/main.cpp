@@ -1,4 +1,4 @@
-#include "view/paintmodel.h"
+#include "view/paintviewer.h"
 #include <QApplication>
 
 int main(int argc, char *argv[]) {
@@ -7,9 +7,9 @@ int main(int argc, char *argv[]) {
   QString filename = "tv.obj";
   tv.recordCoordFromFile(filename);
 
-  s21::PaintModel window;
+  s21::PaintViewer window;
   window.setModel(tv);
-  window.resize(800, 600);
+  window.resize(1700, 900);
   window.setWindowTitle("3D");
   window.show();
 
