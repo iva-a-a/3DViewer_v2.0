@@ -406,7 +406,7 @@ font: bold 14pt &quot;Times New Roman&quot;;</string>
       </rect>
      </property>
      <property name="autoFillBackground">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="styleSheet">
       <string notr="true">font: 75 13pt &quot;Times New Roman&quot;;
@@ -415,7 +415,7 @@ background:gray;
 </string>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="widget">
       <attribute name="title">
@@ -815,7 +815,7 @@ background: rgb(200, 200, 200);</string>
         <string>bmp/jpeg</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="chooseFile_7">
+      <widget class="QPushButton" name="saveGif">
        <property name="geometry">
         <rect>
          <x>190</x>
@@ -853,7 +853,7 @@ color: rgb(0, 0, 0);</string>
       <string> Тип проекции </string>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="typeProjection">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -1276,7 +1276,7 @@ color: rgb(255, 255, 255);</string>
     <zorder>label_scale</zorder>
     <zorder>tabWidget</zorder>
     <zorder>label_type_project</zorder>
-    <zorder>comboBox</zorder>
+    <zorder>typeProjection</zorder>
     <zorder>resetSettings</zorder>
     <zorder>number_of_vertices</zorder>
     <zorder>number_of_edges</zorder>

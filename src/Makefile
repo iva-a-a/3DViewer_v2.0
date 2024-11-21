@@ -54,11 +54,15 @@ OBJECTS_DIR   = ./
 
 SOURCES       = main.cpp \
 		model/model.cpp \
-		view/paintviewer.cpp moc_paintviewer.cpp
+		view/paintviewer.cpp \
+		view/paintmodel.cpp moc_paintviewer.cpp \
+		moc_paintmodel.cpp
 OBJECTS       = main.o \
 		model.o \
 		paintviewer.o \
-		moc_paintviewer.o
+		paintmodel.o \
+		moc_paintviewer.o \
+		moc_paintmodel.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -136,9 +140,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		3D.pro model/model.h \
-		view/paintviewer.h main.cpp \
+		view/paintviewer.h \
+		view/paintmodel.h main.cpp \
 		model/model.cpp \
-		view/paintviewer.cpp
+		view/paintviewer.cpp \
+		view/paintmodel.cpp
 QMAKE_TARGET  = 3D
 DESTDIR       = 
 TARGET        = 3D
@@ -320,8 +326,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents model/model.h view/paintviewer.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp model/model.cpp view/paintviewer.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents model/model.h view/paintviewer.h view/paintmodel.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp model/model.cpp view/paintviewer.cpp view/paintmodel.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents view/paint.ui $(DISTDIR)/
 
 
@@ -354,15 +360,22 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_paintviewer.cpp
+compiler_moc_header_make_all: moc_paintviewer.cpp moc_paintmodel.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_paintviewer.cpp
+	-$(DEL_FILE) moc_paintviewer.cpp moc_paintmodel.cpp
 moc_paintviewer.cpp: view/paintviewer.h \
-		model/model.h \
 		ui_paint.h \
+		view/paintmodel.h \
+		model/model.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/ubuntu/CPP4_3DViewer_v2.0-1/src/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/ubuntu/CPP4_3DViewer_v2.0-1/src -I/home/ubuntu/CPP4_3DViewer_v2.0-1/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include view/paintviewer.h -o moc_paintviewer.cpp
+
+moc_paintmodel.cpp: view/paintmodel.h \
+		model/model.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/ubuntu/CPP4_3DViewer_v2.0-1/src/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/ubuntu/CPP4_3DViewer_v2.0-1/src -I/home/ubuntu/CPP4_3DViewer_v2.0-1/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include view/paintmodel.h -o moc_paintmodel.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -386,20 +399,29 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 main.o: main.cpp view/paintviewer.h \
-		model/model.h \
-		ui_paint.h
+		ui_paint.h \
+		view/paintmodel.h \
+		model/model.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 model.o: model/model.cpp model/model.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o model.o model/model.cpp
 
 paintviewer.o: view/paintviewer.cpp view/paintviewer.h \
-		model/model.h \
-		ui_paint.h
+		ui_paint.h \
+		view/paintmodel.h \
+		model/model.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o paintviewer.o view/paintviewer.cpp
+
+paintmodel.o: view/paintmodel.cpp view/paintmodel.h \
+		model/model.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o paintmodel.o view/paintmodel.cpp
 
 moc_paintviewer.o: moc_paintviewer.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_paintviewer.o moc_paintviewer.cpp
+
+moc_paintmodel.o: moc_paintmodel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_paintmodel.o moc_paintmodel.cpp
 
 ####### Install
 

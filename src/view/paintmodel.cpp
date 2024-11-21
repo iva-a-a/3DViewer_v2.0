@@ -2,17 +2,6 @@
 
 using namespace s21;
 
-// void PaintModel::setVertices(const QVector<QVector3D> vertices) {
-//   v = vertices;
-// }
-// void PaintModel::setFacets(const QVector<QVector<int>> facets) { f = facets;
-// }
-
-// void PaintModel::loadModel(const QString &filename) {
-//   model->recordCoordFromFile(filename);
-//   update();
-// }
-
 void PaintModel::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing); // сглаживание

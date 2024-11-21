@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../model/model.h"
+// #include "../model/model.h"
 #include "ui_paint.h"
 #include <QMainWindow>
 #include <QPainter>
@@ -8,6 +8,8 @@
 #include <QPixmap>
 #include <QSlider>
 #include <QToolTip>
+
+#include "paintmodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,24 +21,22 @@ namespace s21 {
 class PaintViewer : public QMainWindow {
   Q_OBJECT
 private:
-  ObjModel *model; // Экземпляр объекта модели
   Ui::MainWindow *ui;
+  PaintModel *paint_model;
 
 public:
   PaintViewer(QMainWindow *parent = nullptr)
       : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    paint_model = new PaintModel(ui->field);
+    paint_model->setGeometry(
+        QRect(0, 0, ui->field->width() - 10, ui->field->height() - 10));
   };
-  ~PaintViewer() { delete ui; };
+  ~PaintViewer() {
+    delete ui;
+    delete paint_model;
+  };
 
-  void setModel(ObjModel &m) { model = &m; }
-
-  // void setVertices(const QVector<QVector3D> vertices);
-  // void setFacets(const QVector<QVector<int>> facets);
-
-  // void loadModel(const QString &filename);
-
-protected:
-  void paintEvent(QPaintEvent *event) override;
+  void setModel(ObjModel &m) { paint_model->setModel(m); }
 };
 } // namespace s21
