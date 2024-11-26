@@ -13,9 +13,9 @@ private:
 
 public:
   PaintModel(QWidget *parent = nullptr) : QWidget(parent){};
-  ~PaintModel(){};
+  ~PaintModel() = default;
 
-  void setModel(ObjModel &m) { model = &m; }
+  void setModel(ObjModel &m);
 
 protected:
   void paintEvent(QPaintEvent *event) override;

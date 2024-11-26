@@ -415,7 +415,7 @@ background:gray;
 </string>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="widget">
       <attribute name="title">
@@ -771,7 +771,7 @@ background: rgb(200, 200, 200);</string>
       <attribute name="title">
        <string>Сохранение </string>
       </attribute>
-      <widget class="QLabel" name="saveAsGif">
+      <widget class="QLabel" name="saveGif">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -815,7 +815,7 @@ background: rgb(200, 200, 200);</string>
         <string>bmp/jpeg</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="saveGif">
+      <widget class="QPushButton" name="saveAsGif">
        <property name="geometry">
         <rect>
          <x>190</x>
@@ -1162,6 +1162,9 @@ p, li { white-space: pre-wrap; }
      <property name="styleSheet">
       <string notr="true">background:gray;</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
     </widget>
     <widget class="QLineEdit" name="boxShiftY">
      <property name="geometry">
@@ -1174,6 +1177,9 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="styleSheet">
       <string notr="true">background:gray;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLineEdit" name="boxShiftZ">
@@ -1188,6 +1194,9 @@ p, li { white-space: pre-wrap; }
      <property name="styleSheet">
       <string notr="true">background:gray;</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
     </widget>
     <widget class="QLineEdit" name="boxRotateX">
      <property name="geometry">
@@ -1200,6 +1209,9 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="styleSheet">
       <string notr="true">background:gray;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLineEdit" name="boxRotateY">
@@ -1214,6 +1226,9 @@ p, li { white-space: pre-wrap; }
      <property name="styleSheet">
       <string notr="true">background:gray;</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
     </widget>
     <widget class="QLineEdit" name="boxRotateZ">
      <property name="geometry">
@@ -1227,6 +1242,9 @@ p, li { white-space: pre-wrap; }
      <property name="styleSheet">
       <string notr="true">background:gray;</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
     </widget>
     <widget class="QLineEdit" name="boxScale">
      <property name="geometry">
@@ -1239,6 +1257,9 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="styleSheet">
       <string notr="true">background:gray;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_settings_12">
