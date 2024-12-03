@@ -1,6 +1,5 @@
 #pragma once
 
-// #include "../model/model.h"
 #include "ui_paint.h"
 #include <QMainWindow>
 #include <QPainter>
@@ -9,9 +8,9 @@
 #include <QSlider>
 #include <QToolTip>
 
-#include <QFileDialog>
-
 #include <QColorDialog>
+#include <QFileDialog>
+#include <QMessageBox>
 
 #include "paintmodel.h"
 
@@ -32,7 +31,7 @@ public:
   PaintViewer(QMainWindow *parent = nullptr);
   ~PaintViewer();
 
-  void setModel(ObjModel &m);
+  void setModel(Parser &m);
 
   void updateTextBox(const QString &text, QLineEdit *line, QScrollBar *scroll);
 

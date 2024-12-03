@@ -1,7 +1,7 @@
 #include "test_3dviewer.h"
 
 TEST(Tests1, TestReadFile) {
-  s21::ObjModel model;
+  s21::Parser model;
   QString filename = "./tests/cube.obj";
 
   model.recordCoordFromFile(filename);

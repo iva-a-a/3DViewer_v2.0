@@ -1,11 +1,11 @@
-#include "model.h"
-#include <QTextStream>
+#include "parser.h"
 
 #include <QRegularExpression>
+#include <QTextStream>
 
 using namespace s21;
 
-void ObjModel::recordCoordFromFile(const QString &filename) {
+void Parser ::recordCoordFromFile(const QString &filename) {
   QFile file(filename);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     throw std::runtime_error("Cannot open file: " + filename.toStdString());
@@ -41,5 +41,5 @@ void ObjModel::recordCoordFromFile(const QString &filename) {
   file.close();
 }
 
-const QVector<QVector3D> &ObjModel::getVertices() { return vertices; }
-const QVector<QVector<int>> &ObjModel::getFacets() { return facets; }
+const QVector<QVector3D> &Parser ::getVertices() { return vertices; }
+const QVector<QVector<int>> &Parser ::getFacets() { return facets; }

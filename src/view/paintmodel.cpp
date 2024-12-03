@@ -2,7 +2,7 @@
 
 using namespace s21;
 
-void PaintModel::setModel(ObjModel &m) { model = &m; }
+void PaintModel::setModel(Parser &m) { model = &m; }
 
 void PaintModel::paintEvent(QPaintEvent *event) {
   QPainter painter(this);

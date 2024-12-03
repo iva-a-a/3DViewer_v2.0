@@ -15,7 +15,7 @@ PaintViewer::~PaintViewer() {
   delete paint_model;
 };
 
-void PaintViewer::setModel(ObjModel &m) { paint_model->setModel(m); }
+void PaintViewer::setModel(Parser &m) { paint_model->setModel(m); }
 
 void PaintViewer::updateTextBox(const QString &text, QLineEdit *line,
                                 QScrollBar *scroll) {
@@ -122,9 +122,13 @@ void PaintViewer::on_colorSelectBackground_pressed() {
 
 void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
   QString format;
-  QString fileName =
-      QFileDialog::getSaveFileName(this, tr("Сохранить изображение"), "./",
-                                   tr("BMP (*.bmp);; JPEG (*.jpeg)"), &format);
+  QDir dir("saved_images");
+  if (!dir.exists()) {
+    dir.mkpath(".");
+  }
+  QString fileName = QFileDialog::getSaveFileName(
+      this, tr("Сохранить изображение"), dir.absolutePath(),
+      tr("BMP (*.bmp);; JPEG (*.jpeg)"), &format);
 
   if (!fileName.isEmpty()) {
     QRect rect(10, 10, ui->field->width(), ui->field->height());
@@ -137,6 +141,8 @@ void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
       fileName += "." + imageFormat;
     }
     image.save(fileName, imageFormat.toLatin1().constData());
+  } else {
+    QMessageBox::warning(this, tr("Warning"), tr("Could not save the file"));
   }
 }
 
