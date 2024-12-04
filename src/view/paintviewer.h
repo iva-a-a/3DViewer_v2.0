@@ -31,7 +31,7 @@ public:
   PaintViewer(QMainWindow *parent = nullptr);
   ~PaintViewer();
 
-  void setModel(Parser &m);
+  void setModel(Figure &m);
 
   void updateTextBox(const QString &text, QLineEdit *line, QScrollBar *scroll);
 

@@ -5,7 +5,9 @@
 
 using namespace s21;
 
-void Parser ::recordCoordFromFile(const QString &filename) {
+void Parser::recordCoordFromFile(const QString &filename,
+                                 QVector<QVector3D> &vertices,
+                                 QVector<QVector<int>> &facets) {
   QFile file(filename);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     throw std::runtime_error("Cannot open file: " + filename.toStdString());
@@ -40,6 +42,3 @@ void Parser ::recordCoordFromFile(const QString &filename) {
   }
   file.close();
 }
-
-const QVector<QVector3D> &Parser ::getVertices() { return vertices; }
-const QVector<QVector<int>> &Parser ::getFacets() { return facets; }

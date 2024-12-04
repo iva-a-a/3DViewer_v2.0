@@ -17,10 +17,12 @@ INCLUDEPATH += .
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += model/model.h view/paintviewer.h view/paintmodel.h
+HEADERS += model/parser.h model/figure.h model/transform_figure.h view/paintviewer.h view/paintmodel.h
 SOURCES += main.cpp \
-           model/model.cpp \
+           model/parser.cpp \
            view/paintviewer.cpp \
-           view/paintmodel.cpp
+           view/paintmodel.cpp \
+           model/figure.cpp \
+           model/transform_figure.cpp
 
 FORMS += view/paint.ui

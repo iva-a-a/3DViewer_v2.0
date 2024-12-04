@@ -69,10 +69,11 @@ border-radius:5px;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
 font: 16pt &quot;Times New Roman&quot;;</string>
      </property>
      <property name="text">
-      <string>Выберите файл</string>
+      <string> Выберите файл </string>
      </property>
     </widget>
     <widget class="QTextBrowser" name="fileName">
@@ -390,10 +391,11 @@ color: rgb(0, 0, 0);</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
 font: bold 14pt &quot;Times New Roman&quot;;</string>
      </property>
      <property name="text">
-      <string>Сброс настроек</string>
+      <string> Сброс настроек </string>
      </property>
     </widget>
     <widget class="QTabWidget" name="tabWidget">

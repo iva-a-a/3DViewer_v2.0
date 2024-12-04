@@ -15,7 +15,7 @@ PaintViewer::~PaintViewer() {
   delete paint_model;
 };
 
-void PaintViewer::setModel(Parser &m) { paint_model->setModel(m); }
+void PaintViewer::setModel(Figure &m) { paint_model->setModel(m); }
 
 void PaintViewer::updateTextBox(const QString &text, QLineEdit *line,
                                 QScrollBar *scroll) {
@@ -99,7 +99,7 @@ void PaintViewer::on_colorSelectFacets_pressed() {
   QColor color = QColorDialog::getColor(Qt::white, this, "Выберите цвет ребер");
 
   if (color.isValid()) {
-    //измение цвета для ребер
+    // измение цвета для ребер
   }
 }
 
@@ -108,7 +108,7 @@ void PaintViewer::on_colorSelectVertices_pressed() {
       QColorDialog::getColor(Qt::white, this, "Выберите цвет вершин");
 
   if (color.isValid()) {
-    //измение цвета для вершин
+    // измение цвета для вершин
   }
 }
 
@@ -116,7 +116,7 @@ void PaintViewer::on_colorSelectBackground_pressed() {
   QColor color = QColorDialog::getColor(Qt::white, this, "Выберите цвет фона");
 
   if (color.isValid()) {
-    //измение цвета для фона
+    // измение цвета для фона
   }
 }
 

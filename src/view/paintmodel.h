@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../model/parser.h"
+#include "../model/figure.h"
 #include <QPaintEvent>
 #include <QPainter>
 #include <QWidget>
@@ -9,13 +9,13 @@ namespace s21 {
 class PaintModel : public QWidget {
   Q_OBJECT
 private:
-  Parser *model;
+  Figure *model;
 
 public:
-  PaintModel(QWidget *parent = nullptr) : QWidget(parent){};
+  PaintModel(QWidget *parent = nullptr) : QWidget(parent) {};
   ~PaintModel() = default;
 
-  void setModel(Parser &m);
+  void setModel(Figure &m);
 
 protected:
   void paintEvent(QPaintEvent *event) override;

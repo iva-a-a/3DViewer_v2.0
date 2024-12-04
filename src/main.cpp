@@ -3,9 +3,8 @@
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  s21::ObjModel tv;
   QString filename = "tv.obj";
-  tv.recordCoordFromFile(filename);
+  s21::Figure tv(filename);
 
   s21::PaintViewer window;
   window.setModel(tv);
