@@ -2,8 +2,8 @@
 
 using namespace s21;
 
-QVector3D NormalizeParameters::getMinCoord(QVector<QVector3D> &v) {
-  QVector3D minCoord;
+Vertex NormalizeParameters::getMinCoord(QVector<Vertex> &v) {
+  Vertex minCoord;
 
   minCoord = v[0];
   for (const auto &i : v) {
@@ -20,8 +20,8 @@ QVector3D NormalizeParameters::getMinCoord(QVector<QVector3D> &v) {
   return minCoord;
 }
 
-QVector3D NormalizeParameters::getMaxCoord(QVector<QVector3D> &v) {
-  QVector3D maxCoord;
+Vertex NormalizeParameters::getMaxCoord(QVector<Vertex> &v) {
+  Vertex maxCoord;
 
   maxCoord = v[0];
   for (const auto &i : v) {
@@ -38,9 +38,9 @@ QVector3D NormalizeParameters::getMaxCoord(QVector<QVector3D> &v) {
   return maxCoord;
 }
 
-QVector3D NormalizeParameters::getCentralCoord(const QVector3D minV,
-                                               const QVector3D maxV) {
-  QVector3D centr;
+Vertex NormalizeParameters::getCentralCoord(const Vertex minV,
+                                            const Vertex maxV) {
+  Vertex centr;
   centr.setX(minV.x() + (maxV.x() - minV.x()) / 2);
   centr.setY(minV.y() + (maxV.y() - minV.y()) / 2);
   centr.setZ(minV.z() + (maxV.z() - minV.z()) / 2);
@@ -48,16 +48,16 @@ QVector3D NormalizeParameters::getCentralCoord(const QVector3D minV,
   return centr;
 }
 
-void NormalizeParameters::setCentralVertex(QVector<QVector3D> &vertex) {
-  QVector3D centr = getCentralCoord(getMinCoord(vertex), getMaxCoord(vertex));
-  for (int i = 0; i < vertex.size(); i++) {
-    vertex[i] -= centr;
+void NormalizeParameters::setCentralVertex(QVector<Vertex> &v) {
+  Vertex centr = getCentralCoord(getMinCoord(v), getMaxCoord(v));
+  for (int i = 0; i < v.size(); i++) {
+    v[i] -= centr;
   }
 }
 
-void NormalizeParameters::setScaleVertex(QVector<QVector3D> &vertex) {
-  QVector3D min_coord = getMinCoord(vertex);
-  QVector3D scale = getMaxCoord(vertex) - min_coord;
+void NormalizeParameters::setScaleVertex(QVector<Vertex> &v) {
+  Vertex min_coord = getMinCoord(v);
+  Vertex scale = getMaxCoord(v) - min_coord;
   if (scale.x() == 0) {
     scale.setX(1);
   }
@@ -68,14 +68,14 @@ void NormalizeParameters::setScaleVertex(QVector<QVector3D> &vertex) {
     scale.setZ(1);
   }
 
-  for (int i = 0; i < vertex.size(); i++) {
-    vertex[i].setX((vertex[i].x() - min_coord.x()) / scale.x());
-    vertex[i].setY((vertex[i].y() - min_coord.y()) / scale.y());
-    vertex[i].setZ((vertex[i].z() - min_coord.z()) / scale.z());
+  for (int i = 0; i < v.size(); i++) {
+    v[i].setX((v[i].x() - min_coord.x()) / scale.x());
+    v[i].setY((v[i].y() - min_coord.y()) / scale.y());
+    v[i].setZ((v[i].z() - min_coord.z()) / scale.z());
   }
 }
 
-void NormalizeParameters::setNormalVertex(QVector<QVector3D> &vertex) {
-  setCentralVertex(vertex);
-  setScaleVertex(vertex);
+void NormalizeParameters::setNormalVertex(QVector<Vertex> &v) {
+  setCentralVertex(v);
+  setScaleVertex(v);
 }

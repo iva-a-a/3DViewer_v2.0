@@ -1,26 +1,24 @@
 #pragma once
-// #include "parser.h"
-#include <QVector3D>
+
+#include "vertex_edge.h"
 #include <QVector>
 
 namespace s21 {
 
 class NormalizeParameters {
 private:
-  static QVector3D getMinCoord(QVector<QVector3D> &v);
-  static QVector3D getMaxCoord(QVector<QVector3D> &v);
-  static QVector3D getCentralCoord(const QVector3D minV, const QVector3D maxV);
+  static Vertex getMinCoord(QVector<Vertex> &v);
+  static Vertex getMaxCoord(QVector<Vertex> &v);
+  static Vertex getCentralCoord(const Vertex minV, const Vertex maxV);
 
-  static void setCentralVertex(QVector<QVector3D> &vertex);
-  static void setScaleVertex(QVector<QVector3D> &vertex);
+  static void setCentralVertex(QVector<Vertex> &v);
+  static void setScaleVertex(QVector<Vertex> &v);
 
-public:
   NormalizeParameters() {};
   ~NormalizeParameters() = default;
 
-  static void setNormalVertex(QVector<QVector3D> &vertex);
-
-  // void setNormalEdge(QVector<QVector<int>> edge);
+public:
+  static void setNormalVertex(QVector<Vertex> &v);
 };
 
 } // namespace s21
