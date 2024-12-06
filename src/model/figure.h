@@ -5,13 +5,15 @@ namespace s21 {
 
 class Figure {
 private:
-  QVector<QVector3D> vertices;  // координаты вершин
-  QVector<QVector<int>> facets; // индексы вершин, составляющих грани
+  QVector<Vertex> vertices;
+  QVector<Edge> facets;
+
 public:
   Figure(const QString &filename);
   ~Figure() = default;
-  const QVector<QVector3D> getVertices();
-  const QVector<QVector<int>> getFacets();
+
+  const QVector<Vertex> getVertices();
+  const QVector<Edge> getFacets();
 };
 
 } // namespace s21

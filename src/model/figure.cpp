@@ -3,12 +3,12 @@
 using namespace s21;
 
 Figure::Figure(const QString &filename) {
-  Parser::recordCoordFromFile(filename, this->vertices, this->facets);
+  Parser::recordCoordFromFile(filename, vertices, facets);
   if (!vertices.isEmpty()) {
-    NormalizeParameters::setNormalVertex(this->vertices);
+    NormalizeParameters::setNormalVertex(vertices);
   }
 }
 
-const QVector<QVector3D> Figure::getVertices() { return vertices; }
+const QVector<Vertex> Figure::getVertices() { return vertices; }
 
-const QVector<QVector<int>> Figure::getFacets() { return facets; }
+const QVector<Edge> Figure::getFacets() { return facets; }
