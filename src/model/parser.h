@@ -8,13 +8,17 @@
 namespace s21 {
 
 class Parser {
-public:
+private:
   Parser() {};
   ~Parser() = default;
-  // запись координат вершин и граней из файла
+  static void saveCoordVertices(QStringList str, QVector<Vertex> &vertices);
+  static void saveRefFacets(QStringList str, QVector<Edge> &facets,
+                            QVector<Vertex> &vertices);
+
+public:
   static void recordCoordFromFile(const QString &filename,
-                                  QVector<QVector3D> &vertices,
-                                  QVector<QVector<int>> &facets);
+                                  QVector<Vertex> &vertices,
+                                  QVector<Edge> &facets);
 };
 
 } // namespace s21
