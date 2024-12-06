@@ -5,7 +5,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TEMPLATE = app
+#TEMPLATE = app
 TARGET = 3D
 INCLUDEPATH += .
 
@@ -17,12 +17,19 @@ INCLUDEPATH += .
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += model/parser.h model/figure.h model/transform_figure.h view/paintviewer.h view/paintmodel.h
+HEADERS +=  model/figure.h \
+            model/parser.h \
+            model/transform_figure.h \
+            model/vertex_edge.h \
+            view/paintviewer.h \
+            view/paintmodel.h
+
+
 SOURCES += main.cpp \
            model/parser.cpp \
            view/paintviewer.cpp \
            view/paintmodel.cpp \
            model/figure.cpp \
-           model/transform_figure.cpp
+           model/transform_figure.cpp \
 
 FORMS += view/paint.ui
