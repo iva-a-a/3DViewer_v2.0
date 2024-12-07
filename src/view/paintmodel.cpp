@@ -2,13 +2,15 @@
 
 using namespace s21;
 
-void PaintModel::setModel(Figure &m) { model = &m; }
+void PaintModel::setModel(Figure &m) {
+  model = &m;
+  model->transform(TransformMatrixBuilder::createRotationMatrix(3, 1, 1));
+}
 
 void PaintModel::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
-  painter.setRenderHint(QPainter::Antialiasing); // Enable anti-aliasing
+  painter.setRenderHint(QPainter::Antialiasing);
 
-  // Draw vertices
   QPen pen(Qt::red, 5);
   painter.setPen(pen);
 

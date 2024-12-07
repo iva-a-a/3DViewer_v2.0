@@ -21,8 +21,11 @@ HEADERS +=  model/figure.h \
             model/parser.h \
             model/transform_figure.h \
             model/vertex_edge.h \
+            model/transform_matrix_builder.h \
+            model/transform_matrix.h \
             view/paintviewer.h \
-            view/paintmodel.h
+            view/paintmodel.h \
+            model/s21_matrix/s21_matrix_oop.h
 
 
 SOURCES += main.cpp \
@@ -31,5 +34,8 @@ SOURCES += main.cpp \
            view/paintmodel.cpp \
            model/figure.cpp \
            model/transform_figure.cpp \
+           model/transform_matrix_builder.cpp \
+           model/transform_matrix.cpp \
+           model/s21_matrix/s21_matrix_oop.cpp
 
 FORMS += view/paint.ui
