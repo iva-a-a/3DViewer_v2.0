@@ -226,27 +226,27 @@ S21Matrix S21Matrix::operator+(const S21Matrix &other) {
 }
 
 S21Matrix S21Matrix::operator-(const S21Matrix &other) {
-  S21Matrix sum = *this;
-  sum.SubMatrix(other);
-  return sum;
+  S21Matrix sub = *this;
+  sub.SubMatrix(other);
+  return sub;
 }
 
 S21Matrix S21Matrix::operator*(const S21Matrix &other) {
-  S21Matrix sum = *this;
-  sum.MulMatrix(other);
-  return sum;
+  S21Matrix mul = *this;
+  mul.MulMatrix(other);
+  return mul;
 }
 
 S21Matrix operator*(const double num, const S21Matrix &other) {
-  S21Matrix sum = other;
-  sum.MulNumber(num);
-  return sum;
+  S21Matrix mul = other;
+  mul.MulNumber(num);
+  return mul;
 }
 
 S21Matrix operator*(const S21Matrix &other, const double num) {
-  S21Matrix sum = other;
-  sum.MulNumber(num);
-  return sum;
+  S21Matrix mul = other;
+  mul.MulNumber(num);
+  return mul;
 }
 
 bool S21Matrix::operator==(const S21Matrix &other) { return EqMatrix(other); }

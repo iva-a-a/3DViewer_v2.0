@@ -9,6 +9,12 @@ Figure::Figure(const QString &filename) {
   }
 }
 
+void Figure::transform(const TransformMatrix &m) {
+  for (auto &i : vertices) {
+    i.transform(m);
+  }
+}
+
 const QVector<Vertex> Figure::getVertices() { return vertices; }
 
 const QVector<Edge> Figure::getFacets() { return facets; }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "s21_matrix/s21_matrix_oop.h"
+#include "transform_matrix.h"
 
 namespace s21 {
 
@@ -10,9 +10,9 @@ private:
   ~TransformMatrixBuilder() = default;
 
 public:
-  static S21Matrix createRotationMatrix(float a, float b, float c);
-  static S21Matrix createMoveMatrix(float a, float b, float c);
-  static S21Matrix createScaleMatrix(float a, float b, float c);
+  static TransformMatrix createRotationMatrix(float a, float b, float c);
+  static TransformMatrix createMoveMatrix(float a, float b, float c);
+  static TransformMatrix createScaleMatrix(float a, float b, float c);
 };
 
 } // namespace s21

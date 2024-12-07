@@ -1,12 +1,11 @@
 #include "transform_matrix_builder.h"
 
-#include <cmath>
 using namespace s21;
 
-S21Matrix TransformMatrixBuilder::createRotationMatrix(float a, float b,
-                                                       float c) {
+TransformMatrix TransformMatrixBuilder::createRotationMatrix(float a, float b,
+                                                             float c) {
 
-  S21Matrix matrix(4, 4);
+  TransformMatrix matrix;
 
   matrix(0, 0) = cos(b) * cos(c);
   matrix(0, 1) = -sin(c) * cos(b);
@@ -28,8 +27,9 @@ S21Matrix TransformMatrixBuilder::createRotationMatrix(float a, float b,
   return matrix;
 }
 
-S21Matrix TransformMatrixBuilder::createMoveMatrix(float a, float b, float c) {
-  S21Matrix matrix(4, 4);
+TransformMatrix TransformMatrixBuilder::createMoveMatrix(float a, float b,
+                                                         float c) {
+  TransformMatrix matrix;
 
   matrix(0, 0) = 1;
   matrix(0, 1) = 0;
@@ -51,8 +51,9 @@ S21Matrix TransformMatrixBuilder::createMoveMatrix(float a, float b, float c) {
   return matrix;
 }
 
-S21Matrix TransformMatrixBuilder::createScaleMatrix(float a, float b, float c) {
-  S21Matrix matrix(4, 4);
+TransformMatrix TransformMatrixBuilder::createScaleMatrix(float a, float b,
+                                                          float c) {
+  TransformMatrix matrix;
 
   matrix(0, 0) = a;
   matrix(0, 1) = 0;

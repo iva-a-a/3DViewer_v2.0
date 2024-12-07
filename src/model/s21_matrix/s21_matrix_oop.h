@@ -1,5 +1,4 @@
-#ifndef S21MATRIX_OOP_H
-#define S21MATRIX_OOP_H
+#pragma once
 
 #include <iostream>
 
@@ -52,5 +51,3 @@ public:
   void MutatorRow(const int rows);
   void MutatorCol(const int cols);
 };
-
-#endif
