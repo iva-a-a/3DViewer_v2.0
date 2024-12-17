@@ -1011,10 +1011,10 @@ p, li { white-space: pre-wrap; }
       <string notr="true">background:gray;</string>
      </property>
      <property name="minimum">
-      <number>-50</number>
+      <number>0</number>
      </property>
      <property name="maximum">
-      <number>50</number>
+      <number>360</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1099,10 +1099,10 @@ p, li { white-space: pre-wrap; }
       <string notr="true">background:gray;</string>
      </property>
      <property name="minimum">
-      <number>-50</number>
+      <number>0</number>
      </property>
      <property name="maximum">
-      <number>50</number>
+      <number>360</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1121,10 +1121,10 @@ p, li { white-space: pre-wrap; }
       <string notr="true">background:gray;</string>
      </property>
      <property name="minimum">
-      <number>-50</number>
+      <number>0</number>
      </property>
      <property name="maximum">
-      <number>50</number>
+      <number>360</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
