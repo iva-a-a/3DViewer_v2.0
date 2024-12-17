@@ -7,8 +7,8 @@ namespace s21 {
 
 class Figure {
 private:
-  QVector<Vertex> vertices;
-  QVector<Edge> facets;
+  QVector<Vertex> vertices = {};
+  QVector<Edge> facets = {};
 
 public:
   Figure(const QString &filename);
