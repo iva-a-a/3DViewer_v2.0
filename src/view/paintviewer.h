@@ -28,14 +28,15 @@ private:
   PaintModel *paint_model;
 
 public:
-  PaintViewer(QMainWindow *parent = nullptr);
+  PaintViewer(QMainWindow *parent, Facade *c);
   ~PaintViewer();
 
-  void setModel(Figure &m);
+  // Qstring getFilename() const;
+
+private slots:
 
   void updateTextBox(const QString &text, QLineEdit *line, QScrollBar *scroll);
 
-private slots:
   void on_scrollShiftX_valueChanged(int value);
   void on_boxShiftX_textChanged(const QString &text);
 
@@ -64,8 +65,13 @@ private slots:
   void on_colorSelectVertices_pressed();
   void on_colorSelectBackground_pressed();
 
+  void on_resetSettings_pressed();
+
   void on_saveAsBmpOrJpeg_pressed();
 
   void on_saveAsGif_pressed();
+
+private:
+  void initializeTextBox();
 };
 } // namespace s21
