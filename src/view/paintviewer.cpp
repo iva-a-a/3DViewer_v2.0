@@ -74,7 +74,8 @@ void PaintViewer::on_boxShiftZ_textChanged(const QString &text) {
 
 void PaintViewer::on_scrollRotateX_valueChanged(int value) {
   ui->boxRotateX->setText(QString::number(value));
-  paint_model->onRotate(ui->scrollRotateX->value(), 0, 0);
+  paint_model->onRotate(ui->scrollRotateX->value(), ui->scrollRotateY->value(),
+                        ui->scrollRotateZ->value());
 }
 
 void PaintViewer::on_boxRotateX_textChanged(const QString &text) {
@@ -83,7 +84,8 @@ void PaintViewer::on_boxRotateX_textChanged(const QString &text) {
 
 void PaintViewer::on_scrollRotateY_valueChanged(int value) {
   ui->boxRotateY->setText(QString::number(value));
-  paint_model->onRotate(0, ui->scrollRotateY->value(), 0);
+  paint_model->onRotate(ui->scrollRotateX->value(), ui->scrollRotateY->value(),
+                        ui->scrollRotateZ->value());
 }
 void PaintViewer::on_boxRotateY_textChanged(const QString &text) {
   updateTextBox(text, ui->boxRotateY, ui->scrollRotateY);
@@ -91,7 +93,8 @@ void PaintViewer::on_boxRotateY_textChanged(const QString &text) {
 
 void PaintViewer::on_scrollRotateZ_valueChanged(int value) {
   ui->boxRotateZ->setText(QString::number(value));
-  paint_model->onRotate(0, 0, ui->scrollRotateZ->value());
+  paint_model->onRotate(ui->scrollRotateX->value(), ui->scrollRotateY->value(),
+                        ui->scrollRotateZ->value());
 }
 void PaintViewer::on_boxRotateZ_textChanged(const QString &text) {
   updateTextBox(text, ui->boxRotateZ, ui->scrollRotateZ);
@@ -99,8 +102,9 @@ void PaintViewer::on_boxRotateZ_textChanged(const QString &text) {
 
 void PaintViewer::on_scrollScale_valueChanged(int value) {
   ui->boxScale->setText(QString::number(value));
-  // paint_model->onScale(value, value, 0);
+  paint_model->onScale(value, value, value);
 }
+
 void PaintViewer::on_boxScale_textChanged(const QString &text) {
   updateTextBox(text, ui->boxScale, ui->scrollScale);
 }
@@ -141,15 +145,15 @@ void PaintViewer::on_colorSelectBackground_pressed() {
 }
 
 void PaintViewer::on_resetSettings_pressed() {
+
+  on_scrollRotateX_valueChanged(0);
+  on_scrollRotateY_valueChanged(0);
+  on_scrollRotateZ_valueChanged(0);
+
   on_scrollShiftX_valueChanged(0);
   on_scrollShiftY_valueChanged(0);
   on_scrollShiftZ_valueChanged(0);
-
-  // on_scrollRotateX_valueChanged(0);
-  // on_scrollRotateY_valueChanged(0);
-  // on_scrollRotateZ_valueChanged(0);
-
-  // on_scrollScale_valueChanged(0);
+  on_scrollScale_valueChanged(1);
 }
 
 void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
@@ -179,3 +183,8 @@ void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
 }
 
 void PaintViewer::on_saveAsGif_pressed() {}
+
+void PaintViewer::set_number_of_faces() {
+  // QString count = model->getVertices().size();
+  // ui->number_of_edges->setPlainText(count);
+}

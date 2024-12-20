@@ -73,5 +73,6 @@ private slots:
 
 private:
   void initializeTextBox();
+  void set_number_of_faces();
 };
 } // namespace s21
