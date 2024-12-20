@@ -69,9 +69,9 @@ void NormalizeParameters::setScaleVertex(QVector<Vertex> &v) {
   }
 
   for (int i = 0; i < v.size(); i++) {
-    v[i].setX((v[i].x() - min_coord.x()) / scale.x());
-    v[i].setY((v[i].y() - min_coord.y()) / scale.y());
-    v[i].setZ((v[i].z() - min_coord.z()) / scale.z());
+    v[i].setX(((v[i].x() - min_coord.x()) / scale.x()) * 2 - 1);
+    v[i].setY(((v[i].y() - min_coord.y()) / scale.y()) * 2 - 1);
+    v[i].setZ(((v[i].z() - min_coord.z()) / scale.z()) * 2 - 1);
   }
 }
 
