@@ -1143,7 +1143,7 @@ p, li { white-space: pre-wrap; }
       <string notr="true">background:gray;</string>
      </property>
      <property name="minimum">
-      <number>-50</number>
+      <number>1</number>
      </property>
      <property name="maximum">
       <number>50</number>
