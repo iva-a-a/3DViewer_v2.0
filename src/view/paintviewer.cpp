@@ -87,6 +87,7 @@ void PaintViewer::on_scrollRotateY_valueChanged(int value) {
   paint_model->onRotate(ui->scrollRotateX->value(), ui->scrollRotateY->value(),
                         ui->scrollRotateZ->value());
 }
+
 void PaintViewer::on_boxRotateY_textChanged(const QString &text) {
   updateTextBox(text, ui->boxRotateY, ui->scrollRotateY);
 }
@@ -96,6 +97,7 @@ void PaintViewer::on_scrollRotateZ_valueChanged(int value) {
   paint_model->onRotate(ui->scrollRotateX->value(), ui->scrollRotateY->value(),
                         ui->scrollRotateZ->value());
 }
+
 void PaintViewer::on_boxRotateZ_textChanged(const QString &text) {
   updateTextBox(text, ui->boxRotateZ, ui->scrollRotateZ);
 }
@@ -145,15 +147,16 @@ void PaintViewer::on_colorSelectBackground_pressed() {
 }
 
 void PaintViewer::on_resetSettings_pressed() {
+  paint_model->onReset();
+  on_boxShiftX_textChanged("0");
+  on_boxShiftY_textChanged("0");
+  on_boxShiftZ_textChanged("0");
 
-  on_scrollRotateX_valueChanged(0);
-  on_scrollRotateY_valueChanged(0);
-  on_scrollRotateZ_valueChanged(0);
+  on_boxRotateX_textChanged("0");
+  on_boxRotateY_textChanged("0");
+  on_boxRotateZ_textChanged("0");
 
-  on_scrollShiftX_valueChanged(0);
-  on_scrollShiftY_valueChanged(0);
-  on_scrollShiftZ_valueChanged(0);
-  on_scrollScale_valueChanged(1);
+  on_boxScale_textChanged("1");
 }
 
 void PaintViewer::on_saveAsBmpOrJpeg_pressed() {

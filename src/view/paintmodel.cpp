@@ -16,6 +16,10 @@ void PaintModel::onScale(float x, float y, float z) {
   controller->scaleFigure(x, y, z);
   update();
 }
+void PaintModel::onReset() {
+  controller->resetMovement();
+  update();
+}
 
 void PaintModel::paintEvent(QPaintEvent *event) {
 
@@ -43,3 +47,6 @@ void PaintModel::paintEvent(QPaintEvent *event) {
     painter.drawLine(startPoint, endPoint);
   }
 }
+
+// Parameters PaintModel::getParamController() { return controller->getParam();
+// }

@@ -18,6 +18,13 @@ public:
   void onMove(float x, float y, float z);
   void onRotate(float x, float y, float z);
   void onScale(float x, float y, float z);
+  void onReset();
+
+  // Parameters getParamController();
+
+  // void setX(float x) { controller->setRotateX(x); }
+  // void setY(float y) { controller->setRotateY(y); }
+  // void setZ(float z) { controller->setRotateZ(z); }
 
 protected:
   void paintEvent(QPaintEvent *event) override;

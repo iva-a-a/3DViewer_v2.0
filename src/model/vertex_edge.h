@@ -10,6 +10,7 @@ public:
   Vertex() : QVector3D() {}
   Vertex(float x, float y, float z) : QVector3D(x, y, z) {}
   Vertex(const QVector3D &v) : QVector3D(v) {}
+  // Vertex(const Vertex &v) : QVector3D(v) {}
   ~Vertex() = default;
 
   void transform(const TransformMatrix &m) { *this = m.transformPoint(*this); }

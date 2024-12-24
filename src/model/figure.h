@@ -12,7 +12,10 @@ private:
 
 public:
   Figure(const QString &filename);
+  Figure(Figure &f);
   ~Figure() = default;
+
+  Figure &operator=(Figure &f);
 
   void transform(const TransformMatrix &m);
 
