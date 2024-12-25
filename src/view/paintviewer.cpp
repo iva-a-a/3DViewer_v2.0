@@ -5,11 +5,13 @@ using namespace s21;
 PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
   ui = new Ui::MainWindow;
   ui->setupUi(this);
-
   paint_model = new PaintModel(ui->field, c);
   paint_model->setGeometry(
       QRect(0, 0, ui->field->width() - 10, ui->field->height() - 10));
   initializeTextBox();
+  set_number_of_facets();
+  set_number_of_vertices();
+  set_file_name();
 };
 
 PaintViewer::~PaintViewer() {
@@ -159,6 +161,20 @@ void PaintViewer::on_resetSettings_pressed() {
   on_boxScale_textChanged("1");
 }
 
+void PaintViewer::on_chooseFile_pressed() {
+  QString dir = QDir::currentPath() + "/models_3d";
+  QString file = QFileDialog::getOpenFileName(this, tr("Выберите файл"), dir,
+                                              tr("Файлы 3D моделей (*.obj)"));
+  if (file.isEmpty()) {
+    QMessageBox::warning(this, tr("Ошибка"), tr("Файл не выбран"));
+  }
+
+  paint_model->onLoadModel(file);
+  set_number_of_facets();
+  set_number_of_vertices();
+  set_file_name();
+}
+
 void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
   QString format;
   QDir dir("saved_images");
@@ -181,13 +197,20 @@ void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
     }
     image.save(fileName, imageFormat.toLatin1().constData());
   } else {
-    QMessageBox::warning(this, tr("Warning"), tr("Could not save the file"));
+    QMessageBox::warning(this, tr("Ошибка"), tr("Не удалось сохранить файл"));
   }
 }
 
 void PaintViewer::on_saveAsGif_pressed() {}
 
-void PaintViewer::set_number_of_faces() {
-  // QString count = model->getVertices().size();
-  // ui->number_of_edges->setPlainText(count);
+void PaintViewer::set_number_of_facets() {
+  ui->number_of_edges->setPlainText(
+      QString::number(paint_model->onGetSizeFacets()));
 }
+
+void PaintViewer::set_number_of_vertices() {
+  ui->number_of_vertices->setPlainText(
+      QString::number(paint_model->onGetSizeVertices()));
+}
+
+void PaintViewer::set_file_name() { ui->fileName->setPlainText(filename); }

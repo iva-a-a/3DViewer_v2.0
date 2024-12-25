@@ -31,8 +31,6 @@ public:
   PaintViewer(QMainWindow *parent, Facade *c);
   ~PaintViewer();
 
-  // Qstring getFilename() const;
-
 private slots:
 
   void updateTextBox(const QString &text, QLineEdit *line, QScrollBar *scroll);
@@ -67,12 +65,15 @@ private slots:
 
   void on_resetSettings_pressed();
 
-  void on_saveAsBmpOrJpeg_pressed();
+  void on_chooseFile_pressed();
 
+  void on_saveAsBmpOrJpeg_pressed();
   void on_saveAsGif_pressed();
 
 private:
   void initializeTextBox();
-  void set_number_of_faces();
+  void set_number_of_facets();
+  void set_number_of_vertices();
+  void set_file_name();
 };
 } // namespace s21

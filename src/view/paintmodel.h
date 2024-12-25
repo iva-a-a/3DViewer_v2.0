@@ -1,5 +1,5 @@
 #pragma once
-// #include "../model/figure.h"
+
 #include "../controller/controller.h"
 #include <QPaintEvent>
 #include <QPainter>
@@ -20,11 +20,12 @@ public:
   void onScale(float x, float y, float z);
   void onReset();
 
-  // Parameters getParamController();
+  size_t onGetSizeVertices() { return controller->getSizeVertices(); }
+  size_t onGetSizeFacets() { return controller->getSizeFacets(); }
 
-  // void setX(float x) { controller->setRotateX(x); }
-  // void setY(float y) { controller->setRotateY(y); }
-  // void setZ(float z) { controller->setRotateZ(z); }
+  void onLoadModel(const QString &filename);
+
+  // Parameters getParamController();
 
 protected:
   void paintEvent(QPaintEvent *event) override;

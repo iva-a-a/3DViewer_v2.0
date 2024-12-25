@@ -11,6 +11,7 @@ private:
   QVector<Edge> facets = {};
 
 public:
+  Figure() {};
   Figure(const QString &filename);
   Figure(Figure &f);
   ~Figure() = default;
