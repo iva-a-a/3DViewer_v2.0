@@ -5,9 +5,15 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-#TEMPLATE = app
-TARGET = 3D
+CONFIG += c++17
 INCLUDEPATH += .
+TARGET = 3d_viewer
+
+DESTDIR = ../build
+OBJECTS_DIR = $${DESTDIR}/objects
+MOC_DIR = $${DESTDIR}/moc
+RCC_DIR = $${DESTDIR}/rcc
+UI_DIR = $${DESTDIR}/ui
 
 # You can make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -41,3 +47,6 @@ SOURCES += main.cpp \
            controller/controller.cpp
 
 FORMS += view/paint.ui
+
+TEMPLATE = app
+CONFIG -= app_bundle
