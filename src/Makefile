@@ -9,10 +9,12 @@ BUILD_DIR = build
 
 .PHONY: all build clean
 
-all: clean build
+all: build
 
 build:
-	@mkdir $(BUILD_DIR)
+	@if [ ! -d "$(BUILD_DIR)" ]; then \
+		mkdir $(BUILD_DIR); \
+	fi
 	@cd $(BUILD_DIR) && qmake ../.
 	@cd $(BUILD_DIR) && make
 	@clear
