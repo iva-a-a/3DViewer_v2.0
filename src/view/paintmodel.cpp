@@ -1,5 +1,7 @@
 #include "paintmodel.h"
 
+#include <unordered_map>
+
 using namespace s21;
 
 void PaintModel::onMove(float x, float y, float z) {
@@ -18,6 +20,7 @@ void PaintModel::onScale(float x, float y, float z) {
 }
 void PaintModel::onReset() {
   controller->resetMovement();
+  resetSetting();
   update();
 }
 
@@ -30,28 +33,56 @@ void PaintModel::paintEvent(QPaintEvent *event) {
 
   (void)event;
   QPainter painter(this);
-  painter.setRenderHint(QPainter::Antialiasing);
+  painter.fillRect(rect(), s.color_background);
 
-  QPen pen(Qt::red, 5);
+  QPen pen;
+
+  pen.setColor(s.sett_l.color_lines);
+
+  if (s.sett_l.type_lines == SettingLines::Type::Dashed) {
+    QList<qreal> dashes;
+    dashes << 8 << 16;
+    pen.setDashPattern(dashes);
+  } else {
+    pen.setStyle(Qt::SolidLine);
+  }
+  if (s.sett_l.line_thickness > 0) {
+    pen.setWidth(s.sett_l.line_thickness);
+  }
   painter.setPen(pen);
+  if (s.sett_l.line_thickness > 0) {
+    for (const Edge &edge : controller->getFigure()->getFacets()) {
+      const QPointF startPoint(edge.getBeginPosition().x() * 100 + width() / 2,
+                               -edge.getBeginPosition().y() * 100 +
+                                   height() / 2);
+      const QPointF endPoint(edge.getEndPosition().x() * 100 + width() / 2,
+                             -edge.getEndPosition().y() * 100 + height() / 2);
+      painter.drawLine(startPoint, endPoint);
+    }
+  }
+  painter.setBrush(QBrush(s.sett_v.color_vertex));
 
   for (const Vertex &v : controller->getFigure()->getVertices()) {
     QPointF point(v.x() * 100 + width() / 2, -v.y() * 100 + height() / 2);
-    painter.drawPoint(point);
-  }
-
-  pen.setColor(Qt::black);
-  pen.setWidth(1);
-  painter.setPen(pen);
-
-  for (const Edge &edge : controller->getFigure()->getFacets()) {
-    const QPointF startPoint(edge.getBeginPosition().x() * 100 + width() / 2,
-                             -edge.getBeginPosition().y() * 100 + height() / 2);
-    const QPointF endPoint(edge.getEndPosition().x() * 100 + width() / 2,
-                           -edge.getEndPosition().y() * 100 + height() / 2);
-    painter.drawLine(startPoint, endPoint);
+    if (s.sett_v.type_vertex == SettingVertex::Type::Circle) {
+      painter.setPen(Qt::NoPen);
+      painter.drawEllipse(point, s.sett_v.size_vertex / 2,
+                          s.sett_v.size_vertex / 2);
+      painter.setPen(pen);
+    } else if (s.sett_v.type_vertex == SettingVertex::Type::Square) {
+      painter.setPen(Qt::NoPen);
+      painter.drawRect(point.x() - s.sett_v.size_vertex / 2,
+                       point.y() - s.sett_v.size_vertex / 2,
+                       s.sett_v.size_vertex, s.sett_v.size_vertex);
+      painter.setPen(pen);
+    }
   }
 }
 
-// Parameters PaintModel::getParamController() { return controller->getParam();
+// Parameters PaintModel::getParamController() { return
+// controller->getParam();
 // }
+
+RenderSetting *PaintModel::getSettingPaint() { return &s; };
+
+void PaintModel::resetSetting() { s = {}; }

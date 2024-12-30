@@ -7,11 +7,12 @@ PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
   ui->setupUi(this);
   paint_model = new PaintModel(ui->field, c);
   paint_model->setGeometry(
-      QRect(0, 0, ui->field->width() - 10, ui->field->height() - 10));
+      QRect(0, 0, ui->field->width(), ui->field->height()));
   initializeTextBox();
+  on_resetSettings_pressed(); // ДЕЛАЕМ НАЧАЛЬНОЕ ПОЛОЖЕНИЕ КНОПОК ПОЛЗУНКОВ
   set_number_of_facets();
   set_number_of_vertices();
-  set_file_name();
+  // set_file_name();
 };
 
 PaintViewer::~PaintViewer() {
@@ -116,18 +117,50 @@ void PaintViewer::on_boxScale_textChanged(const QString &text) {
 void PaintViewer::on_thicknessSelectFacets_valueChanged() {
   QToolTip::showText(QCursor::pos(),
                      QString::number(ui->thicknessSelectFacets->value()), this);
+  paint_model->getSettingPaint()->sett_l.line_thickness =
+      ui->thicknessSelectFacets->value();
+  paint_model->update();
 }
 
 void PaintViewer::on_sizeSelectVerties_valueChanged() {
   QToolTip::showText(QCursor::pos(),
                      QString::number(ui->sizeSelectVerties->value()), this);
+  paint_model->getSettingPaint()->sett_v.size_vertex =
+      ui->sizeSelectVerties->value();
+  paint_model->update();
+}
+
+void PaintViewer::on_typeSelectFacets_currentIndexChanged(int index) {
+  if (index == 0) {
+    paint_model->getSettingPaint()->sett_l.type_lines =
+        SettingLines::Type::Solid;
+  } else if (index == 1) {
+    paint_model->getSettingPaint()->sett_l.type_lines =
+        SettingLines::Type::Dashed;
+  }
+  paint_model->update();
+}
+
+void PaintViewer::on_typeSelectVertices_currentIndexChanged(int index) {
+  if (index == 0) {
+    paint_model->getSettingPaint()->sett_v.type_vertex =
+        SettingVertex::Type::Circle;
+  } else if (index == 1) {
+    paint_model->getSettingPaint()->sett_v.type_vertex =
+        SettingVertex::Type::Square;
+  } else if (index == 2) {
+    paint_model->getSettingPaint()->sett_v.type_vertex =
+        SettingVertex::Type::None;
+  }
+  paint_model->update();
 }
 
 void PaintViewer::on_colorSelectFacets_pressed() {
   QColor color = QColorDialog::getColor(Qt::white, this, "Выберите цвет ребер");
 
   if (color.isValid()) {
-    // измение цвета для ребер
+    paint_model->getSettingPaint()->sett_l.color_lines = color;
+    paint_model->update();
   }
 }
 
@@ -136,7 +169,8 @@ void PaintViewer::on_colorSelectVertices_pressed() {
       QColorDialog::getColor(Qt::white, this, "Выберите цвет вершин");
 
   if (color.isValid()) {
-    // измение цвета для вершин
+    paint_model->getSettingPaint()->sett_v.color_vertex = color;
+    paint_model->update();
   }
 }
 
@@ -144,7 +178,8 @@ void PaintViewer::on_colorSelectBackground_pressed() {
   QColor color = QColorDialog::getColor(Qt::white, this, "Выберите цвет фона");
 
   if (color.isValid()) {
-    // измение цвета для фона
+    paint_model->getSettingPaint()->color_background = color;
+    paint_model->update();
   }
 }
 
@@ -159,6 +194,10 @@ void PaintViewer::on_resetSettings_pressed() {
   on_boxRotateZ_textChanged("0");
 
   on_boxScale_textChanged("1");
+  ui->typeSelectVertices->setCurrentIndex(0);
+  ui->typeSelectFacets->setCurrentIndex(0);
+  ui->thicknessSelectFacets->setValue(1);
+  ui->sizeSelectVerties->setValue(1);
 }
 
 void PaintViewer::on_chooseFile_pressed() {
@@ -172,7 +211,7 @@ void PaintViewer::on_chooseFile_pressed() {
   paint_model->onLoadModel(file);
   set_number_of_facets();
   set_number_of_vertices();
-  set_file_name();
+  set_file_name(file);
 }
 
 void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
@@ -213,4 +252,6 @@ void PaintViewer::set_number_of_vertices() {
       QString::number(paint_model->onGetSizeVertices()));
 }
 
-void PaintViewer::set_file_name() { ui->fileName->setPlainText(filename); }
+void PaintViewer::set_file_name(const QString &filename) {
+  ui->fileName->setPlainText(filename);
+}

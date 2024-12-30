@@ -11,7 +11,7 @@ struct Parameters {
   float rotate_x = 0.0f;
   float rotate_y = 0.0f;
   float rotate_z = 0.0f;
-  QString filename = ""; // не занулять при сбросе
+  QString filename = "";
 };
 
 class Facade {
@@ -21,6 +21,7 @@ private:
   Parameters p;
 
   float degreesInRadians(float x);
+  void resetParam();
 
 public:
   Facade() { p = {}; }
@@ -35,6 +36,7 @@ public:
   Figure *getFigure();
   size_t getSizeVertices();
   size_t getSizeFacets();
+  // QString getFilename();
 
   // Parameters getParam();
 };

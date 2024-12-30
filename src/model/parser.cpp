@@ -41,7 +41,6 @@ void Parser::saveCoordVertices(QStringList str, QVector<Vertex> &vertices) {
 void Parser::saveRefFacets(QStringList str, QVector<Edge> &facets,
                            QVector<Vertex> &vertices) {
   if (str.size() >= 4) {
-    // Сохраняем индексы вершин
     QVector<int> index;
     for (int i = 1; i < str.size(); i++) {
       QStringList str_index = str[i].split('/');
@@ -49,13 +48,9 @@ void Parser::saveRefFacets(QStringList str, QVector<Edge> &facets,
         index.append(str_index[0].toInt() - 1);
       }
     }
-    // Создаем ребра для грани, используя индексы
     for (int i = 0; i < index.size(); i++) {
       int beginIndex = index[i];
-      int endIndex =
-          index[(i + 1) % index.size()]; // Соединяем последний с первым
-
-      // Создаем ребро, используя ссылки на вершины
+      int endIndex = index[(i + 1) % index.size()];
       Edge edge(vertices[beginIndex], vertices[endIndex]);
       facets.append(edge);
     }

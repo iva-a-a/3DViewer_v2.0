@@ -7,6 +7,16 @@ using namespace s21;
 
 float Facade::degreesInRadians(float x) { return x * M_PI / 180.0f; }
 
+void Facade::resetParam() {
+  p.scale = 1.0f;
+  p.shift_x = 0.0f;
+  p.shift_y = 0.0f;
+  p.shift_z = 0.0f;
+  p.rotate_x = 0.0f;
+  p.rotate_y = 0.0f;
+  p.rotate_z = 0.0f;
+}
+
 void Facade::loadFile(const QString &filename) {
   if (filename.isEmpty()) {
     return;
@@ -57,10 +67,12 @@ Figure *Facade::getFigure() { return &model; }
 void Facade::resetMovement() {
 
   model = copy_model;
-  p = {};
+  resetParam();
 }
 
 size_t Facade::getSizeVertices() { return model.getVertices().size(); }
 size_t Facade::getSizeFacets() { return model.getFacets().size(); }
+
+// QString Facade::getFilename() { return p.filename; }
 
 // Parameters Facade::getParam() { return p; }
