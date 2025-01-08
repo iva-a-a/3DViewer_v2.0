@@ -15,6 +15,7 @@ void Facade::resetParam() {
   p.rotate_x = 0.0f;
   p.rotate_y = 0.0f;
   p.rotate_z = 0.0f;
+  p.type_projection = ProjectionType::Parallel;
 }
 
 void Facade::loadFile(const QString &filename) {
@@ -27,8 +28,20 @@ void Facade::loadFile(const QString &filename) {
   copy_model = model;
 }
 
-void Facade::moveFigure(float x, float y, float z) {
+// void Facade::loadFileWithSettings() {
+//   if (p.filename.isEmpty()) {
+//     return;
+//   }
+//   Figure f(p.filename);
 
+//   model = f;
+//   // moveFigure(p.shift_x, p.shift_y, p.shift_z);
+//   // rotateFigure(p.rotate_x, p.rotate_y, p.rotate_z);
+//   // scaleFigure(p.scale, p.scale, p.scale);
+//   copy_model = model;
+// }
+
+void Facade::moveFigure(float x, float y, float z) {
   model.transform(TransformMatrixBuilder::createMoveMatrix(
       (x - p.shift_x) / STEP, (y - p.shift_y) / STEP, (z - p.shift_z) / STEP));
   p.shift_x = x;
@@ -72,7 +85,4 @@ void Facade::resetMovement() {
 
 size_t Facade::getSizeVertices() { return model.getVertices().size(); }
 size_t Facade::getSizeFacets() { return model.getFacets().size(); }
-
-// QString Facade::getFilename() { return p.filename; }
-
-// Parameters Facade::getParam() { return p; }
+Parameters *Facade::getParam() { return &p; }

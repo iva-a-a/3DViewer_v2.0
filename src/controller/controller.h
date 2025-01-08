@@ -3,15 +3,19 @@
 #include "../model/figure.h"
 
 namespace s21 {
+
+enum class ProjectionType { Parallel, Central };
+
 struct Parameters {
-  float scale = 1.0f;
+  QString filename = "";
   float shift_x = 0.0f;
   float shift_y = 0.0f;
   float shift_z = 0.0f;
   float rotate_x = 0.0f;
   float rotate_y = 0.0f;
   float rotate_z = 0.0f;
-  QString filename = "";
+  float scale = 1.0f;
+  ProjectionType type_projection = ProjectionType::Parallel;
 };
 
 class Facade {
@@ -33,12 +37,12 @@ public:
   void resetMovement();
   void loadFile(const QString &filename);
 
+  // void loadFileWithSettings();
+
   Figure *getFigure();
   size_t getSizeVertices();
   size_t getSizeFacets();
-  // QString getFilename();
-
-  // Parameters getParam();
+  Parameters *getParam();
 };
 
 } // namespace s21
