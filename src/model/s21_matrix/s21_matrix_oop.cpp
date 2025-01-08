@@ -1,7 +1,6 @@
 #include "s21_matrix_oop.h"
 
 #include <cfloat>
-#include <cmath>
 #include <cstring>
 
 static bool EqDouble(double x, double y) {
