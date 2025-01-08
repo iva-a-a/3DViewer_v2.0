@@ -29,22 +29,24 @@ HEADERS +=  model/figure.h \
             model/vertex_edge.h \
             model/transform_matrix_builder.h \
             model/transform_matrix.h \
-            view/paintviewer.h \
-            view/paintmodel.h \
+            view/paint_viewer.h \
+            view/paint_model.h \
             model/s21_matrix/s21_matrix_oop.h \
-            controller/controller.h
+            controller/controller.h \
+            controller/parser_settings.h
 
 
 SOURCES += main.cpp \
            model/parser.cpp \
-           view/paintviewer.cpp \
-           view/paintmodel.cpp \
+           view/paint_viewer.cpp \
+           view/paint_model.cpp \
            model/figure.cpp \
            model/transform_figure.cpp \
            model/transform_matrix_builder.cpp \
            model/transform_matrix.cpp \
            model/s21_matrix/s21_matrix_oop.cpp \
-           controller/controller.cpp
+           controller/controller.cpp \
+           controller/parser_settings.cpp
 
 FORMS += view/paint.ui
 

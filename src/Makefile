@@ -7,7 +7,7 @@ TARGET = 3d_viewer
 
 BUILD_DIR = build
 
-.PHONY: all build clean
+.PHONY: all build run clean delete
 
 all: build
 
@@ -29,3 +29,6 @@ run:
 
 clean:
 	$(RM) $(BUILD_DIR)
+
+delete:
+	rm settings.txt
