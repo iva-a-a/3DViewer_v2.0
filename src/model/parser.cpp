@@ -21,12 +21,17 @@ void Parser::recordCoordFromFile(const QString &filename,
   while (!text.atEnd()) {
     QString str1 = text.readLine();
     QStringList str2 = str1.split(' ', Qt::SkipEmptyParts);
-    if (!str2.isEmpty()) {
-      if (str2[0] == "v") {
-        saveCoordVertices(str2, vertices);
-      } else if (str2[0] == "f") {
-        saveRefFacets(str2, facets, vertices);
-      }
+    if (!str2.isEmpty() && str2[0] == "v") {
+      saveCoordVertices(str2, vertices);
+    }
+  }
+
+  file.seek(0);
+  while (!text.atEnd()) {
+    QString str1 = text.readLine();
+    QStringList str2 = str1.split(' ', Qt::SkipEmptyParts);
+    if (!str2.isEmpty() && str2[0] == "f") {
+      saveRefFacets(str2, facets, vertices);
     }
   }
   file.close();
@@ -51,7 +56,7 @@ void Parser::saveRefFacets(QStringList str, QVector<Edge> &facets,
     for (int i = 0; i < index.size(); i++) {
       int beginIndex = index[i];
       int endIndex = index[(i + 1) % index.size()];
-      Edge edge(vertices[beginIndex], vertices[endIndex]);
+      Edge edge(&vertices[beginIndex], &vertices[endIndex]);
       facets.append(edge);
     }
   }
