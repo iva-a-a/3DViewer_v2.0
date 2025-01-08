@@ -10,42 +10,57 @@ Figure::Figure(const QString &filename) {
     NormalizeParameters::setNormalVertex(vertices);
   }
 }
+Figure::Figure(const Figure &f) {
+  std::unordered_map<const Vertex *, int> v_map;
 
-Figure::Figure(Figure &f) {
-  std::unordered_map<uint64_t, int> v_map;
   vertices.clear();
   vertices.reserve(f.vertices.size());
-  for (int i = 0; i < f.vertices.size(); i++) {
-    vertices.push_back(f.vertices[i]);
-    v_map.insert({uint64_t(&f.vertices[i]), i});
+  for (qsizetype i = 0; i < f.vertices.size(); i++) {
+    vertices.emplace_back(f.vertices[i]);
+    v_map[&f.vertices[i]] = i;
   }
+
   facets.clear();
   facets.reserve(f.facets.size());
-  for (int i = 0; i < f.facets.size(); i++) {
-    const Vertex &begin = f.facets[i].getBeginPosition();
-    const Vertex &end = f.facets[i].getEndPosition();
-    int index_begin = v_map[uint64_t(&begin)];
-    int index_end = v_map[uint64_t(&end)];
-    facets.push_back(Edge(vertices[index_begin], vertices[index_end]));
+  for (qsizetype i = 0; i < f.facets.size(); i++) {
+    const Vertex *begin = f.facets[i].getBeginPosition();
+    const Vertex *end = f.facets[i].getEndPosition();
+    auto index_begin = v_map.find(begin);
+    auto index_end = v_map.find(end);
+    if (index_begin != v_map.end() && index_end != v_map.end()) {
+      facets.emplace_back(&vertices[index_begin->second],
+                          &vertices[index_end->second]);
+    } else {
+      throw "Error: vertex not found";
+    }
   }
 }
 
-Figure &Figure::operator=(Figure &f) {
-  std::unordered_map<uint64_t, int> v_map;
-  vertices.clear();
-  vertices.reserve(f.vertices.size());
-  for (int i = 0; i < f.vertices.size(); i++) {
-    vertices.push_back(f.vertices[i]);
-    v_map.insert({uint64_t(&f.vertices[i]), i});
-  }
-  facets.clear();
-  facets.reserve(f.facets.size());
-  for (int i = 0; i < f.facets.size(); i++) {
-    const Vertex &begin = f.facets[i].getBeginPosition();
-    const Vertex &end = f.facets[i].getEndPosition();
-    int index_begin = v_map[uint64_t(&begin)];
-    int index_end = v_map[uint64_t(&end)];
-    facets.push_back(Edge(vertices[index_begin], vertices[index_end]));
+Figure &Figure::operator=(const Figure &f) {
+  if (this != &f) {
+    std::unordered_map<const Vertex *, int> v_map;
+
+    vertices.clear();
+    vertices.reserve(f.vertices.size());
+    for (qsizetype i = 0; i < f.vertices.size(); i++) {
+      vertices.emplace_back(f.vertices[i]);
+      v_map[&f.vertices[i]] = i;
+    }
+
+    facets.clear();
+    facets.reserve(f.facets.size());
+    for (qsizetype i = 0; i < f.facets.size(); i++) {
+      const Vertex *begin = f.facets[i].getBeginPosition();
+      const Vertex *end = f.facets[i].getEndPosition();
+      auto index_begin = v_map.find(begin);
+      auto index_end = v_map.find(end);
+      if (index_begin != v_map.end() && index_end != v_map.end()) {
+        facets.emplace_back(&vertices[index_begin->second],
+                            &vertices[index_end->second]);
+      } else {
+        throw "Error: vertex not found";
+      }
+    }
   }
   return *this;
 }

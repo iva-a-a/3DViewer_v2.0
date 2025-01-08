@@ -13,10 +13,10 @@ private:
 public:
   Figure() {};
   Figure(const QString &filename);
-  Figure(Figure &f);
+  Figure(const Figure &f);
   ~Figure() = default;
 
-  Figure &operator=(Figure &f);
+  Figure &operator=(const Figure &f);
 
   void transform(const TransformMatrix &m);
 
