@@ -102,7 +102,7 @@ font: 16pt &quot;Times New Roman&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background:gray;
-font: italic 14pt &quot;Times New Roman&quot;;
+font: italic 18pt &quot;Times New Roman&quot;;
 color: white;</string>
      </property>
      <property name="frameShape">
