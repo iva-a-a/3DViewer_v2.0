@@ -21,7 +21,6 @@ PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
   // initializeTextBox();
   set_number_of_facets();
   set_number_of_vertices();
-  // set_file_name(); для загрузки модели из файла !!
 };
 
 PaintViewer::~PaintViewer() {
@@ -39,27 +38,37 @@ void PaintViewer::set_start_saved_settings() {
   Parameters p =
       ParserSettings::getSettingsFromFile(paint_model->getSettingPaint());
   paint_model->onLoadModel(p.filename);
+
+  on_scrollRotateX_valueChanged(p.rotate_x);
+  on_scrollRotateY_valueChanged(p.rotate_y);
+  on_scrollRotateZ_valueChanged(p.rotate_z);
+
   on_scrollShiftX_valueChanged(p.shift_x);
   on_scrollShiftY_valueChanged(p.shift_y);
   on_scrollShiftZ_valueChanged(p.shift_z);
-  std::cout << paint_model->getParamController()->rotate_x << " "
-            << paint_model->getParamController()->rotate_y << " "
-            << paint_model->getParamController()->rotate_z << std::endl;
 
-  on_scrollRotateX_valueChanged(p.rotate_x);
-  std::cout << paint_model->getParamController()->rotate_x << " "
-            << paint_model->getParamController()->rotate_y << " "
-            << paint_model->getParamController()->rotate_z << std::endl;
-
-  on_scrollRotateY_valueChanged(p.rotate_y);
-  std::cout << paint_model->getParamController()->rotate_x << " "
-            << paint_model->getParamController()->rotate_y << " "
-            << paint_model->getParamController()->rotate_z << std::endl;
-  on_scrollRotateZ_valueChanged(p.rotate_z);
-  std::cout << paint_model->getParamController()->rotate_x << " "
-            << paint_model->getParamController()->rotate_y << " "
-            << paint_model->getParamController()->rotate_z << std::endl;
   on_scrollScale_valueChanged(p.scale);
+
+  // ПАРАМЕТРЫ ОТРИСОВКИ МЕНЯЕМ МЕНЮ
+  if (paint_model->getSettingPaint()->sett_v.type_vertex ==
+      SettingVertex::Type::Circle) {
+    ui->typeSelectVertices->setCurrentIndex(0);
+  } else if (paint_model->getSettingPaint()->sett_v.type_vertex ==
+             SettingVertex::Type::Square) {
+    ui->typeSelectVertices->setCurrentIndex(1);
+  } else {
+    ui->typeSelectVertices->setCurrentIndex(2);
+  }
+  if (paint_model->getSettingPaint()->sett_l.type_lines ==
+      SettingLines::Type::Solid) {
+    ui->typeSelectFacets->setCurrentIndex(0);
+  } else {
+    ui->typeSelectFacets->setCurrentIndex(1);
+  }
+  ui->thicknessSelectFacets->setValue(
+      paint_model->getSettingPaint()->sett_l.line_thickness);
+  ui->sizeSelectVerties->setValue(
+      paint_model->getSettingPaint()->sett_v.size_vertex);
 }
 
 void PaintViewer::updateTextBox(const QString &text, QLineEdit *line,
@@ -118,11 +127,11 @@ void PaintViewer::on_boxShiftZ_textChanged(const QString &text) {
 }
 
 void PaintViewer::on_scrollRotateX_valueChanged(int value) {
-  ui->boxRotateX->setText(QString::number(value));
-  // paint_model->onRotate(ui->scrollRotateX->value(),
-  // ui->scrollRotateY->value(),
-  //                       ui->scrollRotateZ->value());
 
+  //  paint_model->onRotate(ui->scrollRotateX->value(),
+  //  ui->scrollRotateY->value(),
+  //                        ui->scrollRotateZ->value());
+  ui->boxRotateX->setText(QString::number(value));
   paint_model->onRotate(ui->scrollRotateX->value(),
                         paint_model->getParamController()->rotate_y,
                         paint_model->getParamController()->rotate_z);

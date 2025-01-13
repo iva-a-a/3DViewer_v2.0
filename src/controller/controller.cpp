@@ -28,19 +28,6 @@ void Facade::loadFile(const QString &filename) {
   copy_model = model;
 }
 
-// void Facade::loadFileWithSettings() {
-//   if (p.filename.isEmpty()) {
-//     return;
-//   }
-//   Figure f(p.filename);
-
-//   model = f;
-//   // moveFigure(p.shift_x, p.shift_y, p.shift_z);
-//   // rotateFigure(p.rotate_x, p.rotate_y, p.rotate_z);
-//   // scaleFigure(p.scale, p.scale, p.scale);
-//   copy_model = model;
-// }
-
 void Facade::moveFigure(float x, float y, float z) {
   model.transform(TransformMatrixBuilder::createMoveMatrix(
       (x - p.shift_x) / STEP, (y - p.shift_y) / STEP, (z - p.shift_z) / STEP));
@@ -55,14 +42,25 @@ void Facade::rotateFigure(float x, float y, float z) {
       -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP));
 
   model.transform(TransformMatrixBuilder::createRotationMatrix(
-      degreesInRadians(x - p.rotate_x), degreesInRadians(y - p.rotate_y),
-      degreesInRadians(z - p.rotate_z)));
+      degreesInRadians(0), degreesInRadians(0), degreesInRadians(-p.rotate_z)));
+  model.transform(TransformMatrixBuilder::createRotationMatrix(
+      degreesInRadians(0), degreesInRadians(-p.rotate_y), degreesInRadians(0)));
+  model.transform(TransformMatrixBuilder::createRotationMatrix(
+      degreesInRadians(-p.rotate_x), degreesInRadians(0), degreesInRadians(0)));
+  model.transform(TransformMatrixBuilder::createRotationMatrix(
+      degreesInRadians(x), degreesInRadians(0), degreesInRadians(0)));
+  model.transform(TransformMatrixBuilder::createRotationMatrix(
+      degreesInRadians(0), degreesInRadians(y), degreesInRadians(0)));
+  model.transform(TransformMatrixBuilder::createRotationMatrix(
+      degreesInRadians(0), degreesInRadians(0), degreesInRadians(z)));
 
   model.transform(TransformMatrixBuilder::createMoveMatrix(
       p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP));
   p.rotate_x = x;
   p.rotate_y = y;
   p.rotate_z = z;
+  std::cout << "rotatefigure " << p.rotate_x << " " << p.rotate_y << " "
+            << p.rotate_z << std::endl;
 }
 
 void Facade::scaleFigure(float x, float y, float z) {
@@ -78,7 +76,6 @@ void Facade::scaleFigure(float x, float y, float z) {
 Figure *Facade::getFigure() { return &model; }
 
 void Facade::resetMovement() {
-
   model = copy_model;
   resetParam();
 }

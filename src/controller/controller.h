@@ -35,9 +35,8 @@ public:
   void rotateFigure(float x, float y, float z);
   void scaleFigure(float x, float y, float z);
   void resetMovement();
-  void loadFile(const QString &filename);
 
-  // void loadFileWithSettings();
+  void loadFile(const QString &filename);
 
   Figure *getFigure();
   size_t getSizeVertices();
