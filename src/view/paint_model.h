@@ -49,10 +49,8 @@ public:
   size_t onGetSizeFacets() { return controller->getSizeFacets(); }
 
   void onLoadModel(const QString &filename);
-  // void onLoadModelWithSettings();
 
   Parameters *getParamController();
-
   RenderSetting *getSettingPaint();
 
 protected:

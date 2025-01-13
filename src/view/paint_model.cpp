@@ -27,11 +27,6 @@ void PaintModel::onLoadModel(const QString &filename) {
   update();
 }
 
-// void PaintModel::onLoadModelWithSettings() {
-//   controller->loadFileWithSettings();
-//   update();
-// }
-
 void PaintModel::paintEvent(QPaintEvent *event) {
   (void)event;
   QPainter painter(this);
