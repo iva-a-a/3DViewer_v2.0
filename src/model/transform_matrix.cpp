@@ -36,4 +36,4 @@ double &TransformMatrix::operator()(int row, int col) const {
 
 void TransformMatrix::InverseTransformMatrix() {
   _matrix = _matrix.InverseMatrix();
-} // память
+}

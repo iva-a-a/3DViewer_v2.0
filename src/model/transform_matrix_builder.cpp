@@ -2,8 +2,8 @@
 
 using namespace s21;
 
-TransformMatrix TransformMatrixBuilder::createRotationMatrix(float a, float b,
-                                                             float c) {
+TransformMatrix TransformMatrixBuilder::createRotateMatrix(float a, float b,
+                                                           float c) {
 
   TransformMatrix matrix;
 

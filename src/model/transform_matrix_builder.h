@@ -10,7 +10,7 @@ private:
   ~TransformMatrixBuilder() = default;
 
 public:
-  static TransformMatrix createRotationMatrix(float a, float b, float c);
+  static TransformMatrix createRotateMatrix(float a, float b, float c);
   static TransformMatrix createMoveMatrix(float a, float b, float c);
   static TransformMatrix createScaleMatrix(float a, float b, float c);
 };
