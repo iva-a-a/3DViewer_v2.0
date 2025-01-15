@@ -21,11 +21,9 @@ struct Parameters {
 class Facade {
 private:
   Figure model;
-  Figure copy_model;
   Parameters p;
 
   float degreesInRadians(float x);
-  void resetParam();
 
 public:
   Facade() { p = {}; }
@@ -34,8 +32,7 @@ public:
   void moveFigure(float x, float y, float z);
   void rotateFigure(float x, float y, float z);
   void scaleFigure(float x, float y, float z);
-  void resetMovement();
-
+  void resetParam();
   void loadFile(const QString &filename);
 
   Figure *getFigure();

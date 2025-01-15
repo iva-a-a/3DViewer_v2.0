@@ -127,10 +127,6 @@ void PaintViewer::on_boxShiftZ_textChanged(const QString &text) {
 }
 
 void PaintViewer::on_scrollRotateX_valueChanged(int value) {
-
-  //  paint_model->onRotate(ui->scrollRotateX->value(),
-  //  ui->scrollRotateY->value(),
-  //                        ui->scrollRotateZ->value());
   ui->boxRotateX->setText(QString::number(value));
   paint_model->onRotate(ui->scrollRotateX->value(),
                         paint_model->getParamController()->rotate_y,
@@ -143,9 +139,6 @@ void PaintViewer::on_boxRotateX_textChanged(const QString &text) {
 
 void PaintViewer::on_scrollRotateY_valueChanged(int value) {
   ui->boxRotateY->setText(QString::number(value));
-  // paint_model->onRotate(ui->scrollRotateX->value(),
-  // ui->scrollRotateY->value(),
-  //                       ui->scrollRotateZ->value());
   paint_model->onRotate(paint_model->getParamController()->rotate_x,
                         ui->scrollRotateY->value(),
                         paint_model->getParamController()->rotate_z);
@@ -157,9 +150,6 @@ void PaintViewer::on_boxRotateY_textChanged(const QString &text) {
 
 void PaintViewer::on_scrollRotateZ_valueChanged(int value) {
   ui->boxRotateZ->setText(QString::number(value));
-  // paint_model->onRotate(ui->scrollRotateX->value(),
-  // ui->scrollRotateY->value(),
-  //                       ui->scrollRotateZ->value());
   paint_model->onRotate(paint_model->getParamController()->rotate_x,
                         paint_model->getParamController()->rotate_y,
                         ui->scrollRotateZ->value());
@@ -248,20 +238,21 @@ void PaintViewer::on_colorSelectBackground_pressed() {
 }
 
 void PaintViewer::on_resetSettings_pressed() {
+
+  on_scrollShiftX_valueChanged(0);
+  on_scrollShiftY_valueChanged(0);
+  on_scrollShiftZ_valueChanged(0);
+
+  on_scrollRotateX_valueChanged(0);
+  on_scrollRotateY_valueChanged(0);
+  on_scrollRotateZ_valueChanged(0);
+
+  on_scrollScale_valueChanged(1);
   paint_model->onReset();
   reset_button();
 }
 
 void PaintViewer::reset_button() {
-  on_boxShiftX_textChanged("0");
-  on_boxShiftY_textChanged("0");
-  on_boxShiftZ_textChanged("0");
-
-  on_boxRotateX_textChanged("0");
-  on_boxRotateY_textChanged("0");
-  on_boxRotateZ_textChanged("0");
-
-  on_boxScale_textChanged("1");
   ui->typeSelectVertices->setCurrentIndex(0);
   ui->typeSelectFacets->setCurrentIndex(0);
   ui->thicknessSelectFacets->setValue(1);

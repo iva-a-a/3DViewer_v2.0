@@ -25,7 +25,6 @@ void Facade::loadFile(const QString &filename) {
   p.filename = filename;
   Figure f(filename);
   model = f;
-  copy_model = model;
 }
 
 void Facade::moveFigure(float x, float y, float z) {
@@ -73,12 +72,6 @@ void Facade::scaleFigure(float x, float y, float z) {
 }
 
 Figure *Facade::getFigure() { return &model; }
-
-void Facade::resetMovement() {
-  model = copy_model;
-  resetParam();
-}
-
 size_t Facade::getSizeVertices() { return model.getVertices().size(); }
 size_t Facade::getSizeFacets() { return model.getFacets().size(); }
 Parameters *Facade::getParam() { return &p; }

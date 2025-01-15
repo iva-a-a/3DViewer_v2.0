@@ -17,7 +17,7 @@ void PaintModel::onScale(float x, float y, float z) {
   update();
 }
 void PaintModel::onReset() {
-  controller->resetMovement();
+  controller->resetParam();
   resetSetting();
   update();
 }
