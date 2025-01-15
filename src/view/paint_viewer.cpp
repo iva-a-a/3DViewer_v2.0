@@ -10,12 +10,13 @@ PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
   paint_model = new PaintModel(ui->field, c);
   paint_model->setGeometry(
       QRect(0, 0, ui->field->width(), ui->field->height()));
+  set_onOrOff_buttons(false);
 
   if (ParserSettings::checkExistFile() == true) {
+    set_onOrOff_buttons(true);
     set_start_saved_settings();
   } else {
-    reset_button();
-    initializeTextBox();
+    initialize_text_box();
   }
   set_number_of_facets();
   set_number_of_vertices();
@@ -40,16 +41,15 @@ void PaintViewer::set_start_saved_settings() {
       ParserSettings::getSettingsFromFile(paint_model->getSettingPaint());
   paint_model->onLoadModel(p.filename);
 
-  set_file_name(getFileName(p.filename));
-
-  on_scrollRotateX_valueChanged(p.rotate_x);
-  on_scrollRotateY_valueChanged(p.rotate_y);
-  on_scrollRotateZ_valueChanged(p.rotate_z);
+  set_file_name(get_filename(p.filename));
 
   on_scrollShiftX_valueChanged(p.shift_x);
   on_scrollShiftY_valueChanged(p.shift_y);
   on_scrollShiftZ_valueChanged(p.shift_z);
 
+  on_scrollRotateX_valueChanged(p.rotate_x);
+  on_scrollRotateY_valueChanged(p.rotate_y);
+  on_scrollRotateZ_valueChanged(p.rotate_z);
   on_scrollScale_valueChanged(p.scale);
 
   if (paint_model->getSettingPaint()->sett_v.type_vertex ==
@@ -88,7 +88,7 @@ void PaintViewer::updateTextBox(const QString &text, QLineEdit *line,
   }
 }
 
-void PaintViewer::initializeTextBox() {
+void PaintViewer::initialize_text_box() {
   on_scrollShiftX_valueChanged(ui->scrollShiftX->value());
   on_scrollShiftY_valueChanged(ui->scrollShiftY->value());
   on_scrollShiftZ_valueChanged(ui->scrollShiftZ->value());
@@ -276,11 +276,12 @@ void PaintViewer::on_chooseFile_pressed() {
     QMessageBox::warning(this, tr("Ошибка"), tr("Файл не выбран"));
     return;
   }
+  set_onOrOff_buttons(true);
   reset_button();
   paint_model->onLoadModel(filePath);
   set_number_of_facets();
   set_number_of_vertices();
-  QString fileName = getFileName(filePath);
+  QString fileName = get_filename(filePath);
   set_file_name(fileName);
   on_resetSettings_pressed();
 }
@@ -327,7 +328,42 @@ void PaintViewer::set_file_name(const QString &filename) {
   ui->fileName->setPlainText(filename);
 }
 
-QString PaintViewer::getFileName(const QString &filePath) {
+QString PaintViewer::get_filename(const QString &filePath) {
   QFileInfo fileInfo(filePath);
   return fileInfo.fileName();
+}
+
+void PaintViewer::set_onOrOff_buttons(bool enabled) {
+  ui->scrollRotateX->setEnabled(enabled);
+  ui->scrollRotateY->setEnabled(enabled);
+  ui->scrollRotateZ->setEnabled(enabled);
+  ui->scrollShiftX->setEnabled(enabled);
+  ui->scrollShiftY->setEnabled(enabled);
+  ui->scrollShiftZ->setEnabled(enabled);
+  ui->scrollScale->setEnabled(enabled);
+
+  ui->typeProjection->setEnabled(enabled);
+
+  ui->resetSettings->setEnabled(enabled);
+
+  ui->boxShiftX->setEnabled(enabled);
+  ui->boxShiftY->setEnabled(enabled);
+  ui->boxShiftZ->setEnabled(enabled);
+  ui->boxRotateX->setEnabled(enabled);
+  ui->boxRotateY->setEnabled(enabled);
+  ui->boxRotateZ->setEnabled(enabled);
+  ui->boxScale->setEnabled(enabled);
+
+  ui->thicknessSelectFacets->setEnabled(enabled);
+  ui->typeSelectFacets->setEnabled(enabled);
+  ui->colorSelectFacets->setEnabled(enabled);
+
+  ui->sizeSelectVerties->setEnabled(enabled);
+  ui->typeSelectVertices->setEnabled(enabled);
+  ui->colorSelectVertices->setEnabled(enabled);
+
+  ui->colorSelectBackground->setEnabled(enabled);
+
+  ui->saveAsBmpOrJpeg->setEnabled(enabled);
+  ui->saveAsGif->setEnabled(enabled);
 }

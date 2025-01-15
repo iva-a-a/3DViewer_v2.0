@@ -71,12 +71,13 @@ private slots:
 
 private:
   void updateTextBox(const QString &text, QLineEdit *line, QScrollBar *scroll);
-  void initializeTextBox();
+  void initialize_text_box();
   void set_number_of_facets();
   void set_number_of_vertices();
   void set_file_name(const QString &filename);
   void reset_button();
   void set_start_saved_settings();
-  QString getFileName(const QString &filePath);
+  QString get_filename(const QString &filePath);
+  void set_onOrOff_buttons(bool enabled);
 };
 } // namespace s21
