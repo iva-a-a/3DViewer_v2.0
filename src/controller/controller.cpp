@@ -38,38 +38,37 @@ void Facade::moveFigure(float x, float y, float z) {
 
 void Facade::rotateFigure(float x, float y, float z) {
 
-  model.transform(TransformMatrixBuilder::createMoveMatrix(
-      -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP));
+  TransformMatrix rotateMat = TransformMatrixBuilder::createRotationMatrix(
+      degreesInRadians(p.rotate_x), degreesInRadians(p.rotate_y),
+      degreesInRadians(p.rotate_z));
+  rotateMat.InverseTransformMatrix();
 
-  model.transform(TransformMatrixBuilder::createRotationMatrix(
-      degreesInRadians(0), degreesInRadians(0), degreesInRadians(-p.rotate_z)));
-  model.transform(TransformMatrixBuilder::createRotationMatrix(
-      degreesInRadians(0), degreesInRadians(-p.rotate_y), degreesInRadians(0)));
-  model.transform(TransformMatrixBuilder::createRotationMatrix(
-      degreesInRadians(-p.rotate_x), degreesInRadians(0), degreesInRadians(0)));
-  model.transform(TransformMatrixBuilder::createRotationMatrix(
-      degreesInRadians(x), degreesInRadians(0), degreesInRadians(0)));
-  model.transform(TransformMatrixBuilder::createRotationMatrix(
-      degreesInRadians(0), degreesInRadians(y), degreesInRadians(0)));
-  model.transform(TransformMatrixBuilder::createRotationMatrix(
-      degreesInRadians(0), degreesInRadians(0), degreesInRadians(z)));
+  rotateMat =
+      TransformMatrixBuilder::createMoveMatrix(
+          -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *
+      rotateMat *
+      TransformMatrixBuilder::createRotationMatrix(
+          degreesInRadians(x), degreesInRadians(y), degreesInRadians(z)) *
+      TransformMatrixBuilder::createMoveMatrix(
+          p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP);
 
-  model.transform(TransformMatrixBuilder::createMoveMatrix(
-      p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP));
+  model.transform(rotateMat);
   p.rotate_x = x;
   p.rotate_y = y;
   p.rotate_z = z;
-  std::cout << "rotatefigure " << p.rotate_x << " " << p.rotate_y << " "
-            << p.rotate_z << std::endl;
 }
 
 void Facade::scaleFigure(float x, float y, float z) {
-  model.transform(TransformMatrixBuilder::createMoveMatrix(
-      -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP));
-  model.transform(TransformMatrixBuilder::createScaleMatrix(
-      x / p.scale, y / p.scale, z / p.scale));
-  model.transform(TransformMatrixBuilder::createMoveMatrix(
-      p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP));
+
+  TransformMatrix scaleMat =
+      TransformMatrixBuilder::createMoveMatrix(
+          -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *
+      TransformMatrixBuilder::createScaleMatrix(x / p.scale, y / p.scale,
+                                                z / p.scale) *
+      TransformMatrixBuilder::createMoveMatrix(
+          p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP);
+
+  model.transform(scaleMat);
   p.scale = x;
 }
 

@@ -17,6 +17,7 @@ public:
   TransformMatrix operator*(const TransformMatrix &m);
   double &operator()(int row, int col) const;
   Vertex transformPoint(Vertex &v) const;
+  void InverseTransformMatrix();
 };
 
 } // namespace s21

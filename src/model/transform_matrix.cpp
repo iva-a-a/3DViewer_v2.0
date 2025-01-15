@@ -13,19 +13,19 @@ TransformMatrix TransformMatrix::operator*(const TransformMatrix &m) {
 }
 
 Vertex TransformMatrix::transformPoint(Vertex &v) const {
-  S21Matrix mat_point(4, 1);
+  S21Matrix mat_point(1, 4);
   S21Matrix m(this->_matrix);
   Vertex result;
   mat_point(0, 0) = v.x();
-  mat_point(1, 0) = v.y();
-  mat_point(2, 0) = v.z();
-  mat_point(3, 0) = 1;
+  mat_point(0, 1) = v.y();
+  mat_point(0, 2) = v.z();
+  mat_point(0, 3) = 1;
 
-  m.MulMatrix(mat_point);
+  mat_point.MulMatrix(m);
 
-  result.setX(m(0, 0));
-  result.setY(m(1, 0));
-  result.setZ(m(2, 0));
+  result.setX(mat_point(0, 0));
+  result.setY(mat_point(0, 1));
+  result.setZ(mat_point(0, 2));
 
   return result;
 }
@@ -33,3 +33,7 @@ Vertex TransformMatrix::transformPoint(Vertex &v) const {
 double &TransformMatrix::operator()(int row, int col) const {
   return _matrix(row, col);
 }
+
+void TransformMatrix::InverseTransformMatrix() {
+  _matrix = _matrix.InverseMatrix();
+} // память
