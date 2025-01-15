@@ -6,6 +6,7 @@ RM = rm -rf
 TARGET = 3d_viewer
 
 BUILD_DIR = build
+SAVE_DIR = saved_images
 
 .PHONY: all build run clean delete
 
@@ -28,7 +29,12 @@ run:
 	@$(CPP) $(CPPFLAGS) -cpp $< -o $@
 
 clean:
-	$(RM) $(BUILD_DIR)
+	@$(RM) $(BUILD_DIR)
+	@echo -- Clean complete.
 
 delete:
-	rm settings.txt
+	@$(RM) settings.txt
+	@if [ -d "$(SAVE_DIR)" ]; then \
+		$(RM) $(SAVE_DIR); \
+	fi
+	@echo -- Delete complete. The settings file and saved images have been deleted.

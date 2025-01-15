@@ -4,6 +4,7 @@
 #include <QCloseEvent>
 #include <QColorDialog>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QPainter>
@@ -76,5 +77,6 @@ private:
   void set_file_name(const QString &filename);
   void reset_button();
   void set_start_saved_settings();
+  QString getFileName(const QString &filePath);
 };
 } // namespace s21

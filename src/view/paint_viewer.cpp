@@ -13,12 +13,10 @@ PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
 
   if (ParserSettings::checkExistFile() == true) {
     set_start_saved_settings();
-    //  set_file_name(paint_model->getParamController().filename);
   } else {
-    reset_button(); // начальное положение ползунков (если нет загрузочного
-                    // файла)
+    reset_button();
+    initializeTextBox();
   }
-  // initializeTextBox();
   set_number_of_facets();
   set_number_of_vertices();
 };
@@ -29,6 +27,9 @@ PaintViewer::~PaintViewer() {
 };
 
 void PaintViewer::closeEvent(QCloseEvent *event) {
+  if (paint_model->getParamController()->filename == "") {
+    return;
+  }
   ParserSettings::saveSettingsToFile(paint_model->getParamController(),
                                      paint_model->getSettingPaint());
   event->accept();
@@ -38,6 +39,8 @@ void PaintViewer::set_start_saved_settings() {
   Parameters p =
       ParserSettings::getSettingsFromFile(paint_model->getSettingPaint());
   paint_model->onLoadModel(p.filename);
+
+  set_file_name(getFileName(p.filename));
 
   on_scrollRotateX_valueChanged(p.rotate_x);
   on_scrollRotateY_valueChanged(p.rotate_y);
@@ -49,7 +52,6 @@ void PaintViewer::set_start_saved_settings() {
 
   on_scrollScale_valueChanged(p.scale);
 
-  // ПАРАМЕТРЫ ОТРИСОВКИ МЕНЯЕМ МЕНЮ
   if (paint_model->getSettingPaint()->sett_v.type_vertex ==
       SettingVertex::Type::Circle) {
     ui->typeSelectVertices->setCurrentIndex(0);
@@ -238,7 +240,6 @@ void PaintViewer::on_colorSelectBackground_pressed() {
 }
 
 void PaintViewer::on_resetSettings_pressed() {
-
   on_scrollShiftX_valueChanged(0);
   on_scrollShiftY_valueChanged(0);
   on_scrollShiftZ_valueChanged(0);
@@ -251,8 +252,15 @@ void PaintViewer::on_resetSettings_pressed() {
   paint_model->onReset();
   reset_button();
 }
-
 void PaintViewer::reset_button() {
+  on_boxShiftX_textChanged("0");
+  on_boxShiftY_textChanged("0");
+  on_boxShiftZ_textChanged("0");
+  on_boxRotateX_textChanged("0");
+  on_boxRotateY_textChanged("0");
+  on_boxRotateZ_textChanged("0");
+  on_boxScale_textChanged("1");
+
   ui->typeSelectVertices->setCurrentIndex(0);
   ui->typeSelectFacets->setCurrentIndex(0);
   ui->thicknessSelectFacets->setValue(1);
@@ -260,17 +268,19 @@ void PaintViewer::reset_button() {
 }
 
 void PaintViewer::on_chooseFile_pressed() {
+
   QString dir = QDir::currentPath() + "/models_3d";
   QString filePath = QFileDialog::getOpenFileName(
       this, tr("Выберите файл"), dir, tr("Файлы 3D моделей (*.obj)"));
   if (filePath.isEmpty()) {
     QMessageBox::warning(this, tr("Ошибка"), tr("Файл не выбран"));
+    return;
   }
-
+  reset_button();
   paint_model->onLoadModel(filePath);
   set_number_of_facets();
   set_number_of_vertices();
-  QString fileName = QFileInfo(filePath).fileName();
+  QString fileName = getFileName(filePath);
   set_file_name(fileName);
   on_resetSettings_pressed();
 }
@@ -315,4 +325,9 @@ void PaintViewer::set_number_of_vertices() {
 
 void PaintViewer::set_file_name(const QString &filename) {
   ui->fileName->setPlainText(filename);
+}
+
+QString PaintViewer::getFileName(const QString &filePath) {
+  QFileInfo fileInfo(filePath);
+  return fileInfo.fileName();
 }
