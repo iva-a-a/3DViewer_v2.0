@@ -19,7 +19,7 @@ Vertex TransformMatrix::transformPoint(Vertex &v) const {
   mat_point(0, 0) = v.x();
   mat_point(0, 1) = v.y();
   mat_point(0, 2) = v.z();
-  mat_point(0, 3) = 1;
+  mat_point(0, 3) = 1.0f;
 
   mat_point.MulMatrix(m);
 

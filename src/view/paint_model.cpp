@@ -2,6 +2,11 @@
 
 using namespace s21;
 
+#define FOCUS 100
+#define SCALE 10
+#define WIDHT width() / 2
+#define HEIGHT height() / 2
+
 void PaintModel::onMove(float x, float y, float z) {
   controller->moveFigure(x, y, z);
   update();
@@ -47,18 +52,35 @@ void PaintModel::paintEvent(QPaintEvent *event) {
   painter.setPen(pen);
   if (s.sett_l.line_thickness > 0) {
     for (const Edge &edge : controller->getFigure()->getFacets()) {
-      const QPointF startPoint(edge.getBeginPosition()->x() * 100 + width() / 2,
-                               -edge.getBeginPosition()->y() * 100 +
-                                   height() / 2);
-      const QPointF endPoint(edge.getEndPosition()->x() * 100 + width() / 2,
-                             -edge.getEndPosition()->y() * 100 + height() / 2);
+      QPointF startPoint;
+      QPointF endPoint;
+      if (controller->getParam()->type_projection == ProjectionType::Parallel) {
+        startPoint.setX(edge.getBeginPosition()->x() * FOCUS + WIDHT);
+        startPoint.setY(-edge.getBeginPosition()->y() * FOCUS + HEIGHT);
+        endPoint.setX(edge.getEndPosition()->x() * FOCUS + WIDHT);
+        endPoint.setY(-edge.getEndPosition()->y() * FOCUS + HEIGHT);
+      } else {
+        startPoint.setX((edge.getBeginPosition()->x() * FOCUS) /
+                            (edge.getBeginPosition()->z() + FOCUS) * SCALE +
+                        WIDHT);
+        startPoint.setY((-edge.getBeginPosition()->y() * FOCUS) /
+                            (edge.getBeginPosition()->z() + FOCUS) * SCALE +
+                        HEIGHT);
+        endPoint.setX((edge.getEndPosition()->x() * FOCUS) /
+                          (edge.getEndPosition()->z() + FOCUS) * SCALE +
+                      WIDHT);
+        endPoint.setY((-edge.getEndPosition()->y() * FOCUS) /
+                          (edge.getEndPosition()->z() + FOCUS) * SCALE +
+                      HEIGHT);
+      }
       painter.drawLine(startPoint, endPoint);
     }
   }
 
+  // вершины не соответствуеют при разных проекциях !!!!
   painter.setBrush(QBrush(s.sett_v.color_vertex));
   for (const Vertex &v : controller->getFigure()->getVertices()) {
-    QPointF point(v.x() * 100 + width() / 2, -v.y() * 100 + height() / 2);
+    QPointF point(v.x() * FOCUS + WIDHT, -v.y() * FOCUS + HEIGHT);
     if (s.sett_v.type_vertex == SettingVertex::Type::Circle) {
       painter.setPen(Qt::NoPen);
       painter.drawEllipse(point, s.sett_v.size_vertex / 2,

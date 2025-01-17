@@ -50,6 +50,11 @@ public:
 
   void onLoadModel(const QString &filename);
 
+  void onChangeCentralProjection() {
+    controller->changeCentralProjection();
+    update();
+  }
+
   Parameters *getParamController();
   RenderSetting *getSettingPaint();
 

@@ -28,7 +28,7 @@ PaintViewer::~PaintViewer() {
 };
 
 void PaintViewer::closeEvent(QCloseEvent *event) {
-  if (paint_model->getParamController()->filename == "") {
+  if (paint_model->getParamController()->filename.isEmpty()) {
     return;
   }
   ParserSettings::saveSettingsToFile(paint_model->getParamController(),
@@ -42,6 +42,13 @@ void PaintViewer::set_start_saved_settings() {
   paint_model->onLoadModel(p.filename);
 
   set_file_name(get_filename(p.filename));
+
+  if (p.type_projection == ProjectionType::Parallel) {
+    ui->typeProjection->setCurrentIndex(0);
+  } else {
+    ui->typeProjection->setCurrentIndex(1);
+  }
+  paint_model->getParamController()->type_projection = p.type_projection;
 
   on_scrollShiftX_valueChanged(p.shift_x);
   on_scrollShiftY_valueChanged(p.shift_y);
@@ -239,6 +246,19 @@ void PaintViewer::on_colorSelectBackground_pressed() {
   }
 }
 
+void PaintViewer::on_typeProjection_currentIndexChanged(int index) {
+  if (index == 0) {
+    paint_model->getParamController()->type_projection =
+        ProjectionType::Parallel;
+
+  } else {
+    paint_model->getParamController()->type_projection =
+        ProjectionType::Central;
+    paint_model->onChangeCentralProjection();
+  }
+  paint_model->update();
+}
+
 void PaintViewer::on_resetSettings_pressed() {
   on_scrollShiftX_valueChanged(0);
   on_scrollShiftY_valueChanged(0);
@@ -262,6 +282,7 @@ void PaintViewer::reset_button() {
   on_boxScale_textChanged("1");
 
   ui->typeSelectVertices->setCurrentIndex(0);
+  ui->typeProjection->setCurrentIndex(0);
   ui->typeSelectFacets->setCurrentIndex(0);
   ui->thicknessSelectFacets->setValue(1);
   ui->sizeSelectVerties->setValue(1);

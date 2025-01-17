@@ -63,6 +63,8 @@ private slots:
 
   void on_colorSelectBackground_pressed();
 
+  void on_typeProjection_currentIndexChanged(int index);
+
   void on_chooseFile_pressed();
   void on_resetSettings_pressed();
 
