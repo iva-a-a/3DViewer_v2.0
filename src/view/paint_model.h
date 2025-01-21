@@ -38,9 +38,8 @@ class PaintModel : public QWidget {
   QPointF projectPoint(const Vertex *position) const;
 
  public:
-  PaintModel(QWidget *parent, Facade *c) : QWidget(parent), controller(c) {
-    s = {};
-  };
+  PaintModel(QWidget *parent, Facade *c)
+      : QWidget(parent), controller(c), s({}) {}
   ~PaintModel() = default;
 
   void onMove(float x, float y, float z);

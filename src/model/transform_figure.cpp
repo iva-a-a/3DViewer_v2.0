@@ -4,7 +4,7 @@
 
 using namespace s21;
 
-Vertex NormalizeParameters::getMinCoord(QVector<Vertex> &v) {
+Vertex NormalizeParameters::getMinCoord(const QVector<Vertex> &v) {
   Vertex minCoord;
 
   minCoord = v[0];
@@ -16,7 +16,7 @@ Vertex NormalizeParameters::getMinCoord(QVector<Vertex> &v) {
   return minCoord;
 }
 
-Vertex NormalizeParameters::getMaxCoord(QVector<Vertex> &v) {
+Vertex NormalizeParameters::getMaxCoord(const QVector<Vertex> &v) {
   Vertex maxCoord;
 
   maxCoord = v[0];

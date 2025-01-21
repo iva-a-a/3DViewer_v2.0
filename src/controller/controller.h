@@ -26,7 +26,7 @@ class Facade {
   float degreesInRadians(float x);
 
  public:
-  Facade() { p = {}; }
+  Facade() : p({}) {}
   ~Facade() = default;
 
   void moveFigure(float x, float y, float z);

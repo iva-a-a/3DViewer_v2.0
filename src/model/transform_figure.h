@@ -8,8 +8,8 @@ namespace s21 {
 
 class NormalizeParameters {
  private:
-  static Vertex getMinCoord(QVector<Vertex> &v);
-  static Vertex getMaxCoord(QVector<Vertex> &v);
+  static Vertex getMinCoord(const QVector<Vertex> &v);
+  static Vertex getMaxCoord(const QVector<Vertex> &v);
   static Vertex getCentralCoord(const Vertex minV, const Vertex maxV);
 
   static void setCentralVertex(QVector<Vertex> &v);

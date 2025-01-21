@@ -12,7 +12,7 @@ class Figure {
 
  public:
   Figure() {};
-  Figure(const QString &filename);
+  explicit Figure(const QString &filename);
   Figure(const Figure &f);
   ~Figure() = default;
 
