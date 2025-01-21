@@ -35,8 +35,6 @@ public:
   void resetParam();
   void loadFile(const QString &filename);
 
-  void changeCentralProjection();
-
   Figure *getFigure();
   size_t getSizeVertices();
   size_t getSizeFacets();

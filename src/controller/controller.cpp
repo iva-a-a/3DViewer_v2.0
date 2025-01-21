@@ -3,11 +3,6 @@
 #define STEP 5
 #define STEP_SCALE 3
 
-#define FOV 30.0f * (M_PI / 180.0f)
-#define ASPECT 600.0f / 420.0f
-#define NEAR 0.0001f
-#define FAR 10000000.0f
-
 #include <cmath>
 
 using namespace s21;
@@ -32,14 +27,6 @@ void Facade::loadFile(const QString &filename) {
   p.filename = filename;
   Figure f(filename);
   model = f;
-}
-
-void Facade::changeCentralProjection() {
-  TransformMatrix projectionMat =
-      /*  TransformMatrixBuilder::createScaleMatrix(STEP_SCALE, STEP_SCALE,
-                                                  STEP_SCALE) * */
-      TransformMatrixBuilder::createPerspectiveMatrix(FOV, ASPECT, NEAR, FAR);
-  model.transform(projectionMat);
 }
 
 void Facade::moveFigure(float x, float y, float z) {

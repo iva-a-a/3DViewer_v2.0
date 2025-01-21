@@ -2,8 +2,8 @@
 
 using namespace s21;
 
-#define FOCUS 100
-#define SCALE 10
+#define FOCUS 20
+#define SCALE 150
 #define WIDHT width() / 2
 #define HEIGHT height() / 2
 
@@ -55,10 +55,10 @@ void PaintModel::paintEvent(QPaintEvent *event) {
       QPointF startPoint;
       QPointF endPoint;
       if (controller->getParam()->type_projection == ProjectionType::Parallel) {
-        startPoint.setX(edge.getBeginPosition()->x() * FOCUS + WIDHT);
-        startPoint.setY(-edge.getBeginPosition()->y() * FOCUS + HEIGHT);
-        endPoint.setX(edge.getEndPosition()->x() * FOCUS + WIDHT);
-        endPoint.setY(-edge.getEndPosition()->y() * FOCUS + HEIGHT);
+        startPoint.setX(edge.getBeginPosition()->x() * SCALE + WIDHT);
+        startPoint.setY(-edge.getBeginPosition()->y() * SCALE + HEIGHT);
+        endPoint.setX(edge.getEndPosition()->x() * SCALE + WIDHT);
+        endPoint.setY(-edge.getEndPosition()->y() * SCALE + HEIGHT);
       } else {
         startPoint.setX((edge.getBeginPosition()->x() * FOCUS) /
                             (edge.getBeginPosition()->z() + FOCUS) * SCALE +
@@ -76,11 +76,18 @@ void PaintModel::paintEvent(QPaintEvent *event) {
       painter.drawLine(startPoint, endPoint);
     }
   }
-
-  // вершины не соответствуеют при разных проекциях !!!!
   painter.setBrush(QBrush(s.sett_v.color_vertex));
   for (const Vertex &v : controller->getFigure()->getVertices()) {
-    QPointF point(v.x() * FOCUS + WIDHT, -v.y() * FOCUS + HEIGHT);
+    QPointF point;
+    if (controller->getParam()->type_projection == ProjectionType::Parallel) {
+      point.setX(v.x() * SCALE + WIDHT);
+      point.setY(-v.y() * SCALE + HEIGHT);
+    } else {
+      float x = (v.x() * FOCUS) / (v.z() + FOCUS) * SCALE + WIDHT;
+      float y = (-v.y() * FOCUS) / (v.z() + FOCUS) * SCALE + HEIGHT;
+      point.setX(x);
+      point.setY(y);
+    }
     if (s.sett_v.type_vertex == SettingVertex::Type::Circle) {
       painter.setPen(Qt::NoPen);
       painter.drawEllipse(point, s.sett_v.size_vertex / 2,

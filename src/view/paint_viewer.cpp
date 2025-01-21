@@ -254,7 +254,6 @@ void PaintViewer::on_typeProjection_currentIndexChanged(int index) {
   } else {
     paint_model->getParamController()->type_projection =
         ProjectionType::Central;
-    paint_model->onChangeCentralProjection();
   }
   paint_model->update();
 }
