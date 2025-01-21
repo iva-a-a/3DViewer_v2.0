@@ -33,6 +33,8 @@ private:
   RenderSetting s;
 
   void resetSetting();
+  void paintVertex(QPainter &painter, const QPointF &point) const;
+  QPointF projectPoint(const Vertex *position) const;
 
 public:
   PaintModel(QWidget *parent, Facade *c) : QWidget(parent), controller(c) {
