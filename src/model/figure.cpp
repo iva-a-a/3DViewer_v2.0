@@ -9,6 +9,9 @@ Figure::Figure(const QString &filename) {
   if (!vertices.isEmpty()) {
     NormalizeParameters::setNormalVertex(vertices);
   }
+  if (facets.size() > 1) {
+    NormalizeParameters::remDuplicateFaces(facets);
+  }
 }
 Figure::Figure(const Figure &f) {
   std::unordered_map<const Vertex *, int> v_map;

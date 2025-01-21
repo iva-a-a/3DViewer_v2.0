@@ -1,12 +1,13 @@
 #pragma once
 
-#include "vertex_edge.h"
 #include <QVector>
+
+#include "vertex_edge.h"
 
 namespace s21 {
 
 class NormalizeParameters {
-private:
+ private:
   static Vertex getMinCoord(QVector<Vertex> &v);
   static Vertex getMaxCoord(QVector<Vertex> &v);
   static Vertex getCentralCoord(const Vertex minV, const Vertex maxV);
@@ -17,8 +18,9 @@ private:
   NormalizeParameters() {};
   ~NormalizeParameters() = default;
 
-public:
+ public:
   static void setNormalVertex(QVector<Vertex> &v);
+  static void remDuplicateFaces(QVector<Edge> &f);
 };
 
-} // namespace s21
+}  // namespace s21

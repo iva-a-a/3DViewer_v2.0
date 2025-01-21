@@ -1,5 +1,7 @@
 #include "transform_figure.h"
 
+#include <unordered_set>
+
 using namespace s21;
 
 Vertex NormalizeParameters::getMinCoord(QVector<Vertex> &v) {
@@ -60,4 +62,15 @@ void NormalizeParameters::setScaleVertex(QVector<Vertex> &v) {
 void NormalizeParameters::setNormalVertex(QVector<Vertex> &v) {
   setCentralVertex(v);
   setScaleVertex(v);
+}
+
+void NormalizeParameters::remDuplicateFaces(QVector<Edge> &f) {
+  std::unordered_set<Edge, Edge::HashEdge> unique_facets;
+  QVector<Edge> tmp;
+  for (const auto &i : f) {
+    if (unique_facets.insert(i).second) {
+      tmp.append(i);
+    }
+  }
+  f = tmp;
 }
