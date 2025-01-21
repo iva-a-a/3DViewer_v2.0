@@ -5,14 +5,10 @@
 using namespace s21;
 
 Figure::Figure(const QString &filename) {
-    try {
-        Parser::recordCoordFromFile(filename, vertices, facets);
-        if (!vertices.isEmpty()) {
-            NormalizeParameters::setNormalVertex(vertices);
-        }
-    } catch (const std::exception &e) {
-        throw std::runtime_error("Figure constructor failed: " + std::string(e.what()));
-    }
+  Parser::recordCoordFromFile(filename, vertices, facets);
+  if (!vertices.isEmpty()) {
+    NormalizeParameters::setNormalVertex(vertices);
+  }
 }
 
 Figure::Figure(const Figure &f) {
@@ -21,7 +17,7 @@ Figure::Figure(const Figure &f) {
   vertices.clear();
   vertices.reserve(f.vertices.size());
   for (qsizetype i = 0; i < f.vertices.size(); i++) {
-    vertices.emplace_back(f.vertices[i]);
+    vertices.append(f.vertices[i]);  // Замена emplace_back на append
     v_map[&f.vertices[i]] = i;
   }
 
@@ -33,8 +29,8 @@ Figure::Figure(const Figure &f) {
     auto index_begin = v_map.find(begin);
     auto index_end = v_map.find(end);
     if (index_begin != v_map.end() && index_end != v_map.end()) {
-      facets.emplace_back(&vertices[index_begin->second],
-                          &vertices[index_end->second]);
+      facets.append(Edge(&vertices[index_begin->second],
+                         &vertices[index_end->second]));  // Замена emplace_back на append
     } else {
       throw "Error: vertex not found";
     }
@@ -48,7 +44,7 @@ Figure &Figure::operator=(const Figure &f) {
     vertices.clear();
     vertices.reserve(f.vertices.size());
     for (qsizetype i = 0; i < f.vertices.size(); i++) {
-      vertices.emplace_back(f.vertices[i]);
+      vertices.append(f.vertices[i]);  // Замена emplace_back на append
       v_map[&f.vertices[i]] = i;
     }
 
@@ -60,8 +56,8 @@ Figure &Figure::operator=(const Figure &f) {
       auto index_begin = v_map.find(begin);
       auto index_end = v_map.find(end);
       if (index_begin != v_map.end() && index_end != v_map.end()) {
-        facets.emplace_back(&vertices[index_begin->second],
-                            &vertices[index_end->second]);
+        facets.append(Edge(&vertices[index_begin->second],
+                           &vertices[index_end->second]));  // Замена emplace_back на append
       } else {
         throw "Error: vertex not found";
       }
@@ -70,19 +66,11 @@ Figure &Figure::operator=(const Figure &f) {
   return *this;
 }
 
-#include <stdexcept>
-
-void s21::Figure::transform(const s21::TransformMatrix &matrix) {
-    if (!matrix.isValid()) {
-        throw std::invalid_argument("Invalid transformation matrix provided.");
-    }
-
-    // Применяем преобразование к каждой вершине
-    for (auto &vertex : vertices) {
-        vertex = matrix.transformPoint(vertex);  // Используем transformPoint
-    }
+void Figure::transform(const TransformMatrix &m) {
+  for (auto &i : vertices) {
+    i.transform(m);
+  }
 }
-
 
 const QVector<Vertex> Figure::getVertices() { return vertices; }
 

@@ -9,7 +9,7 @@ class NormalizeParameters {
 public:
   static Vertex getMinCoord(QVector<Vertex> &v);
   static Vertex getMaxCoord(QVector<Vertex> &v);
-  static Vertex getCentralCoord(const Vertex &minCoord, const Vertex &maxCoord);
+  static Vertex getCentralCoord(const Vertex minV, const Vertex maxV);
 
   static void setCentralVertex(QVector<Vertex> &v);
   static void setScaleVertex(QVector<Vertex> &v);

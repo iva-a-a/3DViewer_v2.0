@@ -1,6 +1,6 @@
 #pragma once
 
-#include "s21_matrix_oop.h"
+#include "s21_matrix/s21_matrix_oop.h"
 
 namespace s21 {
 

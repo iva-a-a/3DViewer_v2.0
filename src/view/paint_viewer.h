@@ -79,5 +79,10 @@ private:
   void set_start_saved_settings();
   QString get_filename(const QString &filePath);
   void set_onOrOff_buttons(bool enabled);
+   QTimer *_screencastTimer; // Таймер для записи скринкаста
+  int _frameCounter;        // Счетчик кадров
+  QString _outputDir;       // Папка для временных файлов
+
+  void recordFrame();       // Метод для записи отдельного кадра
 };
 } // namespace s21

@@ -16,6 +16,7 @@ void PaintModel::onScale(float x, float y, float z) {
   controller->scaleFigure(x, y, z);
   update();
 }
+
 void PaintModel::onReset() {
   controller->resetParam();
   resetSetting();
@@ -34,17 +35,21 @@ void PaintModel::paintEvent(QPaintEvent *event) {
 
   QPen pen;
   pen.setColor(s.sett_l.color_lines);
+
   if (s.sett_l.type_lines == SettingLines::Type::Dashed) {
     QList<qreal> dashes;
     dashes << 8 << 16;
-    pen.setDashPattern(dashes);
+    pen.setDashPattern(QVector<qreal>::fromList(dashes));
   } else {
     pen.setStyle(Qt::SolidLine);
   }
+
   if (s.sett_l.line_thickness > 0) {
     pen.setWidth(s.sett_l.line_thickness);
   }
+
   painter.setPen(pen);
+
   if (s.sett_l.line_thickness > 0) {
     for (const Edge &edge : controller->getFigure()->getFacets()) {
       const QPointF startPoint(edge.getBeginPosition()->x() * 100 + width() / 2,
@@ -76,6 +81,6 @@ void PaintModel::paintEvent(QPaintEvent *event) {
 
 Parameters *PaintModel::getParamController() { return controller->getParam(); }
 
-RenderSetting *PaintModel::getSettingPaint() { return &s; };
+RenderSetting *PaintModel::getSettingPaint() { return &s; }
 
 void PaintModel::resetSetting() { s = {}; }

@@ -38,30 +38,22 @@ Vertex NormalizeParameters::getMaxCoord(QVector<Vertex> &v) {
   return maxCoord;
 }
 
-Vertex NormalizeParameters::getCentralCoord(const Vertex &minCoord, const Vertex &maxCoord) {
-    float centerX = (minCoord.x() + maxCoord.x()) / 2;
-    float centerY = (minCoord.y() + maxCoord.y()) / 2;
-    float centerZ = (minCoord.z() + maxCoord.z()) / 2;
-    return Vertex(centerX, centerY, centerZ);
+Vertex NormalizeParameters::getCentralCoord(const Vertex minV,
+                                            const Vertex maxV) {
+  Vertex centr;
+  centr.setX(minV.x() + (maxV.x() - minV.x()) / 2);
+  centr.setY(minV.y() + (maxV.y() - minV.y()) / 2);
+  centr.setZ(minV.z() + (maxV.z() - minV.z()) / 2);
+
+  return centr;
 }
 
 void NormalizeParameters::setCentralVertex(QVector<Vertex> &v) {
-    // Получаем минимальные и максимальные координаты
-    Vertex minCoord = getMinCoord(v);
-    Vertex maxCoord = getMaxCoord(v);
-
-    // Вычисляем центральную точку
-    Vertex centr = getCentralCoord(minCoord, maxCoord);
-    
-    // Сдвигаем вершины так, чтобы центр был в (0, 0, 0)
-    for (int i = 0; i < v.size(); i++) {
-        v[i].setX(v[i].x() - centr.x());  // Сдвиг по оси X
-        v[i].setY(v[i].y() - centr.y());  // Сдвиг по оси Y
-        v[i].setZ(v[i].z() - centr.z());  // Сдвиг по оси Z
-    }
+  Vertex centr = getCentralCoord(getMinCoord(v), getMaxCoord(v));
+  for (int i = 0; i < v.size(); i++) {
+    v[i] -= centr;
+  }
 }
-
-
 
 void NormalizeParameters::setScaleVertex(QVector<Vertex> &v) {
   Vertex min_coord = getMinCoord(v);
