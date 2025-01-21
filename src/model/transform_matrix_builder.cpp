@@ -74,29 +74,3 @@ TransformMatrix TransformMatrixBuilder::createScaleMatrix(float a, float b,
 
   return matrix;
 }
-
-TransformMatrix TransformMatrixBuilder::createPerspectiveMatrix(float fov,
-                                                                float aspect,
-                                                                float near,
-                                                                float far) {
-  TransformMatrix matrix;
-
-  matrix(0, 0) = 1.0f / tanf(fov / 2) / aspect;
-  matrix(0, 1) = 0.0f;
-  matrix(0, 2) = 0.0f;
-  matrix(0, 3) = 0.0f;
-  matrix(1, 0) = 0.0f;
-  matrix(1, 1) = 1.0f / tanf(fov / 2);
-  matrix(1, 2) = 0.0f;
-  matrix(1, 3) = 0.0f;
-  matrix(2, 0) = 0.0f;
-  matrix(2, 1) = 0.0f;
-  matrix(2, 2) = (far + near) / (far - near);
-  matrix(2, 3) = (2.0f * far * near) / (far - near);
-  matrix(3, 0) = 0.0f;
-  matrix(3, 1) = 0.0f;
-  matrix(3, 2) = -1.0f;
-  matrix(3, 3) = 0.0f;
-
-  return matrix;
-}
