@@ -7,15 +7,9 @@ Vertex NormalizeParameters::getMinCoord(QVector<Vertex> &v) {
 
   minCoord = v[0];
   for (const auto &i : v) {
-    if (i.x() < minCoord.x()) {
-      minCoord.setX(i.x());
-    }
-    if (i.y() < minCoord.y()) {
-      minCoord.setY(i.y());
-    }
-    if (i.z() < minCoord.z()) {
-      minCoord.setZ(i.z());
-    }
+    minCoord.setX(std::min(i.x(), minCoord.x()));
+    minCoord.setY(std::min(i.y(), minCoord.y()));
+    minCoord.setZ(std::min(i.z(), minCoord.z()));
   }
   return minCoord;
 }
@@ -25,15 +19,9 @@ Vertex NormalizeParameters::getMaxCoord(QVector<Vertex> &v) {
 
   maxCoord = v[0];
   for (const auto &i : v) {
-    if (i.x() > maxCoord.x()) {
-      maxCoord.setX(i.x());
-    }
-    if (i.y() > maxCoord.y()) {
-      maxCoord.setY(i.y());
-    }
-    if (i.z() > maxCoord.z()) {
-      maxCoord.setZ(i.z());
-    }
+    maxCoord.setX(std::max(i.x(), maxCoord.x()));
+    maxCoord.setY(std::max(i.y(), maxCoord.y()));
+    maxCoord.setZ(std::max(i.z(), maxCoord.z()));
   }
   return maxCoord;
 }
@@ -58,20 +46,14 @@ void NormalizeParameters::setCentralVertex(QVector<Vertex> &v) {
 void NormalizeParameters::setScaleVertex(QVector<Vertex> &v) {
   Vertex min_coord = getMinCoord(v);
   Vertex scale = getMaxCoord(v) - min_coord;
-  if (scale.x() == 0) {
-    scale.setX(1);
-  }
-  if (scale.y() == 0) {
-    scale.setY(1);
-  }
-  if (scale.z() == 0) {
-    scale.setZ(1);
-  }
+  float common_scale = std::max(scale.x(), std::max(scale.y(), scale.z()));
+  common_scale = common_scale == 0.0f ? 1.0f : common_scale;
+  float min = std::min(min_coord.x(), std::min(min_coord.y(), min_coord.z()));
 
   for (int i = 0; i < v.size(); i++) {
-    v[i].setX(((v[i].x() - min_coord.x()) / scale.x()) * 2 - 1);
-    v[i].setY(((v[i].y() - min_coord.y()) / scale.y()) * 2 - 1);
-    v[i].setZ(((v[i].z() - min_coord.z()) / scale.z()) * 2 - 1);
+    v[i].setX(((v[i].x() - min) / common_scale) * 2 - 1);
+    v[i].setY(((v[i].y() - min) / common_scale) * 2 - 1);
+    v[i].setZ(((v[i].z() - min) / common_scale) * 2 - 1);
   }
 }
 
