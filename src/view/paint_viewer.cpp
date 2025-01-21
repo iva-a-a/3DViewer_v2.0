@@ -288,7 +288,6 @@ void PaintViewer::reset_button() {
 }
 
 void PaintViewer::on_chooseFile_pressed() {
-
   QString dir = QDir::currentPath() + "/models_3d";
   QString filePath = QFileDialog::getOpenFileName(
       this, tr("Выберите файл"), dir, tr("Файлы 3D моделей (*.obj)"));

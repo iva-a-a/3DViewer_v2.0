@@ -7,10 +7,10 @@ namespace s21 {
 class Vertex;
 
 class TransformMatrix {
-private:
+ private:
   S21Matrix _matrix;
 
-public:
+ public:
   TransformMatrix() : _matrix(S21Matrix(4, 4)) {}
   TransformMatrix(const TransformMatrix &m);
   ~TransformMatrix() = default;
@@ -20,4 +20,4 @@ public:
   void InverseTransformMatrix();
 };
 
-} // namespace s21
+}  // namespace s21

@@ -19,13 +19,13 @@ struct Parameters {
 };
 
 class Facade {
-private:
+ private:
   Figure model;
   Parameters p;
 
   float degreesInRadians(float x);
 
-public:
+ public:
   Facade() { p = {}; }
   ~Facade() = default;
 
@@ -41,4 +41,4 @@ public:
   Parameters *getParam();
 };
 
-} // namespace s21
+}  // namespace s21

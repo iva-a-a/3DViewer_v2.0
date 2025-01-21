@@ -1,7 +1,6 @@
 #include "controller.h"
 
 #define STEP 5
-#define STEP_SCALE 3
 
 #include <cmath>
 
@@ -30,7 +29,6 @@ void Facade::loadFile(const QString &filename) {
 }
 
 void Facade::moveFigure(float x, float y, float z) {
-
   model.transform(TransformMatrixBuilder::createMoveMatrix(
       (x - p.shift_x) / STEP, (y - p.shift_y) / STEP, (z - p.shift_z) / STEP));
 
@@ -40,20 +38,19 @@ void Facade::moveFigure(float x, float y, float z) {
 }
 
 void Facade::rotateFigure(float x, float y, float z) {
-
   TransformMatrix rotateMat = TransformMatrixBuilder::createRotateMatrix(
       degreesInRadians(p.rotate_x), degreesInRadians(p.rotate_y),
       degreesInRadians(p.rotate_z));
   rotateMat.InverseTransformMatrix();
 
-  rotateMat = TransformMatrixBuilder::createMoveMatrix(
-                  -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *
-              rotateMat *
-              TransformMatrixBuilder::createRotateMatrix(degreesInRadians(x),
-                                                         degreesInRadians(y),
-                                                         degreesInRadians(z)) *
-              TransformMatrixBuilder::createMoveMatrix(
-                  p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP);
+  rotateMat =
+      TransformMatrixBuilder::createMoveMatrix(
+          -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *
+      rotateMat *
+      TransformMatrixBuilder::createRotateMatrix(
+          degreesInRadians(x), degreesInRadians(y), degreesInRadians(z)) *
+      TransformMatrixBuilder::createMoveMatrix(
+          p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP);
 
   model.transform(rotateMat);
   p.rotate_x = x;
@@ -62,7 +59,6 @@ void Facade::rotateFigure(float x, float y, float z) {
 }
 
 void Facade::scaleFigure(float x, float y, float z) {
-
   TransformMatrix scaleMat =
       TransformMatrixBuilder::createMoveMatrix(
           -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *

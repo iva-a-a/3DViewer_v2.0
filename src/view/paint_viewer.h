@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ui_paint.h"
 #include <QCloseEvent>
 #include <QColorDialog>
 #include <QFileDialog>
@@ -13,28 +12,29 @@
 #include <QToolTip>
 
 #include "paint_model.h"
+#include "ui_paint.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
-} // namespace Ui
+}  // namespace Ui
 QT_END_NAMESPACE
 
 namespace s21 {
 
 class PaintViewer : public QMainWindow {
   Q_OBJECT
-private:
+ private:
   Ui::MainWindow *ui;
   PaintModel *paint_model;
 
-public:
+ public:
   PaintViewer(QMainWindow *parent, Facade *c);
   ~PaintViewer();
 
   void closeEvent(QCloseEvent *event) override;
 
-private slots:
+ private slots:
 
   void on_scrollShiftX_valueChanged(int value);
   void on_boxShiftX_textChanged(const QString &text);
@@ -71,7 +71,7 @@ private slots:
   void on_saveAsBmpOrJpeg_pressed();
   void on_saveAsGif_pressed();
 
-private:
+ private:
   void updateTextBox(const QString &text, QLineEdit *line, QScrollBar *scroll);
   void initialize_text_box();
   void set_number_of_facets();
@@ -82,4 +82,4 @@ private:
   QString get_filename(const QString &filePath);
   void set_onOrOff_buttons(bool enabled);
 };
-} // namespace s21
+}  // namespace s21

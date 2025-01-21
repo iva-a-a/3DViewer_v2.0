@@ -65,7 +65,7 @@ void PaintModel::paintEvent(QPaintEvent *event) {
 
   pen.setColor(s.sett_l.color_lines);
   if (s.sett_l.type_lines == SettingLines::Type::Dashed) {
-    pen.setDashPattern({8, 16});
+    pen.setDashPattern({8, 8});
   } else {
     pen.setStyle(Qt::SolidLine);
   }

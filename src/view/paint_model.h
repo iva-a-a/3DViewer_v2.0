@@ -1,10 +1,11 @@
 #pragma once
 
-#include "../controller/controller.h"
 #include <QPaintEvent>
 #include <QPainter>
 #include <QWidget>
 #include <fstream>
+
+#include "../controller/controller.h"
 
 namespace s21 {
 struct SettingVertex {
@@ -28,7 +29,7 @@ struct RenderSetting {
 
 class PaintModel : public QWidget {
   Q_OBJECT
-private:
+ private:
   Facade *controller;
   RenderSetting s;
 
@@ -36,7 +37,7 @@ private:
   void paintVertex(QPainter &painter, const QPointF &point) const;
   QPointF projectPoint(const Vertex *position) const;
 
-public:
+ public:
   PaintModel(QWidget *parent, Facade *c) : QWidget(parent), controller(c) {
     s = {};
   };
@@ -55,7 +56,7 @@ public:
   Parameters *getParamController();
   RenderSetting *getSettingPaint();
 
-protected:
+ protected:
   void paintEvent(QPaintEvent *event) override;
 };
-} // namespace s21
+}  // namespace s21

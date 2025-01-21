@@ -8,7 +8,9 @@ TARGET = 3d_viewer
 BUILD_DIR = build
 SAVE_DIR = saved_images
 
-.PHONY: all build run clean delete
+ALL_SRC = $(wildcard *.cpp *.h  */*.cpp */*.h */*/*.cpp */*/*.h)
+
+.PHONY: all build run clean delete clang
 
 all: build
 
@@ -38,3 +40,9 @@ delete:
 		$(RM) $(SAVE_DIR); \
 	fi
 	@echo -- Delete complete. The settings file and saved images have been deleted.
+
+clang:
+	@cp ./../materials/linters/.clang-format ./
+	@clang-format -i $(ALL_SRC)
+	@rm -f .clang-format
+	@echo -- File is formatted according to the style.

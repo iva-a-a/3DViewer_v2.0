@@ -6,11 +6,11 @@
 namespace s21 {
 
 class Figure {
-private:
+ private:
   QVector<Vertex> vertices = {};
   QVector<Edge> facets = {};
 
-public:
+ public:
   Figure() {};
   Figure(const QString &filename);
   Figure(const Figure &f);
@@ -24,4 +24,4 @@ public:
   const QVector<Edge> getFacets();
 };
 
-} // namespace s21
+}  // namespace s21

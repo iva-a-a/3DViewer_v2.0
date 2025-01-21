@@ -4,7 +4,6 @@ using namespace s21;
 
 TransformMatrix TransformMatrixBuilder::createRotateMatrix(float a, float b,
                                                            float c) {
-
   TransformMatrix matrix;
 
   matrix(0, 0) = cos(b) * cos(c);

@@ -4,7 +4,7 @@
 #include <iostream>
 
 class S21Matrix {
-private:
+ private:
   int _rows, _cols;
   double **matrix_;
 
@@ -15,7 +15,7 @@ private:
   bool IsSquareMatrix();
   void SetNewNatrix(const int NewRow, const int NewCol);
 
-public:
+ public:
   S21Matrix();
   S21Matrix(int rows, int cols);
   S21Matrix(const S21Matrix &other);

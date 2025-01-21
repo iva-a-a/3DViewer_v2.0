@@ -1,5 +1,6 @@
-#include "view/paint_viewer.h"
 #include <QApplication>
+
+#include "view/paint_viewer.h"
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);

@@ -1,24 +1,24 @@
 #pragma once
 
-#include "transform_figure.h"
-
 #include <QFile>
 #include <QString>
+
+#include "transform_figure.h"
 
 namespace s21 {
 
 class Parser {
-private:
+ private:
   Parser() {};
   ~Parser() = default;
   static void saveCoordVertices(QStringList str, QVector<Vertex> &vertices);
   static void saveRefFacets(QStringList str, QVector<Edge> &facets,
                             QVector<Vertex> &vertices);
 
-public:
+ public:
   static void recordCoordFromFile(const QString &filename,
                                   QVector<Vertex> &vertices,
                                   QVector<Edge> &facets);
 };
 
-} // namespace s21
+}  // namespace s21
