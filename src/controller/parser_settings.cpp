@@ -85,11 +85,6 @@ Parameters ParserSettings::getSettingsFromFile(RenderSetting *s) {
   file.close();
   return p;
 }
-bool ParserSettings::checkExistFile() {
-  std::ifstream file(filename);
-  if (file.is_open()) {
-    file.close();
-    return true;
-  }
-  return false;
+bool ParserSettings::checkExistFile(const std::string name) {
+  return std::filesystem::exists(name);
 }
