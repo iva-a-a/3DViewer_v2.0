@@ -4,40 +4,121 @@
 
 namespace s21 {
 
+/**
+ * @enum ProjectionType
+ * @brief Тип проекции.
+ */
 enum class ProjectionType { Parallel, Central };
 
+/**
+ * @struct Parameters
+ * @brief Структура параметров.
+ */
 struct Parameters {
+  /** Имя файла для загрузки модели. */
   QString filename = "";
+  /** Текущий сдвиг по оси OX. */
   float shift_x = 0.0f;
+  /** Текущий сдвиг по оси OY. */
   float shift_y = 0.0f;
+  /** Текущий сдвиг по оси OZ. */
   float shift_z = 0.0f;
+  /** Текущий угол поворота по оси OX. */
   float rotate_x = 0.0f;
+  /** Текущий угол поворота по оси OY. */
   float rotate_y = 0.0f;
+  /** Текущий угол поворота по оси OZ. */
   float rotate_z = 0.0f;
+  /** Текущий масштаб. */
   float scale = 1.0f;
+  /** Текущий тип проекции. */
   ProjectionType type_projection = ProjectionType::Parallel;
 };
 
+/**
+ * @class Facade
+ * @brief Предназначен для работы с моделью.
+ */
 class Facade {
  private:
+  /**< Модель. */
   Figure model;
+  /**< Параметры для изменения модели. */
   Parameters p;
-
+  /**
+   * @brief Преобразует угол из градусов в радианы.
+   * @param x Угол в градусах.
+   * @return Угол в радианах.
+   */
   float degreesInRadians(float x);
 
  public:
+  /**
+   * @brief Конструктор класса Facade.
+   */
   Facade() : p({}) {}
+
+  /**
+   * @brief Деструктор класса Facade.
+   */
   ~Facade() = default;
 
+  /**
+   * @brief Перемещение фигуры на заданные координаты.
+   * @param x Значение сдвига по оси OX.
+   * @param y Значение сдвига по оси OY.
+   * @param z Значение сдвига по оси OZ.
+   */
   void moveFigure(float x, float y, float z);
+
+  /**
+   * @brief Поворот фигуры на заданные углы.
+   * @param x Угол поворота по оси OX.
+   * @param y Угол поворота по оси OY.
+   * @param z Угол поворота по оси OZ.
+   */
   void rotateFigure(float x, float y, float z);
+
+  /**
+   * @brief Масштабирование фигуры на заданные коэффициенты.
+   * @param x Коэффициент масштабирования по оси OX.
+   * @param y Коэффициент масштабирования по оси OY.
+   * @param z Коэффициент масштабирования по оси OZ.
+   */
   void scaleFigure(float x, float y, float z);
+  /**
+   * @brief Сброс параметров объекта Facade к значениям по умолчанию.
+   */
   void resetParam();
+
+  /**
+   * @brief Загрузка файла с данными и обновление модели.
+   * @param filename Имя файла для загрузки.
+   */
   void loadFile(const QString &filename);
 
+  /**
+   * @brief Получение модели.
+   * @return Указатель на фигуру(модель).
+   */
   Figure *getFigure();
+
+  /**
+   * @brief Получение количества вершин.
+   * @return Количество вершин.
+   */
   size_t getSizeVertices();
+
+  /**
+   * @brief Получение количества граней.
+   * @return Количество граней.
+   */
   size_t getSizeFacets();
+
+  /**
+   * @brief Получение параметров.
+   * @return Указатель на параметры.
+   */
   Parameters *getParam();
 };
 

@@ -2,9 +2,25 @@
 
 using namespace s21;
 
+/**
+ * @def FOCUS
+ * @brief Фокусное расстояние.
+ */
 #define FOCUS 20
+/**
+ * @def SCALE
+ * @brief Параметр масштаба отрисовки.
+ */
 #define SCALE 150
+/**
+ * @def WIDHT
+ * @brief Половина ширина окна.
+ */
 #define WIDHT width() / 2
+/**
+ * @def HEIGHT
+ * @brief Половина высота окна.
+ */
 #define HEIGHT height() / 2
 
 void PaintModel::onMove(float x, float y, float z) {
@@ -90,6 +106,10 @@ void PaintModel::paintEvent(QPaintEvent *event) {
     painter.setPen(pen);
   }
 }
+
+size_t PaintModel::onGetSizeVertices() { return controller->getSizeVertices(); }
+
+size_t PaintModel::onGetSizeFacets() { return controller->getSizeFacets(); }
 
 Parameters *PaintModel::getParamController() { return controller->getParam(); }
 

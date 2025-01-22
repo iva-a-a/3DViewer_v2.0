@@ -18,8 +18,9 @@ PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
   } else {
     initialize_text_box();
   }
-  set_number_of_facets();
-  set_number_of_vertices();
+  set_textToQTextBrowser(ui->number_of_edges, paint_model->onGetSizeFacets());
+  set_textToQTextBrowser(ui->number_of_vertices,
+                         paint_model->onGetSizeVertices());
 };
 
 PaintViewer::~PaintViewer() {
@@ -298,8 +299,9 @@ void PaintViewer::on_chooseFile_pressed() {
   set_onOrOff_buttons(true);
   reset_button();
   paint_model->onLoadModel(filePath);
-  set_number_of_facets();
-  set_number_of_vertices();
+  set_textToQTextBrowser(ui->number_of_edges, paint_model->onGetSizeFacets());
+  set_textToQTextBrowser(ui->number_of_vertices,
+                         paint_model->onGetSizeVertices());
   QString fileName = get_filename(filePath);
   set_file_name(fileName);
   on_resetSettings_pressed();
@@ -332,15 +334,9 @@ void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
 }
 
 void PaintViewer::on_saveAsGif_pressed() {}
-
-void PaintViewer::set_number_of_facets() {
-  ui->number_of_edges->setPlainText(
-      QString::number(paint_model->onGetSizeFacets()));
-}
-
-void PaintViewer::set_number_of_vertices() {
-  ui->number_of_vertices->setPlainText(
-      QString::number(paint_model->onGetSizeVertices()));
+void PaintViewer::set_textToQTextBrowser(QTextBrowser *text,
+                                         const size_t size) {
+  text->setPlainText(QString::number(size));
 }
 
 void PaintViewer::set_file_name(const QString &filename) {

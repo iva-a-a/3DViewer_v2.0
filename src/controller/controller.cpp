@@ -1,5 +1,9 @@
 #include "controller.h"
 
+/**
+ * @def STEP
+ * @brief Шаг для сдвига.
+ */
 #define STEP 5
 
 #include <cmath>
@@ -72,6 +76,9 @@ void Facade::scaleFigure(float x, float y, float z) {
 }
 
 Figure *Facade::getFigure() { return &model; }
+
 size_t Facade::getSizeVertices() { return model.getVertices().size(); }
+
 size_t Facade::getSizeFacets() { return model.getFacets().size(); }
+
 Parameters *Facade::getParam() { return &p; }
