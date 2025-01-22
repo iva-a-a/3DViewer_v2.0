@@ -23,6 +23,16 @@ using namespace s21;
  */
 #define HEIGHT height() / 2
 
+/**
+ * @brief Получение статической точки с координатами (inf, inf).
+ * @return Ссылка на статическую точку типа QPointF с координатами (inf, inf).
+ */
+static QPointF &nullPoint() {
+  float inf = std::numeric_limits<float>::infinity();
+  static QPointF point(inf, inf);
+  return point;
+}
+
 void PaintModel::onMove(float x, float y, float z) {
   controller->moveFigure(x, y, z);
   update();
@@ -65,8 +75,8 @@ QPointF PaintModel::projectPoint(const Vertex *position) const {
     x = position->x() * SCALE + WIDHT;
     y = -position->y() * SCALE + HEIGHT;
   } else {
-    if (position->z() == -FOCUS) {
-      return QPointF();
+    if (-FOCUS >= position->z()) {
+      return nullPoint();
     }
     x = (position->x() * FOCUS) / (position->z() + FOCUS) * SCALE + WIDHT;
     y = (-position->y() * FOCUS) / (position->z() + FOCUS) * SCALE + HEIGHT;
@@ -91,7 +101,7 @@ void PaintModel::paintEvent(QPaintEvent *event) {
     for (const Edge &edge : controller->getFigure()->getFacets()) {
       QPointF startPoint = projectPoint(edge.getBeginPosition());
       QPointF endPoint = projectPoint(edge.getEndPosition());
-      if (!startPoint.isNull() && !endPoint.isNull()) {
+      if (startPoint != nullPoint() && endPoint != nullPoint()) {
         painter.drawLine(startPoint, endPoint);
       }
     }
@@ -100,7 +110,7 @@ void PaintModel::paintEvent(QPaintEvent *event) {
   painter.setBrush(QBrush(s.sett_v.color_vertex));
   for (const Vertex &v : controller->getFigure()->getVertices()) {
     QPointF point = projectPoint(&v);
-    if (!point.isNull()) {
+    if (point != nullPoint()) {
       paintVertex(painter, point);
     }
     painter.setPen(pen);

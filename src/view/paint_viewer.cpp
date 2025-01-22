@@ -12,8 +12,7 @@ PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
       QRect(0, 0, ui->field->width(), ui->field->height()));
   set_onOrOff_buttons(false);
 
-  if (ParserSettings::checkExistFile() == true) {
-    set_onOrOff_buttons(true);
+  if (ParserSettings::checkExistFile("settings.txt") == true) {
     set_start_saved_settings();
   } else {
     initialize_text_box();
@@ -40,6 +39,10 @@ void PaintViewer::closeEvent(QCloseEvent *event) {
 void PaintViewer::set_start_saved_settings() {
   Parameters p =
       ParserSettings::getSettingsFromFile(paint_model->getSettingPaint());
+  if (ParserSettings::checkExistFile(p.filename.toStdString()) == false) {
+    return;
+  }
+  set_onOrOff_buttons(true);
   paint_model->onLoadModel(p.filename);
 
   set_file_name(get_filename(p.filename));
