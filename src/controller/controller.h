@@ -8,7 +8,12 @@ namespace s21 {
  * @enum ProjectionType
  * @brief Тип проекции.
  */
-enum class ProjectionType { Parallel, Central };
+enum class ProjectionType {
+  /** Параллельная проекция. */
+  Parallel,
+  /** Центральная проекция. */
+  Central
+};
 
 /**
  * @struct Parameters
