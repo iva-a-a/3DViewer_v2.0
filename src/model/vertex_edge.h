@@ -39,7 +39,7 @@ class Vertex : public QVector3D {
    * @brief Применение преобразования к вершине.
    * @param m Ссылка на матрицу преобразования.
    */
-  void transform(const TransformMatrix &m) { *this = m.transformPoint(*this); }
+  void transform(const TransformMatrix &m) { m.transformPoint(*this); }
 };
 
 /**

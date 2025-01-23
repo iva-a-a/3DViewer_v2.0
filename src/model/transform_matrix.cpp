@@ -12,22 +12,16 @@ TransformMatrix TransformMatrix::operator*(const TransformMatrix &m) {
   return *this;
 }
 
-Vertex TransformMatrix::transformPoint(Vertex &v) const {
-  S21Matrix mat_point(1, 4);
-  S21Matrix m(this->_matrix);
-  Vertex result;
-  mat_point(0, 0) = v.x();
-  mat_point(0, 1) = v.y();
-  mat_point(0, 2) = v.z();
-  mat_point(0, 3) = 1.0f;
-
-  mat_point.MulMatrix(m);
-
-  result.setX(mat_point(0, 0));
-  result.setY(mat_point(0, 1));
-  result.setZ(mat_point(0, 2));
-
-  return result;
+void TransformMatrix::transformPoint(Vertex &v) const {
+  float x = v.x() * this->_matrix(0, 0) + v.y() * this->_matrix(1, 0) +
+            v.z() * this->_matrix(2, 0) + this->_matrix(3, 0);
+  float y = v.x() * this->_matrix(0, 1) + v.y() * this->_matrix(1, 1) +
+            v.z() * this->_matrix(2, 1) + this->_matrix(3, 1);
+  float z = v.x() * this->_matrix(0, 2) + v.y() * this->_matrix(1, 2) +
+            v.z() * this->_matrix(2, 2) + this->_matrix(3, 2);
+  v.setX(x);
+  v.setY(y);
+  v.setZ(z);
 }
 
 double &TransformMatrix::operator()(int row, int col) const {

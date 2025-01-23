@@ -50,9 +50,8 @@ class TransformMatrix {
   /**
    * @brief Применение преобразования к вершине.
    * @param v Ссылка на вершину.
-   * @return Преобразованная вершина.
    */
-  Vertex transformPoint(Vertex &v) const;
+  void transformPoint(Vertex &v) const;
 
   /**
    * @brief Нахождение обратной матрицы.
