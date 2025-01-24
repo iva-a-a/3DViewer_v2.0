@@ -70,6 +70,7 @@ clean:
 	@$(RM) $(BUILD_DIR)
 	@$(RM) *.tar.gz
 	@$(RM) doxygen
+	@$(RM) viewer_test
 	@find model controller -type f -name "*.o" -exec rm -f {} \;
 	@echo -- Clean complete.
 
