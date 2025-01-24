@@ -2,7 +2,6 @@
 
 #include <QDir>
 #include <QImage>
-#include <QTimer>
 
 #include "../controller/parser_settings.h"
 
@@ -29,6 +28,8 @@ PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
   _frameCounter = 0;
   _outputDir = "screencasts/";
   connect(_screencastTimer, &QTimer::timeout, this, &PaintViewer::recordFrame);
+  connect(_screencastTimer, &QTimer::timeout, this,
+          &PaintViewer::updateCountdown);
   QDir dir(_outputDir);
   if (!dir.exists()) {
     dir.mkpath(".");
@@ -38,6 +39,7 @@ PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
 PaintViewer::~PaintViewer() {
   delete ui;
   delete paint_model;
+  delete _screencastTimer;
 };
 
 void PaintViewer::closeEvent(QCloseEvent *event) {
@@ -431,5 +433,19 @@ void PaintViewer::recordFrame() {
 
     QMessageBox::information(this, "Скринкаст",
                              "Скринкаст сохранён в screencasts/screencast.gif");
+  }
+}
+
+void PaintViewer::updateCountdown() {
+  static int countdown = 50;
+  if (countdown > 0) {
+    if (countdown % 10 == 0) {
+      ui->saveAsGif->setText(QString::number(countdown / 10));
+    }
+    countdown--;
+  }
+  if (countdown == 0) {
+    ui->saveAsGif->setText("gif");
+    countdown = 50;
   }
 }

@@ -9,6 +9,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QSlider>
+#include <QTimer>
 #include <QToolTip>
 
 #include "paint_model.h"
@@ -240,5 +241,9 @@ class PaintViewer : public QMainWindow {
    * @brief Запись отдельного кадра для gif.
    */
   void recordFrame();
+  /**
+   * @brief Обновление таймера при записи gif.
+   */
+  void updateCountdown();
 };
 }  // namespace s21
