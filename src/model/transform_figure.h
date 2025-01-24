@@ -11,7 +11,7 @@ namespace s21 {
  * @brief Класс для нормализации вершин и удаления дублирующихся граней.
  */
 class NormalizeParameters {
- private:
+private:
   /**
    * @brief Получение минимальной координаты из списка вершин.
    * @param v Ссылка на список вершин.
@@ -57,7 +57,7 @@ class NormalizeParameters {
    */
   ~NormalizeParameters() = default;
 
- public:
+public:
   /**
    * @brief Нормализация вершины.
    * @param v Ссылка на список вершин.
@@ -71,4 +71,4 @@ class NormalizeParameters {
   static void remDuplicateFaces(QVector<Edge> &f);
 };
 
-}  // namespace s21
+} // namespace s21

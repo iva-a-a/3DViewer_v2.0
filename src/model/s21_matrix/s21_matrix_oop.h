@@ -8,7 +8,7 @@
  * @brief Класс для работы с матрицами.
  */
 class S21Matrix {
- private:
+private:
   /** Количество строк матрицы. */
   int _rows;
   /** Количество столбцов матрицы. */
@@ -52,7 +52,7 @@ class S21Matrix {
    */
   void SetNewNatrix(const int NewRow, const int NewCol);
 
- public:
+public:
   /**
    * @brief Конструктор S21Matrix по умолчанию.
    */

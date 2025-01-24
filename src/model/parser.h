@@ -12,7 +12,7 @@ namespace s21 {
  * @brief Класс для парсинга и сохранения вершин и граней .obj файла.
  */
 class Parser {
- private:
+private:
   /**
    * @brief Конструктор класса Parser.
    */
@@ -39,7 +39,7 @@ class Parser {
   static void saveRefFacets(QStringList str, QVector<Edge> &facets,
                             QVector<Vertex> &vertices);
 
- public:
+public:
   /**
    * @brief Запись координат вершин и ссылокна грани из файла.
    * @param filename Имя файла с данными.
@@ -51,4 +51,4 @@ class Parser {
                                   QVector<Edge> &facets);
 };
 
-}  // namespace s21
+} // namespace s21

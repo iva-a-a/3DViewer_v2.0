@@ -46,6 +46,7 @@ Pазработана на языке C++ стандарта C++17.
  * @return Код завершения программы.
  */
 
+#ifndef UNIT_TESTS
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   s21::Facade scene;
@@ -56,3 +57,5 @@ int main(int argc, char *argv[]) {
   window.show();
   return app.exec();
 }
+
+#endif

@@ -64,7 +64,7 @@ struct RenderSetting {
  */
 class PaintModel : public QWidget {
   Q_OBJECT
- private:
+private:
   /** Указатель на контроллер. */
   Facade *controller;
   /** Настройки отрисовки. */
@@ -89,7 +89,7 @@ class PaintModel : public QWidget {
    */
   QPointF projectPoint(const Vertex *position) const;
 
- public:
+public:
   /**
    * @brief Конструктор класса PaintModel.
    * @param parent Указатель на родительский объект.
@@ -161,11 +161,11 @@ class PaintModel : public QWidget {
    */
   RenderSetting *getSettingPaint();
 
- protected:
+protected:
   /**
    * @brief Обработка события рисования.
    * @param event Ссылка на событие рисования.
    */
   void paintEvent(QPaintEvent *event) override;
 };
-}  // namespace s21
+} // namespace s21

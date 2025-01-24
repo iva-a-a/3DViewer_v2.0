@@ -1,0 +1,1 @@
+/home/nikita/123/satvajos_12_01/CPP4_3DViewer_v2.0-1-satvajos/src/models_3d/cube.obj 0 1 0 196 291 0 1 0 0 1 0 0 0 255 0 1 0 0 0 255 255 255 255 255

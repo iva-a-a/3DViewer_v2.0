@@ -2,6 +2,10 @@
 
 #include "../controller/parser_settings.h"
 
+#include <QDir>
+#include <QImage>
+#include <QTimer>
+
 using namespace s21;
 
 PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
@@ -20,6 +24,15 @@ PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
   set_textToQTextBrowser(ui->number_of_edges, paint_model->onGetSizeFacets());
   set_textToQTextBrowser(ui->number_of_vertices,
                          paint_model->onGetSizeVertices());
+
+  _screencastTimer = new QTimer(this);
+  _frameCounter = 0;
+  _outputDir = "screencasts/";
+  connect(_screencastTimer, &QTimer::timeout, this, &PaintViewer::recordFrame);
+  QDir dir(_outputDir);
+  if (!dir.exists()) {
+    dir.mkpath(".");
+  }
 };
 
 PaintViewer::~PaintViewer() {
@@ -336,7 +349,6 @@ void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
   }
 }
 
-void PaintViewer::on_saveAsGif_pressed() {}
 void PaintViewer::set_textToQTextBrowser(QTextBrowser *text,
                                          const size_t size) {
   text->setPlainText(QString::number(size));
@@ -384,4 +396,40 @@ void PaintViewer::set_onOrOff_buttons(bool enabled) {
 
   ui->saveAsBmpOrJpeg->setEnabled(enabled);
   ui->saveAsGif->setEnabled(enabled);
+}
+
+void PaintViewer::on_saveAsGif_pressed() {
+  _frameCounter = 0;
+  _outputDir = "screencasts/";
+  QDir dir(_outputDir);
+  if (!dir.exists()) {
+    dir.mkpath(".");
+  }
+  _screencastTimer->start(100);
+}
+
+void PaintViewer::recordFrame() {
+  if (_frameCounter < 50) {
+    QString filename = QString("%1frame_%2.png")
+                           .arg(_outputDir)
+                           .arg(_frameCounter, 3, 10, QChar('0'));
+
+    QPixmap pixmap = ui->field->grab();
+    QImage frame = pixmap.toImage().scaled(640, 480, Qt::KeepAspectRatio);
+    frame.save(filename, "PNG");
+    _frameCounter++;
+  } else {
+    _screencastTimer->stop();
+
+    QString gifCommand =
+        QString("convert -delay 10 -loop 0 %1frame_*.png %1screencast.gif")
+            .arg(_outputDir);
+    (void)system(gifCommand.toStdString().c_str());
+
+    QString cleanupCommand = QString("rm -f %1frame_*.png").arg(_outputDir);
+    (void)system(cleanupCommand.toStdString().c_str());
+
+    QMessageBox::information(this, "Скринкаст",
+                             "Скринкаст сохранён в screencasts/screencast.gif");
+  }
 }

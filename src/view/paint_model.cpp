@@ -47,6 +47,7 @@ void PaintModel::onScale(float x, float y, float z) {
   controller->scaleFigure(x, y, z);
   update();
 }
+
 void PaintModel::onReset() {
   controller->resetParam();
   resetSetting();

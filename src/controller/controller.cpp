@@ -35,7 +35,6 @@ void Facade::loadFile(const QString &filename) {
 void Facade::moveFigure(float x, float y, float z) {
   model.transform(TransformMatrixBuilder::createMoveMatrix(
       (x - p.shift_x) / STEP, (y - p.shift_y) / STEP, (z - p.shift_z) / STEP));
-
   p.shift_x = x;
   p.shift_y = y;
   p.shift_z = z;
@@ -47,14 +46,14 @@ void Facade::rotateFigure(float x, float y, float z) {
       degreesInRadians(p.rotate_z));
   rotateMat.InverseTransformMatrix();
 
-  rotateMat =
-      TransformMatrixBuilder::createMoveMatrix(
-          -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *
-      rotateMat *
-      TransformMatrixBuilder::createRotateMatrix(
-          degreesInRadians(x), degreesInRadians(y), degreesInRadians(z)) *
-      TransformMatrixBuilder::createMoveMatrix(
-          p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP);
+  rotateMat = TransformMatrixBuilder::createMoveMatrix(
+                  -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *
+              rotateMat *
+              TransformMatrixBuilder::createRotateMatrix(degreesInRadians(x),
+                                                         degreesInRadians(y),
+                                                         degreesInRadians(z)) *
+              TransformMatrixBuilder::createMoveMatrix(
+                  p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP);
 
   model.transform(rotateMat);
   p.rotate_x = x;

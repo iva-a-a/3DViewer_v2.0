@@ -11,7 +11,7 @@ namespace s21 {
  * @brief Предназначен для сохранения и получения настроек фигуры и отрисовки.
  */
 class ParserSettings {
- private:
+private:
   /** Имя файла настроек. */
   inline static const std::string filename = "settings.txt";
   /**
@@ -24,7 +24,7 @@ class ParserSettings {
    */
   ~ParserSettings() = default;
 
- public:
+public:
   /**
    * @brief Сохранение настроек в файл.
    * @param p Указатель на структуру параметров.
@@ -46,4 +46,4 @@ class ParserSettings {
    */
   static bool checkExistFile(const std::string name);
 };
-}  // namespace s21
+} // namespace s21

@@ -11,11 +11,11 @@ class Vertex;
  * @brief Класс для матрицы преобразования.
  */
 class TransformMatrix {
- private:
+private:
   /** Матрица преобразования. */
   S21Matrix _matrix;
 
- public:
+public:
   /**
    * @brief Конструктор класса TransformMatrix по умолчанию.
    */
@@ -57,6 +57,16 @@ class TransformMatrix {
    * @brief Нахождение обратной матрицы.
    */
   void InverseTransformMatrix();
+
+  // TransformMatrix(TransformMatrix &&m) noexcept;  // Перемещающий конструктор
+  // TransformMatrix &operator=(const TransformMatrix &m); // Оператор
+  // копирования
+  // TransformMatrix &operator=(TransformMatrix &&m) noexcept; //
+  // Оператор перемещения
+  // void SetIdentityMatrix();
+
+  // // Новый метод для проверки корректности
+  // bool isValid() const;
 };
 
-}  // namespace s21
+} // namespace s21

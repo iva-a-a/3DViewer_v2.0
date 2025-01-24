@@ -10,13 +10,13 @@ namespace s21 {
  * @brief Класс представляет фигуру, состоящую из вершин и граней.
  */
 class Figure {
- private:
+private:
   /** Список вершин фигуры. */
   QVector<Vertex> vertices = {};
   /** Список граней фигуры. */
   QVector<Edge> facets = {};
 
- public:
+public:
   /**
    * @brief Конструктор класса Figure по умолчанию.
    */
@@ -62,4 +62,4 @@ class Figure {
   const QVector<Edge> getFacets();
 };
 
-}  // namespace s21
+} // namespace s21

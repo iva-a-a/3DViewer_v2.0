@@ -2,6 +2,13 @@ CPP = g++
 CPPFLAGS = -Wall -Werror -Wextra -std=c++17
 RM = rm -rf
 
+#CPPFLAGS = -Wall -Werror -Wextra -std=c++17 -fPIC -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets
+#LDFLAGS = -L/usr/lib/x86_64-linux-gnu -lQt6Core -lQt6Gui -lQt6Widgets
+
+LIBS = -lgtest -lm
+#$(LDFLAGS)
+CPPFLAGS_TEST = -DUNIT_TESTS $(CPPFLAGS)
+
 TARGET = 3d_viewer
 
 BUILD_DIR = build
@@ -9,6 +16,10 @@ INSTALL_DIR = install
 SAVE_DIR = saved_images
 
 ALL_SRC = $(wildcard *.cpp *.h  */*.cpp */*.h */*/*.cpp */*/*.h)
+
+TEST_SRC = tests/main_test.cpp  # Исходный файл для тестов
+SRC = $(wildcard model/*.cpp controller/*.cpp model/s21_matrix/*.cpp)
+OBJS = $(SRC:.cpp=.o) $(wildcard model/*.o)  # Добавили все .o файлы из папки model
 
 VERSION = 2.0
 
@@ -30,6 +41,7 @@ clean:
 	@$(RM) $(BUILD_DIR)
 	@$(RM) *.tar.gz
 	@$(RM) doxygen
+	@find model controller -type f -name "*.o" -exec rm -f {} \;
 	@echo -- Clean complete.
 
 dvi:
@@ -45,7 +57,9 @@ dist:
 	@$(RM) $(TARGET)-$(VERSION)
 	@echo -- Dist complete. Archive name '"$(TARGET)-$(VERSION).tar.gz"'.
 
-tests:
+tests: $(OBJS)
+	$(CPP) $(CPPFLAGS_TEST) $(TEST_SRC) $(OBJS) -o viewer_test $(LIBS)
+	./viewer_test
 
 %.o: %.cpp
 	@$(CPP) $(CPPFLAGS) -cpp $< -o $@

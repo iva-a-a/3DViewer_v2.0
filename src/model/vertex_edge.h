@@ -10,7 +10,7 @@ namespace s21 {
  * @brief Класс представления вершины.
  */
 class Vertex : public QVector3D {
- public:
+public:
   /**
    * @brief Конструктор класса Vertex по умолчанию.
    */
@@ -47,13 +47,13 @@ class Vertex : public QVector3D {
  * @brief Класс представления ребра.
  */
 class Edge {
- private:
+private:
   /** Указатель на начальную вершину. */
   Vertex *_begin;
   /** Указатель на конечную вершину. */
   Vertex *_end;
 
- public:
+public:
   /**
    * @brief Конструктор класса Edge.
    * @param begin Указатель на начальную вершину.
@@ -98,4 +98,4 @@ class Edge {
   };
 };
 
-}  // namespace s21
+} // namespace s21
