@@ -17,7 +17,7 @@
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
-} // namespace Ui
+}  // namespace Ui
 QT_END_NAMESPACE
 
 namespace s21 {
@@ -28,13 +28,13 @@ namespace s21 {
  */
 class PaintViewer : public QMainWindow {
   Q_OBJECT
-private:
+ private:
   /** Указатель на объект Ui::MainWindow. */
   Ui::MainWindow *ui;
   /** Указатель на объект PaintModel. */
   PaintModel *paint_model;
 
-public:
+ public:
   /**
    * @brief Конструктор класса PaintViewer.
    * @param parent Указатель на родительский объект.
@@ -52,7 +52,7 @@ public:
    */
   void closeEvent(QCloseEvent *event) override;
 
-private slots:
+ private slots:
 
   /**
    * @brief Обработка изменения значения ползунка сдвига по оси OX.
@@ -186,7 +186,7 @@ private slots:
    */
   void on_saveAsGif_pressed();
 
-private:
+ private:
   /**
    * @brief Обновление текстового поля и ползунка.
    * @param text Текст поля.
@@ -230,10 +230,15 @@ private:
    */
   void set_onOrOff_buttons(bool enabled);
 
-  QTimer *_screencastTimer; // Таймер для записи скринкаста
-  int _frameCounter;        // Счетчик кадров
-  QString _outputDir;       // Папка для временных файлов
-
-  void recordFrame(); // Метод для записи отдельного кадра
+  /** Указатель на таймер для записи скринкаста. */
+  QTimer *_screencastTimer;
+  /** Счетчик кадров. */
+  int _frameCounter;
+  /** Папка для временных файлов для gif. */
+  QString _outputDir;
+  /**
+   * @brief Запись отдельного кадра для gif.
+   */
+  void recordFrame();
 };
-} // namespace s21
+}  // namespace s21

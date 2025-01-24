@@ -9,7 +9,7 @@ namespace s21 {
  * @brief Класс для создания матриц движения.
  */
 class TransformMatrixBuilder {
-private:
+ private:
   /**
    * @brief Конструктор класса TransformMatrixBuilder.
    */
@@ -20,7 +20,7 @@ private:
    */
   ~TransformMatrixBuilder() = default;
 
-public:
+ public:
   /**
    * @brief Создание матрицы поворота.
    * @param a Угол поворота по оси OX.
@@ -49,4 +49,4 @@ public:
   static TransformMatrix createScaleMatrix(float a, float b, float c);
 };
 
-} // namespace s21
+}  // namespace s21

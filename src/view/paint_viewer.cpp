@@ -1,10 +1,10 @@
 #include "paint_viewer.h"
 
-#include "../controller/parser_settings.h"
-
 #include <QDir>
 #include <QImage>
 #include <QTimer>
+
+#include "../controller/parser_settings.h"
 
 using namespace s21;
 

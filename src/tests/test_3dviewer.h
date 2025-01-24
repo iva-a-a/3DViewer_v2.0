@@ -1,4 +1,5 @@
 #pragma once
 
-#include "../model/model.h"
 #include <gtest/gtest.h>
+
+#include "../model/model.h"

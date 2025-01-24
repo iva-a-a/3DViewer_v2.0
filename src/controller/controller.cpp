@@ -46,14 +46,14 @@ void Facade::rotateFigure(float x, float y, float z) {
       degreesInRadians(p.rotate_z));
   rotateMat.InverseTransformMatrix();
 
-  rotateMat = TransformMatrixBuilder::createMoveMatrix(
-                  -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *
-              rotateMat *
-              TransformMatrixBuilder::createRotateMatrix(degreesInRadians(x),
-                                                         degreesInRadians(y),
-                                                         degreesInRadians(z)) *
-              TransformMatrixBuilder::createMoveMatrix(
-                  p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP);
+  rotateMat =
+      TransformMatrixBuilder::createMoveMatrix(
+          -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *
+      rotateMat *
+      TransformMatrixBuilder::createRotateMatrix(
+          degreesInRadians(x), degreesInRadians(y), degreesInRadians(z)) *
+      TransformMatrixBuilder::createMoveMatrix(
+          p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP);
 
   model.transform(rotateMat);
   p.rotate_x = x;

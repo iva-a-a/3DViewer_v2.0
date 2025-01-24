@@ -2,12 +2,41 @@ CPP = g++
 CPPFLAGS = -Wall -Werror -Wextra -std=c++17
 RM = rm -rf
 
-#CPPFLAGS = -Wall -Werror -Wextra -std=c++17 -fPIC -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets
-#LDFLAGS = -L/usr/lib/x86_64-linux-gnu -lQt6Core -lQt6Gui -lQt6Widgets
+# Определяем переменную для операционной системы
+OS := $(shell uname)
 
-LIBS = -lgtest -lm
-#$(LDFLAGS)
-CPPFLAGS_TEST = -DUNIT_TESTS $(CPPFLAGS)
+# Устанавливаем флаги в зависимости от операционной системы
+ifeq ($(OS),Linux)
+    FLAGS_TEST = -fPIC -I/usr/include/x86_64-linux-gnu/qt6 \
+	-I/usr/include/x86_64-linux-gnu/qt6/QtCore \
+	-I/usr/include/x86_64-linux-gnu/qt6/QtGui \
+	-I/usr/include/x86_64-linux-gnu/qt6/QtWidgets
+    LDFLAGS = -L/usr/lib/x86_64-linux-gnu -lQt6Core -lQt6Gui -lQt6Widgets
+
+	LIBS = -lgtest -lm -lsubunit -pthread $(LDFLAGS)
+endif
+
+ifeq ($(OS),Darwin)
+    FLAGS_TEST = -I. -I/opt/homebrew/lib/QtCore.framework/Headers \
+	-I/opt/homebrew/include \
+	-I/opt/homebrew/lib/QtGui.framework/Headers \
+	-I/opt/homebrew/lib/QtWidgets.framework/Headers \
+	-I/opt/homebrew/Cellar/googletest/1.15.2/include \
+	-I/opt/homebrew/Cellar/googletest/1.15.2
+
+    LDFLAGS = -F/opt/homebrew/lib -framework QtWidgets \
+	-framework QtGui -framework AppKit \
+	-framework ImageIO -framework Metal \
+	-framework QtCore -framework IOKit \
+	-framework DiskArbitration \
+	-framework AGL \
+	-framework OpenGL \
+	-L/opt/homebrew/Cellar/googletest/1.15.2/lib
+
+	LIBS = -lm  -lgtest -lgtest_main -pthread $(LDFLAGS)
+endif
+
+CPPFLAGS_TEST = -DUNIT_TESTS $(FLAGS_TEST)
 
 TARGET = 3d_viewer
 
@@ -17,9 +46,9 @@ SAVE_DIR = saved_images
 
 ALL_SRC = $(wildcard *.cpp *.h  */*.cpp */*.h */*/*.cpp */*/*.h)
 
-TEST_SRC = tests/main_test.cpp  # Исходный файл для тестов
+TEST_SRC = tests/main_test.cpp
 SRC = $(wildcard model/*.cpp controller/*.cpp model/s21_matrix/*.cpp)
-OBJS = $(SRC:.cpp=.o) $(wildcard model/*.o)  # Добавили все .o файлы из папки model
+OBJS = $(SRC:.cpp=.o)
 
 VERSION = 2.0
 
@@ -58,11 +87,11 @@ dist:
 	@echo -- Dist complete. Archive name '"$(TARGET)-$(VERSION).tar.gz"'.
 
 tests: $(OBJS)
-	$(CPP) $(CPPFLAGS_TEST) $(TEST_SRC) $(OBJS) -o viewer_test $(LIBS)
+	$(CPP) $(CPPFLAGS) $(CPPFLAGS_TEST) $(TEST_SRC) $(OBJS) -o viewer_test $(LIBS)
 	./viewer_test
 
 %.o: %.cpp
-	@$(CPP) $(CPPFLAGS) -cpp $< -o $@
+	@$(CPP) $(CPPFLAGS) $(CPPFLAGS_TEST) -c $< -o $@
 
 build:
 	@if [ ! -d "$(BUILD_DIR)" ]; then \

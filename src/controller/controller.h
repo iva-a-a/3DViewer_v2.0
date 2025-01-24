@@ -45,7 +45,7 @@ struct Parameters {
  * @brief Предназначен для работы с моделью.
  */
 class Facade {
-private:
+ private:
   /**< Модель. */
   Figure model;
   /**< Параметры для изменения модели. */
@@ -57,7 +57,7 @@ private:
    */
   float degreesInRadians(float x);
 
-public:
+ public:
   /**
    * @brief Конструктор класса Facade.
    */
@@ -127,4 +127,4 @@ public:
   Parameters *getParam();
 };
 
-} // namespace s21
+}  // namespace s21

@@ -13,6 +13,7 @@ Figure::Figure(const QString &filename) {
     NormalizeParameters::remDuplicateFaces(facets);
   }
 }
+
 Figure::Figure(const Figure &f) {
   std::unordered_map<const Vertex *, int> v_map;
 
