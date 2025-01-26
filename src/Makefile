@@ -43,6 +43,7 @@ TARGET = 3d_viewer
 BUILD_DIR = build
 INSTALL_DIR = install
 SAVE_DIR = saved_images
+GCOV_DIR = gcov_report
 
 ALL_SRC = $(wildcard *.cpp *.h  */*.cpp */*.h */*/*.cpp */*/*.h)
 
@@ -52,7 +53,7 @@ OBJS = $(SRC:.cpp=.o)
 
 VERSION = 2.0
 
-.PHONY: all install uninstall clean dvi dist tests build run delete clang
+.PHONY: all install uninstall clean dvi dist tests build run delete clang gcov_report
 
 all: install
 
@@ -71,7 +72,11 @@ clean:
 	@$(RM) *.tar.gz
 	@$(RM) doxygen
 	@$(RM) viewer_test
+	@$(RM) $(GCOV_DIR)
 	@find model controller -type f -name "*.o" -exec rm -f {} \;
+	@find . -name "*.gcda" -exec rm -f {} \;
+	@find . -name "*.gcno" -exec rm -f {} \;
+	@find . -name "*.gcov" -exec rm -f {} \;
 	@echo -- Clean complete.
 
 dvi:
@@ -88,11 +93,11 @@ dist:
 	@echo -- Dist complete. Archive name '"$(TARGET)-$(VERSION).tar.gz"'.
 
 tests: $(OBJS)
-	$(CPP) $(CPPFLAGS) $(CPPFLAGS_TEST) $(TEST_SRC) $(OBJS) -o viewer_test $(LIBS)
+	$(CPP) $(CPPFLAGS) $(CPPFLAGS_TEST) -fprofile-arcs -ftest-coverage $(TEST_SRC) $(OBJS) -o viewer_test $(LIBS)
 	./viewer_test
 
 %.o: %.cpp
-	@$(CPP) $(CPPFLAGS) $(CPPFLAGS_TEST) -c $< -o $@
+	@$(CPP) $(CPPFLAGS) $(CPPFLAGS_TEST) -fprofile-arcs -ftest-coverage -c $< -o $@
 
 build:
 	@if [ ! -d "$(BUILD_DIR)" ]; then \
@@ -106,6 +111,12 @@ build:
 run:
 	@./$(INSTALL_DIR)/$(TARGET)
 
+gcov_report: tests
+	@mkdir -p $(GCOV_DIR)
+	@gcovr -r . --html --html-details -o $(GCOV_DIR)/index.html
+	@echo -- Gcov HTML report generated in $(GCOV_DIR)/index.html.
+	@xdg-open $(GCOV_DIR)/index.html || open $(GCOV_DIR)/index.html || echo "Please open $(GCOV_DIR)/index.html manually."
+
 delete:
 	@$(RM) settings.txt
 	@if [ -d "$(SAVE_DIR)" ]; then \
@@ -114,7 +125,7 @@ delete:
 	@echo -- Delete complete. The settings file and saved images have been deleted.
 
 clang:
-	@cp ./../materials/linters/.clang-format ./
+	@cp ./../materials/linters/.clang-format ./ 
 	@clang-format -i $(ALL_SRC)
 	@rm -f .clang-format
-	@echo -- Files is formatted according to the style.
+	@echo -- Files are formatted according to the style.
