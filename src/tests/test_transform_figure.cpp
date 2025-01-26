@@ -230,23 +230,76 @@ TEST_F(TransformFigureTest, RemoveDuplicateFaces) {
     // Создаем объект Figure
     s21::Figure figure(testFileName);
 
-    // Получаем грани фигуры
-    QVector<s21::Edge> facets = figure.getFacets();
+    // Получаем оригинальные грани фигуры
+    QVector<s21::Edge> originalFacets = figure.getFacets();
 
-    // Добавляем дубликаты граней для теста
-    if (!facets.isEmpty()) {
-        facets.append(facets[0]);
-        facets.append(facets[1]);
-    }
+    // Проверяем, что грани загружены корректно
+    ASSERT_FALSE(originalFacets.isEmpty());
+
+    // Добавляем дубликаты граней вручную
+    QVector<s21::Edge> facetsWithDuplicates = originalFacets;
+    facetsWithDuplicates.append(originalFacets[0]);  // Дубликат первой грани
+    facetsWithDuplicates.append(originalFacets[1]);  // Дубликат второй грани
 
     // Проверяем, что дубликаты добавлены
-    int originalCount = facets.size();
-    int uniqueCount = std::unordered_set<s21::Edge, s21::Edge::HashEdge>(facets.begin(), facets.end()).size();
+    int originalCount = facetsWithDuplicates.size();
+    int uniqueCount = std::unordered_set<s21::Edge, s21::Edge::HashEdge>(
+        facetsWithDuplicates.begin(), facetsWithDuplicates.end()).size();
     ASSERT_GT(originalCount, uniqueCount);
 
-    // Вызываем метод remDuplicateFaces
-    s21::NormalizeParameters::remDuplicateFaces(facets);
+// Вызываем метод remDuplicateFaces
+    s21::NormalizeParameters::remDuplicateFaces(facetsWithDuplicates);
 
     // Проверяем, что количество граней уменьшилось до количества уникальных
-    EXPECT_EQ(facets.size(), uniqueCount);
+    EXPECT_EQ(facetsWithDuplicates.size(), uniqueCount);
+
+    // Дополнительная проверка: сравниваем результат с исходными уникальными данными
+    ASSERT_EQ(facetsWithDuplicates.size(), originalFacets.size());
+    for (int i = 0; i < originalFacets.size(); ++i) {
+        EXPECT_EQ(facetsWithDuplicates[i], originalFacets[i]);
+    }
+}
+
+// Проверяет корректность масштабирования для нестандартных диапазонов координат
+TEST_F(TransformFigureTest, ScaleWithNonStandardRange) {
+  // Создаем набор вершин с нестандартными диапазонами
+  QVector<s21::Vertex> vertices = {
+      {10.0, 20.0, -30.0},
+      {40.0, -50.0, 60.0},
+      {-70.0, 80.0, -90.0}};
+
+  // Применяем метод setScaleVertex
+  s21::TestNormalizeParameters::TestSetScaleVertex(vertices);
+
+  // Проверяем, что все вершины находятся в диапазоне [-1, 1]
+  for (const auto &vertex : vertices) {
+    EXPECT_GE(vertex.x(), -1);
+    EXPECT_LE(vertex.x(), 1);
+    EXPECT_GE(vertex.y(), -1);
+    EXPECT_LE(vertex.y(), 1);
+    EXPECT_GE(vertex.z(), -1);
+    EXPECT_LE(vertex.z(), 1);
+  }
+}
+
+// Проверяет работу с уже нормализованными данными
+TEST_F(TransformFigureTest, NormalizedData) {
+  // Создаем набор уже нормализованных вершин
+  QVector<s21::Vertex> vertices = {
+      {0.5, -0.5, 0.0},
+      {-0.8, 0.8, -0.2},
+      {0.0, 0.0, 0.0}};
+
+  // Копируем вершины для проверки неизменности
+  QVector<s21::Vertex> originalVertices = vertices;
+
+  // Применяем метод setScaleVertex, который не должен изменить данные
+  s21::TestNormalizeParameters::TestSetScaleVertex(vertices);
+
+  // Проверяем, что данные не изменились
+  for (int i = 0; i < vertices.size(); ++i) {
+    EXPECT_NEAR(vertices[i].x(), originalVertices[i].x(), EPS);
+    EXPECT_NEAR(vertices[i].y(), originalVertices[i].y(), EPS);
+    EXPECT_NEAR(vertices[i].z(), originalVertices[i].z(), EPS);
+  }
 }

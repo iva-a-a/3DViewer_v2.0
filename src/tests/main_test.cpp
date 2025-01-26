@@ -7,6 +7,8 @@
 #include "test_transform_matrix.cpp"
 #include "test_transform_matrix_builder.cpp"
 #include "test_controller.cpp"
+#include "test_s21_matrix_oop.cpp"
+#include "test_parser_settings.cpp"
 
 // Определение main для тестов
 int main(int argc, char **argv) {
