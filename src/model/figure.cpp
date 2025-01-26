@@ -9,6 +9,9 @@ Figure::Figure(const QString &filename) {
   if (!vertices.isEmpty()) {
     NormalizeParameters::setNormalVertex(vertices);
   }
+  if (facets.size() > 1) {
+    NormalizeParameters::remDuplicateFaces(facets);
+  }
 }
 
 Figure::Figure(const Figure &f) {
@@ -17,7 +20,7 @@ Figure::Figure(const Figure &f) {
   vertices.clear();
   vertices.reserve(f.vertices.size());
   for (qsizetype i = 0; i < f.vertices.size(); i++) {
-    vertices.append(f.vertices[i]);  // Замена emplace_back на append
+    vertices.emplace_back(f.vertices[i]);
     v_map[&f.vertices[i]] = i;
   }
 
@@ -29,8 +32,8 @@ Figure::Figure(const Figure &f) {
     auto index_begin = v_map.find(begin);
     auto index_end = v_map.find(end);
     if (index_begin != v_map.end() && index_end != v_map.end()) {
-      facets.append(Edge(&vertices[index_begin->second],
-                         &vertices[index_end->second]));  // Замена emplace_back на append
+      facets.emplace_back(&vertices[index_begin->second],
+                          &vertices[index_end->second]);
     } else {
       throw "Error: vertex not found";
     }
@@ -44,7 +47,7 @@ Figure &Figure::operator=(const Figure &f) {
     vertices.clear();
     vertices.reserve(f.vertices.size());
     for (qsizetype i = 0; i < f.vertices.size(); i++) {
-      vertices.append(f.vertices[i]);  // Замена emplace_back на append
+      vertices.emplace_back(f.vertices[i]);
       v_map[&f.vertices[i]] = i;
     }
 
@@ -56,8 +59,8 @@ Figure &Figure::operator=(const Figure &f) {
       auto index_begin = v_map.find(begin);
       auto index_end = v_map.find(end);
       if (index_begin != v_map.end() && index_end != v_map.end()) {
-        facets.append(Edge(&vertices[index_begin->second],
-                           &vertices[index_end->second]));  // Замена emplace_back на append
+        facets.emplace_back(&vertices[index_begin->second],
+                            &vertices[index_end->second]);
       } else {
         throw "Error: vertex not found";
       }

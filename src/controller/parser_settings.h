@@ -1,21 +1,49 @@
 #pragma once
 
+#include <string>
+
 #include "../view/paint_model.h"
 #include "controller.h"
 
-#include <string>
-
 namespace s21 {
-
+/**
+ * @class ParserSettings
+ * @brief Предназначен для сохранения и получения настроек фигуры и отрисовки.
+ */
 class ParserSettings {
-private:
+ private:
+  /** Имя файла настроек. */
   inline static const std::string filename = "settings.txt";
+  /**
+   * @brief Конструктор класса ParserSettings.
+   */
+  ParserSettings() {}
 
-public:
-  ParserSettings() = default;
+  /**
+   * @brief Деструктор класса ParserSettings.
+   */
+  ~ParserSettings() = default;
 
+ public:
+  /**
+   * @brief Сохранение настроек в файл.
+   * @param p Указатель на структуру параметров.
+   * @param s Указатель на структуру настроек рендеринга.
+   */
   static void saveSettingsToFile(Parameters *p, RenderSetting *s);
+
+  /**
+   * @brief Получение настроек из файла.
+   * @param s Указатель на структуру настроек рендеринга.
+   * @return Структура параметров.
+   */
   static Parameters getSettingsFromFile(RenderSetting *s);
-  static bool checkExistFile();
+
+  /**
+   * @brief Проверка существования файла.
+   * @param name Имя файла.
+   * @return true - если файл существует, false - если не существует.
+   */
+  static bool checkExistFile(const std::string name);
 };
-} // namespace s21
+}  // namespace s21

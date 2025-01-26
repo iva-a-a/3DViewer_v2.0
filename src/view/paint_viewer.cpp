@@ -1,11 +1,9 @@
 #include "paint_viewer.h"
 
-#include "../controller/parser_settings.h" 
-
-#include <QTimer>
-#include <QImage>
 #include <QDir>
-#include <QMessageBox>
+#include <QImage>
+
+#include "../controller/parser_settings.h"
 
 using namespace s21;
 
@@ -17,33 +15,35 @@ PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
       QRect(0, 0, ui->field->width(), ui->field->height()));
   set_onOrOff_buttons(false);
 
-  if (ParserSettings::checkExistFile() == true) {
-    set_onOrOff_buttons(true);
+  if (ParserSettings::checkExistFile("settings.txt") == true) {
     set_start_saved_settings();
   } else {
     initialize_text_box();
   }
-  set_number_of_facets();
-  set_number_of_vertices(); 
-   _screencastTimer = new QTimer(this);
-    _frameCounter = 0;
-    _outputDir = "screencasts/";
+  set_textToQTextBrowser(ui->number_of_edges, paint_model->onGetSizeFacets());
+  set_textToQTextBrowser(ui->number_of_vertices,
+                         paint_model->onGetSizeVertices());
 
-    connect(_screencastTimer, &QTimer::timeout, this, &PaintViewer::recordFrame);
-
-    QDir dir(_outputDir);
-    if (!dir.exists()) {
-        dir.mkpath(".");
-    }
-}; 
+  _screencastTimer = new QTimer(this);
+  _frameCounter = 0;
+  _outputDir = "screencasts/";
+  connect(_screencastTimer, &QTimer::timeout, this, &PaintViewer::recordFrame);
+  connect(_screencastTimer, &QTimer::timeout, this,
+          &PaintViewer::updateCountdown);
+  QDir dir(_outputDir);
+  if (!dir.exists()) {
+    dir.mkpath(".");
+  }
+};
 
 PaintViewer::~PaintViewer() {
   delete ui;
   delete paint_model;
+  delete _screencastTimer;
 };
 
 void PaintViewer::closeEvent(QCloseEvent *event) {
-  if (paint_model->getParamController()->filename == "") {
+  if (paint_model->getParamController()->filename.isEmpty()) {
     return;
   }
   ParserSettings::saveSettingsToFile(paint_model->getParamController(),
@@ -54,9 +54,20 @@ void PaintViewer::closeEvent(QCloseEvent *event) {
 void PaintViewer::set_start_saved_settings() {
   Parameters p =
       ParserSettings::getSettingsFromFile(paint_model->getSettingPaint());
+  if (ParserSettings::checkExistFile(p.filename.toStdString()) == false) {
+    return;
+  }
+  set_onOrOff_buttons(true);
   paint_model->onLoadModel(p.filename);
 
   set_file_name(get_filename(p.filename));
+
+  if (p.type_projection == ProjectionType::Parallel) {
+    ui->typeProjection->setCurrentIndex(0);
+  } else {
+    ui->typeProjection->setCurrentIndex(1);
+  }
+  paint_model->getParamController()->type_projection = p.type_projection;
 
   on_scrollShiftX_valueChanged(p.shift_x);
   on_scrollShiftY_valueChanged(p.shift_y);
@@ -117,8 +128,6 @@ void PaintViewer::on_scrollShiftX_valueChanged(int value) {
   ui->boxShiftX->setText(QString::number(value));
   paint_model->onMove(ui->scrollShiftX->value(), ui->scrollShiftY->value(),
                       ui->scrollShiftZ->value());
-  // Перерисовываем виджет, чтобы изменения отобразились
-  update();
 }
 
 void PaintViewer::on_boxShiftX_textChanged(const QString &text) {
@@ -129,8 +138,6 @@ void PaintViewer::on_scrollShiftY_valueChanged(int value) {
   ui->boxShiftY->setText(QString::number(value));
   paint_model->onMove(ui->scrollShiftX->value(), ui->scrollShiftY->value(),
                       ui->scrollShiftZ->value());
-  // Перерисовываем виджет, чтобы изменения отобразились
-  update();
 }
 
 void PaintViewer::on_boxShiftY_textChanged(const QString &text) {
@@ -141,8 +148,6 @@ void PaintViewer::on_scrollShiftZ_valueChanged(int value) {
   ui->boxShiftZ->setText(QString::number(value));
   paint_model->onMove(ui->scrollShiftX->value(), ui->scrollShiftY->value(),
                       ui->scrollShiftZ->value());
-// Перерисовываем виджет, чтобы изменения отобразились
-  update();
 }
 
 void PaintViewer::on_boxShiftZ_textChanged(const QString &text) {
@@ -260,6 +265,18 @@ void PaintViewer::on_colorSelectBackground_pressed() {
   }
 }
 
+void PaintViewer::on_typeProjection_currentIndexChanged(int index) {
+  if (index == 0) {
+    paint_model->getParamController()->type_projection =
+        ProjectionType::Parallel;
+
+  } else {
+    paint_model->getParamController()->type_projection =
+        ProjectionType::Central;
+  }
+  paint_model->update();
+}
+
 void PaintViewer::on_resetSettings_pressed() {
   on_scrollShiftX_valueChanged(0);
   on_scrollShiftY_valueChanged(0);
@@ -283,13 +300,13 @@ void PaintViewer::reset_button() {
   on_boxScale_textChanged("1");
 
   ui->typeSelectVertices->setCurrentIndex(0);
+  ui->typeProjection->setCurrentIndex(0);
   ui->typeSelectFacets->setCurrentIndex(0);
   ui->thicknessSelectFacets->setValue(1);
   ui->sizeSelectVerties->setValue(1);
 }
 
 void PaintViewer::on_chooseFile_pressed() {
-
   QString dir = QDir::currentPath() + "/models_3d";
   QString filePath = QFileDialog::getOpenFileName(
       this, tr("Выберите файл"), dir, tr("Файлы 3D моделей (*.obj)"));
@@ -300,8 +317,9 @@ void PaintViewer::on_chooseFile_pressed() {
   set_onOrOff_buttons(true);
   reset_button();
   paint_model->onLoadModel(filePath);
-  set_number_of_facets();
-  set_number_of_vertices();
+  set_textToQTextBrowser(ui->number_of_edges, paint_model->onGetSizeFacets());
+  set_textToQTextBrowser(ui->number_of_vertices,
+                         paint_model->onGetSizeVertices());
   QString fileName = get_filename(filePath);
   set_file_name(fileName);
   on_resetSettings_pressed();
@@ -333,14 +351,9 @@ void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
   }
 }
 
-void PaintViewer::set_number_of_facets() {
-  ui->number_of_edges->setPlainText(
-      QString::number(paint_model->onGetSizeFacets()));
-}
-
-void PaintViewer::set_number_of_vertices() {
-  ui->number_of_vertices->setPlainText(
-      QString::number(paint_model->onGetSizeVertices()));
+void PaintViewer::set_textToQTextBrowser(QTextBrowser *text,
+                                         const size_t size) {
+  text->setPlainText(QString::number(size));
 }
 
 void PaintViewer::set_file_name(const QString &filename) {
@@ -385,46 +398,54 @@ void PaintViewer::set_onOrOff_buttons(bool enabled) {
 
   ui->saveAsBmpOrJpeg->setEnabled(enabled);
   ui->saveAsGif->setEnabled(enabled);
-} 
+}
 
-// GIF 
 void PaintViewer::on_saveAsGif_pressed() {
-    _frameCounter = 0;  // Сброс счётчика кадров
-    _outputDir = "screencasts/";
-
-    QDir dir(_outputDir);
-    if (!dir.exists()) {
-        dir.mkpath(".");
-    }
-
-    _screencastTimer->start(100);  // Частота кадров 10 FPS (интервал 100 мс)
+  _frameCounter = 0;
+  _outputDir = "screencasts/";
+  QDir dir(_outputDir);
+  if (!dir.exists()) {
+    dir.mkpath(".");
+  }
+  _screencastTimer->start(100);
 }
 
 void PaintViewer::recordFrame() {
-    if (_frameCounter < 50) {  // Записываем до 50 кадров (5 секунд)
-        QString filename = QString("%1frame_%2.png")
-                               .arg(_outputDir)
-                               .arg(_frameCounter, 3, 10, QChar('0'));
+  if (_frameCounter < 50) {
+    QString filename = QString("%1frame_%2.png")
+                           .arg(_outputDir)
+                           .arg(_frameCounter, 3, 10, QChar('0'));
 
-        // Захват с нужным разрешением (640x480)
-        QPixmap pixmap = ui->field->grab();  // Используем grab() для захвата содержимого
-        QImage frame = pixmap.toImage().scaled(640, 480, Qt::KeepAspectRatio);  // Масштабирование до требуемого размера
-        frame.save(filename, "PNG");
+    QPixmap pixmap = ui->field->grab();
+    QImage frame = pixmap.toImage().scaled(640, 480, Qt::KeepAspectRatio);
+    frame.save(filename, "PNG");
+    _frameCounter++;
+  } else {
+    _screencastTimer->stop();
 
-        _frameCounter++;
-    } else {
-        _screencastTimer->stop();
+    QString gifCommand =
+        QString("convert -delay 10 -loop 0 %1frame_*.png %1screencast.gif")
+            .arg(_outputDir);
+    (void)system(gifCommand.toStdString().c_str());
 
-        // Создание GIF из кадров
-        QString gifCommand = QString("convert -delay 10 -loop 0 %1frame_*.png %1screencast.gif")
-                                 .arg(_outputDir);
-        (void)system(gifCommand.toStdString().c_str());
+    QString cleanupCommand = QString("rm -f %1frame_*.png").arg(_outputDir);
+    (void)system(cleanupCommand.toStdString().c_str());
 
-        // Удаление временных PNG-файлов
-        QString cleanupCommand = QString("rm -f %1frame_*.png").arg(_outputDir);
-        (void)system(cleanupCommand.toStdString().c_str());
-
-        QMessageBox::information(this, "Скринкаст", "Скринкаст сохранён в screencasts/screencast.gif");
-    }
+    QMessageBox::information(this, "Скринкаст",
+                             "Скринкаст сохранён в screencasts/screencast.gif");
+  }
 }
 
+void PaintViewer::updateCountdown() {
+  static int countdown = 50;
+  if (countdown > 0) {
+    if (countdown % 10 == 0) {
+      ui->saveAsGif->setText(QString::number(countdown / 10));
+    }
+    countdown--;
+  }
+  if (countdown == 0) {
+    ui->saveAsGif->setText("gif");
+    countdown = 50;
+  }
+}

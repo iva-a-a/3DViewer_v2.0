@@ -1,6 +1,11 @@
 #include "controller.h"
 
+/**
+ * @def STEP
+ * @brief Шаг для сдвига.
+ */
 #define STEP 5
+
 #include <cmath>
 
 using namespace s21;
@@ -36,20 +41,19 @@ void Facade::moveFigure(float x, float y, float z) {
 }
 
 void Facade::rotateFigure(float x, float y, float z) {
-
   TransformMatrix rotateMat = TransformMatrixBuilder::createRotateMatrix(
       degreesInRadians(p.rotate_x), degreesInRadians(p.rotate_y),
       degreesInRadians(p.rotate_z));
   rotateMat.InverseTransformMatrix();
 
-  rotateMat = TransformMatrixBuilder::createMoveMatrix(
-                  -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *
-              rotateMat *
-              TransformMatrixBuilder::createRotateMatrix(degreesInRadians(x),
-                                                         degreesInRadians(y),
-                                                         degreesInRadians(z)) *
-              TransformMatrixBuilder::createMoveMatrix(
-                  p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP);
+  rotateMat =
+      TransformMatrixBuilder::createMoveMatrix(
+          -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *
+      rotateMat *
+      TransformMatrixBuilder::createRotateMatrix(
+          degreesInRadians(x), degreesInRadians(y), degreesInRadians(z)) *
+      TransformMatrixBuilder::createMoveMatrix(
+          p.shift_x / STEP, p.shift_y / STEP, p.shift_z / STEP);
 
   model.transform(rotateMat);
   p.rotate_x = x;
@@ -58,7 +62,6 @@ void Facade::rotateFigure(float x, float y, float z) {
 }
 
 void Facade::scaleFigure(float x, float y, float z) {
-
   TransformMatrix scaleMat =
       TransformMatrixBuilder::createMoveMatrix(
           -p.shift_x / STEP, -p.shift_y / STEP, -p.shift_z / STEP) *
@@ -72,6 +75,9 @@ void Facade::scaleFigure(float x, float y, float z) {
 }
 
 Figure *Facade::getFigure() { return &model; }
+
 size_t Facade::getSizeVertices() { return model.getVertices().size(); }
+
 size_t Facade::getSizeFacets() { return model.getFacets().size(); }
+
 Parameters *Facade::getParam() { return &p; }
