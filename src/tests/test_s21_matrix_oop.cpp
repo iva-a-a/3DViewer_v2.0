@@ -239,7 +239,7 @@ TEST(S21MatrixTest, MutatorRow) {
     EXPECT_EQ(matrix.AccessorCol(), 2);
     EXPECT_EQ(matrix(0, 0), 1.0);
     EXPECT_EQ(matrix(1, 1), 2.0);
-    EXPECT_EQ(matrix(2, 0), 0.0); // Новая строка инициализирована нулями
+    EXPECT_EQ(matrix(2, 0), 0.0); 
 }
 
 // Тест функции MutatorCol
@@ -253,7 +253,7 @@ TEST(S21MatrixTest, MutatorCol) {
     EXPECT_EQ(matrix.AccessorCol(), 3);
     EXPECT_EQ(matrix(0, 0), 1.0);
     EXPECT_EQ(matrix(1, 1), 2.0);
-    EXPECT_EQ(matrix(0, 2), 0.0); // Новый столбец инициализирован нулями
+    EXPECT_EQ(matrix(0, 2), 0.0); 
 }
 
 // Исключение при сложении матриц разных размеров

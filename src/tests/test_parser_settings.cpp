@@ -7,7 +7,6 @@
 
 using namespace s21;
 
-// Вспомогательные функции для создания настроек
 Parameters CreateTestParameters() {
   Parameters p;
   p.filename = "test_file.obj";
@@ -41,17 +40,13 @@ TEST(ParserSettingsTest, SaveAndLoadSettings) {
   Parameters p = CreateTestParameters();
   RenderSetting s = CreateTestRenderSettings();
 
-  // Сохранение настроек в файл
   ParserSettings::saveSettingsToFile(&p, &s);
 
-  // Проверка существования файла
   ASSERT_TRUE(ParserSettings::checkExistFile("settings.txt"));
 
-  // Загрузка настроек из файла
   RenderSetting s_loaded;
   Parameters p_loaded = ParserSettings::getSettingsFromFile(&s_loaded);
 
-  // Сравнение сохраненных и загруженных настроек
   EXPECT_EQ(p.filename.toStdString(), p_loaded.filename.toStdString());
   EXPECT_EQ(p.shift_x, p_loaded.shift_x);
   EXPECT_EQ(p.shift_y, p_loaded.shift_y);

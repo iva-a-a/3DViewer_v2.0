@@ -9,7 +9,6 @@
 class ParserTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    // Путь к тестовым файлам
     validFileName = "./models_3d/cube.obj";
     emptyFileName = "./models_3d/empty.obj";
     nonExistentFileName = "./models_3d/nonexistent.obj";
@@ -32,12 +31,12 @@ TEST_F(ParserTest, RecordCoordFromFile) {
   ASSERT_NO_THROW(
       s21::Parser::recordCoordFromFile(validFileName, vertices, facets));
 
-  ASSERT_EQ(vertices.size(), 8);  // Проверяем количество вершин
-  EXPECT_FLOAT_EQ(vertices[0].x(), 1.0);  // Координаты первой вершины
+  ASSERT_EQ(vertices.size(), 8); 
+  EXPECT_FLOAT_EQ(vertices[0].x(), 1.0);  
   EXPECT_FLOAT_EQ(vertices[0].y(), -1.0);
   EXPECT_FLOAT_EQ(vertices[0].z(), -1.0);
 
-  ASSERT_EQ(facets.size(), 36);  // Проверяем количество граней
+  ASSERT_EQ(facets.size(), 36);  
 }
 
 // Тест проверяет обработку отсутствующего файла
@@ -81,10 +80,10 @@ TEST_F(ParserTest, UnrecognizedLinesInFile) {
   QFile file(unrecognizedLinesFileName);
   if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
     QTextStream out(&file);
-    out << "v 1.0 1.0 1.0\n";  // Корректная вершина
-    out << "v -1.0 -1.0 -1.0\n";  // Корректная вершина
-    out << "This is an unrecognized line\n";  // Некорректная строка
-    out << "v 0.0 0.0 0.0\n";  // Корректная вершина
+    out << "v 1.0 1.0 1.0\n";  
+    out << "v -1.0 -1.0 -1.0\n";  
+    out << "This is an unrecognized line\n"; 
+    out << "v 0.0 0.0 0.0\n"; 
     file.close();
   } else {
     FAIL() << "Could not create unrecognized lines file for testing.";

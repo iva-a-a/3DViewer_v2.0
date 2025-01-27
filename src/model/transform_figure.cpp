@@ -46,7 +46,6 @@ void NormalizeParameters::setCentralVertex(QVector<Vertex> &v) {
 }
 
 void NormalizeParameters::setScaleVertex(QVector<Vertex> &v) {
-  // Вычисляем минимальные и максимальные координаты
   Vertex min_coord = getMinCoord(v);
   Vertex max_coord = getMaxCoord(v);
   Vertex scale = max_coord - min_coord;
@@ -54,7 +53,6 @@ void NormalizeParameters::setScaleVertex(QVector<Vertex> &v) {
   float common_scale = std::max({scale.x(), scale.y(), scale.z()});
   common_scale = common_scale == 0.0f ? 1.0f : common_scale;
 
-  // Проверяем, находятся ли координаты уже в диапазоне [-1, 1]
   bool is_already_normalized = true;
   for (const auto &vertex : v) {
     if (vertex.x() < -1 || vertex.x() > 1 ||
@@ -65,15 +63,12 @@ void NormalizeParameters::setScaleVertex(QVector<Vertex> &v) {
     }
   }
 
-  // Если данные уже нормализованы, ничего не делаем
   if (is_already_normalized) {
     return;
   }
 
-  // Центр объекта
   Vertex center = getCentralCoord(min_coord, max_coord);
 
-  // Масштабируем координаты в диапазон [-1, 1]
   for (int i = 0; i < v.size(); ++i) {
     v[i].setX((v[i].x() - center.x()) / common_scale * 2);
     v[i].setY((v[i].y() - center.y()) / common_scale * 2);

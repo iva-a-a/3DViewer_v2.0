@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include "../controller/controller.h"
 
-// Указываем путь к файлу, который будет использоваться в тестах
 const QString testFileName = "./models_3d/cube.obj";
 
 // Тест: Инициализация параметров
@@ -24,7 +23,6 @@ TEST(FacadeTest, ResetParamTest) {
 TEST(FacadeTest, LoadFileTest) {
     s21::Facade facade;
 
-    // Используем testFileName
     ASSERT_NO_THROW(facade.loadFile(testFileName));
 
     EXPECT_EQ(facade.getParam()->filename, testFileName);
@@ -84,7 +82,6 @@ TEST(FacadeTest, GetFigureTest) {
 TEST(FacadeTest, GetSizeVerticesAndFacetsTest) {
     s21::Facade facade;
 
-    // Используем testFileName
     ASSERT_NO_THROW(facade.loadFile(testFileName));
 
     EXPECT_GT(facade.getSizeVertices(), 0u);
