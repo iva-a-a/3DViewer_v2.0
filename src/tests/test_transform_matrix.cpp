@@ -93,3 +93,18 @@ TEST_F(TransformMatrixTest, InverseMatrix) {
   EXPECT_NEAR(invertibleMatrix(1, 1), 0.5, 1e-6);
   EXPECT_NEAR(invertibleMatrix(2, 2), 0.333333, 1e-6);
 }
+
+// Тест: Преобразование с нулевыми значениями
+TEST_F(TransformMatrixTest, TransformWithZeroValues) {
+    s21::TransformMatrix zeroMatrix;
+    zeroMatrix(0, 0) = 0.0;
+    zeroMatrix(1, 1) = 0.0;
+    zeroMatrix(2, 2) = 0.0;
+
+    s21::Vertex point(1.0, 1.0, 1.0);
+    zeroMatrix.transformPoint(point);
+
+    EXPECT_NEAR(point.x(), 0.0, 1e-6);
+    EXPECT_NEAR(point.y(), 0.0, 1e-6);
+    EXPECT_NEAR(point.z(), 0.0, 1e-6);
+}

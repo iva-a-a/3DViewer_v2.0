@@ -107,3 +107,55 @@ TEST_F(ParserTest, UnrecognizedLinesInFile) {
 
   ASSERT_TRUE(facets.isEmpty());
 }
+
+// Тест: Обработка файла с некорректными данными
+TEST_F(ParserTest, InvalidDataInFile) {
+    QVector<s21::Vertex> vertices;
+    QVector<s21::Edge> facets;
+
+    QString invalidDataFileName = "./models_3d/invalid_data.obj";
+    QFile file(invalidDataFileName);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        QTextStream out(&file);
+        out << "v 1.0 1.0 1.0\n";  
+        out << "v -1.0 -1.0 -1.0\n";  
+        out << "f 1 2 3\n";  // Некорректные индексы граней
+        file.close();
+    } else {
+        FAIL() << "Could not create invalid data file for testing.";
+    }
+
+    ASSERT_NO_THROW(
+        s21::Parser::recordCoordFromFile(invalidDataFileName, vertices, facets));
+
+    ASSERT_EQ(vertices.size(), 2);
+    EXPECT_FLOAT_EQ(vertices[0].x(), 1.0);
+    EXPECT_FLOAT_EQ(vertices[0].y(), 1.0);
+    EXPECT_FLOAT_EQ(vertices[0].z(), 1.0);
+
+    EXPECT_FLOAT_EQ(vertices[1].x(), -1.0);
+    EXPECT_FLOAT_EQ(vertices[1].y(), -1.0);
+    EXPECT_FLOAT_EQ(vertices[1].z(), -1.0);
+
+    ASSERT_TRUE(facets.isEmpty());
+}
+
+// Тест: Обработка файла с некорректными значениями вершин
+TEST_F(ParserTest, InvalidVertexDataInFile) {
+    QVector<s21::Vertex> vertices;
+    QVector<s21::Edge> facets;
+
+    QString invalidVertexFileName = "./models_3d/invalid_vertex.obj";
+    QFile file(invalidVertexFileName);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        QTextStream out(&file);
+        out << "v 1.0 abc 1.0\n";  // Некорректное значение
+        file.close();
+    } else {
+        FAIL() << "Could not create invalid vertex file for testing.";
+    }
+
+    ASSERT_NO_THROW(
+        s21::Parser::recordCoordFromFile(invalidVertexFileName, vertices, facets));
+    ASSERT_TRUE(vertices.isEmpty());  // Ожидаем, что вершины не будут загружены
+}

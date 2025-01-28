@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
-
 #include <QString>
 #include <QVector>
 #include <unordered_map>
-
+#include <QTextStream>
 #include "../model/figure.h"
+#include <QDir>
 
 class FigureTest : public ::testing::Test {
  protected:
@@ -18,10 +18,8 @@ class FigureTest : public ::testing::Test {
 // Тест конструктора класса Figure
 TEST_F(FigureTest, Constructor) {
   s21::Figure figure(testFileName);
-  ASSERT_EQ(figure.getVertices().size(),
-            8);  
-  ASSERT_EQ(figure.getFacets().size(),
-            18);  
+  ASSERT_EQ(figure.getVertices().size(), 8);  // Проверка количества вершин
+  ASSERT_EQ(figure.getFacets().size(), 18);  // Проверка количества граней
 }
 
 // Тест конструктора копирования класса Figure
@@ -53,14 +51,18 @@ TEST_F(FigureTest, Transform) {
   ASSERT_EQ(figure.getVertices().size(), originalVertexCount);
 }
 
-// Тест метода, который выбрасывает исключение, если не может найти вершину
-TEST_F(FigureTest, ConstructorThrowsExceptionForInvalidVertex) {
+// Тест: Конструктор корректно обрабатывает невалидный файл
+TEST_F(FigureTest, HandlesInvalidFileGracefully) {
   QString invalidFileName = "./models_3d/invalid.obj";
 
-  ASSERT_THROW(s21::Figure figure(invalidFileName), std::runtime_error);
+  EXPECT_NO_THROW({
+      s21::Figure figure(invalidFileName);
+      EXPECT_EQ(figure.getVertices().size(), 0u);  // Нет вершин
+      EXPECT_EQ(figure.getFacets().size(), 0u);    // Нет граней
+  });
 }
 
-// Тест проверяет нормализацию вершин при создании объекта Figure
+// Тест: Нормализация вершин при создании объекта Figure
 TEST_F(FigureTest, Normalization) {
   s21::Figure figure(testFileName);
 
@@ -72,18 +74,31 @@ TEST_F(FigureTest, Normalization) {
     }
   }
 
-  ASSERT_TRUE(
-      normalizationApplied);  
+  ASSERT_TRUE(normalizationApplied);
 }
 
-// Тест проверяет методы getVertices и getFacets для получения вершин и граней
+// Тест: Нормализация вершин с использованием разных данных
+TEST_F(FigureTest, NormalizationWithDifferentData) {
+  QString anotherFileName = "./models_3d/another_cube.obj";
+  s21::Figure figure(anotherFileName);
+
+  bool normalizationApplied = false;
+  for (const auto &vertex : figure.getVertices()) {
+    if (vertex.x() != 0.0 || vertex.y() != 0.0 || vertex.z() != 0.0) {
+      normalizationApplied = true;
+      break;
+    }
+  }
+
+  ASSERT_TRUE(normalizationApplied);
+}
+
+// Тест: Проверка методов getVertices и getFacets
 TEST_F(FigureTest, GetVerticesAndFacets) {
   s21::Figure figure(testFileName);
 
-  ASSERT_EQ(figure.getVertices().size(),
-            8);  
-  ASSERT_EQ(figure.getFacets().size(),
-            18); 
+  ASSERT_EQ(figure.getVertices().size(), 8);  // Проверка количества вершин
+  ASSERT_EQ(figure.getFacets().size(), 18);  // Проверка количества граней
 
   const auto &vertices = figure.getVertices();
   float epsilon = 0.000001f;
@@ -92,8 +107,18 @@ TEST_F(FigureTest, GetVerticesAndFacets) {
   EXPECT_NEAR(vertices[0].z(), -1.0, epsilon);
 
   const auto &facets = figure.getFacets();
-  EXPECT_NEAR(facets[0].getBeginPosition()->x(), 1.0,
-              epsilon);  
-  EXPECT_NEAR(facets[0].getEndPosition()->x(), -1.0,
-              epsilon);  
+  EXPECT_NEAR(facets[0].getBeginPosition()->x(), 1.0, epsilon);
+  EXPECT_NEAR(facets[0].getEndPosition()->x(), -1.0, epsilon);
 }
+
+// Тест: Обработка пустых данных
+TEST_F(FigureTest, HandlesEmptyDataGracefully) {
+    QString emptyFileName = "./models_3d/empty.obj";
+    EXPECT_NO_THROW({
+        s21::Figure figure(emptyFileName);
+        EXPECT_EQ(figure.getVertices().size(), 0u);  
+        EXPECT_EQ(figure.getFacets().size(), 0u);    
+    });
+}
+
+

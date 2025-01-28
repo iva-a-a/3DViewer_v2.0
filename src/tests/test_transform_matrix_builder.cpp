@@ -55,3 +55,15 @@ TEST_F(TransformMatrixBuilderTest, CreateScaleMatrix) {
   EXPECT_FLOAT_EQ(result(1, 1), 3.0f);  
   EXPECT_FLOAT_EQ(result(2, 2), 4.0f);  
 }
+
+// Тест: Создание матрицы масштабирования с нулевыми значениями
+TEST_F(TransformMatrixBuilderTest, CreateScaleMatrixWithZeroValues) {
+    float a = 0.0f, b = 0.0f, c = 0.0f;
+
+    s21::TransformMatrix result =
+        s21::TransformMatrixBuilder::createScaleMatrix(a, b, c);
+
+    EXPECT_FLOAT_EQ(result(0, 0), 0.0f);
+    EXPECT_FLOAT_EQ(result(1, 1), 0.0f);
+    EXPECT_FLOAT_EQ(result(2, 2), 0.0f);
+}

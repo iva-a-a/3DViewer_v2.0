@@ -38,25 +38,47 @@ void Parser::recordCoordFromFile(const QString &filename,
 
 void Parser::saveCoordVertices(QStringList str, QVector<Vertex> &vertices) {
   if (str.size() >= 4) {
-    Vertex v(str[1].toFloat(), str[2].toFloat(), str[3].toFloat());
-    vertices.append(v);
+    bool conversionOk1, conversionOk2, conversionOk3;
+    float x = str[1].toFloat(&conversionOk1);
+    float y = str[2].toFloat(&conversionOk2);
+    float z = str[3].toFloat(&conversionOk3);
+
+    // Если все преобразования прошли успешно, добавляем вершину
+    if (conversionOk1 && conversionOk2 && conversionOk3) {
+      Vertex v(x, y, z);
+      vertices.append(v);
+    }
   }
 }
+
 void Parser::saveRefFacets(QStringList str, QVector<Edge> &facets,
                            QVector<Vertex> &vertices) {
   if (str.size() >= 4) {
     QVector<int> index;
+    bool validIndices = true; // Флаг для проверки корректности всех индексов
+
     for (int i = 1; i < str.size(); i++) {
       QStringList str_index = str[i].split('/');
       if (!str_index.isEmpty()) {
-        index.append(str_index[0].toInt() - 1);
+        int vertexIndex = str_index[0].toInt() - 1;
+        if (vertexIndex >= 0 && vertexIndex < vertices.size()) {
+          index.append(vertexIndex);
+        } else {
+          // Если индекс некорректен, помечаем грань как невалидную
+          validIndices = false;
+          break; // Прерываем цикл, так как грань некорректна
+        }
       }
     }
-    for (int i = 0; i < index.size(); i++) {
-      int beginIndex = index[i];
-      int endIndex = index[(i + 1) % index.size()];
-      Edge edge(&vertices[beginIndex], &vertices[endIndex]);
-      facets.append(edge);
+
+    // Создаём грань только если все индексы корректны
+    if (validIndices && index.size() >= 2) {
+      for (int i = 0; i < index.size(); i++) {
+        int beginIndex = index[i];
+        int endIndex = index[(i + 1) % index.size()];
+        Edge edge(&vertices[beginIndex], &vertices[endIndex]);
+        facets.append(edge);
+      }
     }
   }
 }

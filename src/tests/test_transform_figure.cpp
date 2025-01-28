@@ -250,3 +250,22 @@ TEST_F(TransformFigureTest, NormalizedData) {
     EXPECT_NEAR(vertices[i].z(), originalVertices[i].z(), EPS);
   }
 }
+
+// Тест: Преобразование с нулевыми значениями
+TEST_F(TransformFigureTest, TransformWithZeroValues) {
+    s21::Figure figure(testFileName);
+
+    s21::TransformMatrix transformMatrix;
+    transformMatrix(0, 0) = 0.0;
+    transformMatrix(1, 1) = 0.0;
+    transformMatrix(2, 2) = 0.0;
+
+    figure.transform(transformMatrix);
+
+    for (const auto &vertex : figure.getVertices()) {
+        EXPECT_NEAR(vertex.x(), 0.0, EPS);
+        EXPECT_NEAR(vertex.y(), 0.0, EPS);
+        EXPECT_NEAR(vertex.z(), 0.0, EPS);
+    }
+}
+
