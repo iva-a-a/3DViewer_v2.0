@@ -38,25 +38,42 @@ void Parser::recordCoordFromFile(const QString &filename,
 
 void Parser::saveCoordVertices(QStringList str, QVector<Vertex> &vertices) {
   if (str.size() >= 4) {
-    Vertex v(str[1].toFloat(), str[2].toFloat(), str[3].toFloat());
-    vertices.append(v);
+    bool conversionOkX, conversionOkY, conversionOkZ;
+    float x = str[1].toFloat(&conversionOkX);
+    float y = str[2].toFloat(&conversionOkY);
+    float z = str[3].toFloat(&conversionOkZ);
+    if (conversionOkX && conversionOkY && conversionOkZ) {
+      Vertex v(x, y, z);
+      vertices.append(v);
+    }
   }
 }
+
 void Parser::saveRefFacets(QStringList str, QVector<Edge> &facets,
                            QVector<Vertex> &vertices) {
   if (str.size() >= 4) {
     QVector<int> index;
+    bool validIndices = true;
+
     for (int i = 1; i < str.size(); i++) {
       QStringList str_index = str[i].split('/');
       if (!str_index.isEmpty()) {
-        index.append(str_index[0].toInt() - 1);
+        int vertexIndex = str_index[0].toInt() - 1;
+        if (vertexIndex >= 0 && vertexIndex < vertices.size()) {
+          index.append(vertexIndex);
+        } else {
+          validIndices = false;
+          break;
+        }
       }
     }
-    for (int i = 0; i < index.size(); i++) {
-      int beginIndex = index[i];
-      int endIndex = index[(i + 1) % index.size()];
-      Edge edge(&vertices[beginIndex], &vertices[endIndex]);
-      facets.append(edge);
+    if (validIndices && index.size() >= 2) {
+      for (int i = 0; i < index.size(); i++) {
+        int beginIndex = index[i];
+        int endIndex = index[(i + 1) % index.size()];
+        Edge edge(&vertices[beginIndex], &vertices[endIndex]);
+        facets.append(edge);
+      }
     }
   }
 }

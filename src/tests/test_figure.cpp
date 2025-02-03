@@ -1,93 +1,76 @@
 #include <gtest/gtest.h>
 
+#include <QDir>
 #include <QString>
+#include <QTextStream>
 #include <QVector>
 #include <unordered_map>
 
 #include "../model/figure.h"
 
 class FigureTest : public ::testing::Test {
- protected:
-  void SetUp() override {
-    // Путь к файлу cube.obj
-    testFileName = "./models_3d/cube.obj";
-  }
+protected:
+  void SetUp() override { testFileName = "./models_3d/cube.obj"; }
 
   QString testFileName;
 };
 
 // Тест конструктора класса Figure
 TEST_F(FigureTest, Constructor) {
-  // Создание объекта Figure из файла
   s21::Figure figure(testFileName);
-
-  // Проверка, что количество вершин и граней корректное
-  ASSERT_EQ(figure.getVertices().size(),
-            8);  // В файле cube.obj должно быть 8 вершин
-  ASSERT_EQ(figure.getFacets().size(),
-            18);  // В файле cube.obj должно быть 36 граней
+  ASSERT_EQ(figure.getVertices().size(), 8); // Проверка количества вершин
+  ASSERT_EQ(figure.getFacets().size(), 18);  // Проверка количества граней
 }
 
 // Тест конструктора копирования класса Figure
 TEST_F(FigureTest, CopyConstructor) {
-  // Создаем объект Figure
   s21::Figure figure(testFileName);
-
-  // Копируем его
   s21::Figure copiedFigure = figure;
-
-  // Проверяем, что количество вершин и граней одинаково в оригинальном и
-  // копированном объекте
   ASSERT_EQ(copiedFigure.getVertices().size(), figure.getVertices().size());
   ASSERT_EQ(copiedFigure.getFacets().size(), figure.getFacets().size());
 }
 
 // Тест оператора присваивания класса Figure
 TEST_F(FigureTest, AssignmentOperator) {
-  // Создаем объект Figure
   s21::Figure figure(testFileName);
-
-  // Создаем новый объект и присваиваем ему значения из figure
   s21::Figure assignedFigure(testFileName);
   assignedFigure = figure;
 
-  // Проверяем, что количество вершин и граней одинаково в оригинальном и
-  // присвоенном объекте
   ASSERT_EQ(assignedFigure.getVertices().size(), figure.getVertices().size());
   ASSERT_EQ(assignedFigure.getFacets().size(), figure.getFacets().size());
 }
 
 // Тест метода transform, который выполняет преобразование вершин
 TEST_F(FigureTest, Transform) {
-  // Создаем объект Figure
   s21::Figure figure(testFileName);
-
-  // Запоминаем количество вершин до преобразования
   int originalVertexCount = figure.getVertices().size();
 
-  // Применяем преобразование (например, умножаем на матрицу)
   s21::TransformMatrix transformMatrix;
   figure.transform(transformMatrix);
 
-  // Проверяем, что количество вершин не изменилось (матрица не должна менять их
-  // количество)
   ASSERT_EQ(figure.getVertices().size(), originalVertexCount);
 }
 
-// Тест метода, который выбрасывает исключение, если не может найти вершину
-TEST_F(FigureTest, ConstructorThrowsExceptionForInvalidVertex) {
+// Тест: Конструктор корректно обрабатывает несуществующий файл
+TEST_F(FigureTest, HandlesInvalidFileGracefully) {
   QString invalidFileName = "./models_3d/invalid.obj";
 
-  ASSERT_THROW(s21::Figure figure(invalidFileName), std::runtime_error);
+  try {
+    s21::Figure figure(invalidFileName);
+    EXPECT_EQ(figure.getVertices().size(), 0u);
+    EXPECT_EQ(figure.getFacets().size(), 0u);
+    FAIL() << "Expected std::runtime_error";
+  } catch (const std::runtime_error &e) {
+    EXPECT_STREQ(e.what(), "Cannot open file: ./models_3d/invalid.obj");
+  } catch (...) {
+    FAIL() << "Expected std::runtime_error, but caught a different exception";
+  }
 }
 
-// Тест проверяет нормализацию вершин при создании объекта Figure
+// Тест: Нормализация вершин при создании объекта Figure
 TEST_F(FigureTest, Normalization) {
-  // Создание объекта Figure из файла
   s21::Figure figure(testFileName);
 
-  // Применяется ли нормализация? (Проверим, что вершины не равны нулевым
-  // значениям)
   bool normalizationApplied = false;
   for (const auto &vertex : figure.getVertices()) {
     if (vertex.x() != 0.0 || vertex.y() != 0.0 || vertex.z() != 0.0) {
@@ -96,31 +79,89 @@ TEST_F(FigureTest, Normalization) {
     }
   }
 
-  ASSERT_TRUE(
-      normalizationApplied);  // Ожидаем, что нормализация вершин была применена
+  ASSERT_TRUE(normalizationApplied);
 }
 
-// Тест проверяет методы getVertices и getFacets для получения вершин и граней
+// Тест: Проверка методов getVertices и getFacets
 TEST_F(FigureTest, GetVerticesAndFacets) {
   s21::Figure figure(testFileName);
 
-  // Проверяем, что методы getVertices и getFacets возвращают правильные данные
-  ASSERT_EQ(figure.getVertices().size(),
-            8);  // В файле cube.obj должно быть 8 вершин
-  ASSERT_EQ(figure.getFacets().size(),
-            18);  // В файле cube.obj должно быть 36 граней
+  ASSERT_EQ(figure.getVertices().size(), 8); // Проверка количества вершин
+  ASSERT_EQ(figure.getFacets().size(), 18);  // Проверка количества граней
 
-  // Проверка содержимого вершин
   const auto &vertices = figure.getVertices();
   float epsilon = 0.000001f;
   EXPECT_NEAR(vertices[0].x(), 1.0, epsilon);
   EXPECT_NEAR(vertices[0].y(), -1.0, epsilon);
   EXPECT_NEAR(vertices[0].z(), -1.0, epsilon);
 
-  // Проверка содержимого граней
   const auto &facets = figure.getFacets();
-  EXPECT_NEAR(facets[0].getBeginPosition()->x(), 1.0,
-              epsilon);  // Проверка первого ребра
-  EXPECT_NEAR(facets[0].getEndPosition()->x(), -1.0,
-              epsilon);  // Проверка первого ребра
+  EXPECT_NEAR(facets[0].getBeginPosition()->x(), 1.0, epsilon);
+  EXPECT_NEAR(facets[0].getEndPosition()->x(), -1.0, epsilon);
+}
+
+// Тест: Обработка пустых данных
+TEST_F(FigureTest, HandlesEmptyDataGracefully) {
+  QString emptyFileName = "./models_3d/empty.obj";
+  QFile file(emptyFileName);
+  if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+    file.close();
+  } else {
+    FAIL() << "Could not create empty file for testing.";
+  }
+  EXPECT_NO_THROW({
+    s21::Figure figure(emptyFileName);
+    EXPECT_EQ(figure.getVertices().size(), 0u);
+    EXPECT_EQ(figure.getFacets().size(), 0u);
+  });
+  QFile::remove(emptyFileName);
+}
+
+// Тест: Загрузка файла с дублирующимися гранями
+TEST_F(FigureTest, LoadFileWithDuplicatesTest) {
+
+  QString duplicatesFile = "./models_3d/duplicates.obj";
+  QFile file(duplicatesFile);
+  if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+    QTextStream out(&file);
+    out << "v 1.000000 -1.000000 -1.000000\n";
+    out << "v 1.000000 -1.000000 1.000000\n";
+    out << "v -1.000000 -1.000000 1.000000\n";
+    out << "v -1.000000 -1.000000 -1.000000\n";
+    out << "v 1.000000 1.000000 -0.999999\n";
+    out << "v 0.999999 1.000000 1.000001\n";
+    out << "v -1.000000 1.000000 1.000000\n";
+    out << "v -1.000000 1.000000 -1.000000\n";
+    out << "f 2/1/1 3/2/1 4/3/1\n";
+    out << "f 8/1/2 7/4/2 6/5/2\n";
+    out << "f 5/6/3 6/7/3 2/8/3\n";
+    out << "f 6/8/4 7/5/4 3/4/4\n";
+    out << "f 3/9/5 7/10/5 8/11/5\n";
+    out << "f 1/12/6 4/13/6 8/11/6\n";
+    out << "f 1/4/1 2/1/1 4/3/1\n";
+    out << "f 5/14/2 8/1/2 6/5/2\n";
+    out << "f 1/12/3 5/6/3 2/8/3\n";
+    out << "f 2/12/4 6/8/4 3/4/4\n";
+    out << "f 4/13/5 3/9/5 8/11/5\n";
+    out << "f 5/6/6 1/12/6 8/11/6\n";
+
+    out << "f 2/1/1 3/2/1 4/3/1\n";
+    out << "f 8/1/2 7/4/2 6/5/2\n";
+    out << "f 5/6/3 6/7/3 2/8/3\n";
+    out << "f 6/8/4 7/5/4 3/4/4\n";
+    out << "f 3/9/5 7/10/5 8/11/5\n";
+    out << "f 1/12/6 4/13/6 8/11/6\n";
+    out << "f 1/4/1 2/1/1 4/3/1\n";
+    out << "f 5/14/2 8/1/2 6/5/2\n";
+    out << "f 1/12/3 5/6/3 2/8/3\n";
+    out << "f 2/12/4 6/8/4 3/4/4\n";
+    out << "f 4/13/5 3/9/5 8/11/5\n";
+    out << "f 5/6/6 1/12/6 8/11/6\n";
+    file.close();
+  } else {
+    FAIL() << "Could not create unrecognized lines file for testing.";
+  }
+  s21::Figure figure(duplicatesFile);
+  EXPECT_EQ(figure.getFacets().size(), 18);
+  QFile::remove(duplicatesFile);
 }

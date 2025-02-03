@@ -1,5 +1,6 @@
 CPP = g++
 CPPFLAGS = -Wall -Werror -Wextra -std=c++17
+GCOV_FLAGS = -fprofile-arcs -ftest-coverage -coverage
 RM = rm -rf
 
 # Определяем переменную для операционной системы
@@ -43,6 +44,7 @@ TARGET = 3d_viewer
 BUILD_DIR = build
 INSTALL_DIR = install
 SAVE_DIR = saved_images
+GCOV_DIR = gcov_report
 
 ALL_SRC = $(wildcard *.cpp *.h  */*.cpp */*.h */*/*.cpp */*/*.h)
 
@@ -52,7 +54,7 @@ OBJS = $(SRC:.cpp=.o)
 
 VERSION = 2.0
 
-.PHONY: all install uninstall clean dvi dist tests build run delete clang
+.PHONY: all install uninstall clean dvi dist tests build run delete clang gcov_report
 
 all: install
 
@@ -71,12 +73,18 @@ clean:
 	@$(RM) *.tar.gz
 	@$(RM) doxygen
 	@$(RM) viewer_test
+	@$(RM) $(GCOV_DIR)
 	@find model controller -type f -name "*.o" -exec rm -f {} \;
+	@find . -name "*.gcda" -exec rm -f {} \;
+	@find . -name "*.gcno" -exec rm -f {} \;
+	@find . -name "*.gcov" -exec rm -f {} \;
 	@echo -- Clean complete.
 
 dvi:
-	doxygen
-	open doxygen/html/index.html
+	@doxygen
+	@clear
+	@open doxygen/html/index.html || xdg-open doxygen/html/index.html || echo "Please open doxygen/html/index.html manually."
+	@echo -- Dvi complete.
 
 dist:
 	@if [ ! -d "$(TARGET)-$(VERSION)" ]; then \
@@ -105,6 +113,13 @@ build:
 
 run:
 	@./$(INSTALL_DIR)/$(TARGET)
+
+gcov_report: CPPFLAGS_TEST += $(GCOV_FLAGS)
+gcov_report: tests
+	@mkdir -p $(GCOV_DIR)
+	@gcovr -r . --html --html-details -o $(GCOV_DIR)/index.html
+	@echo -- Gcov HTML report generated in $(GCOV_DIR)/index.html.
+	@xdg-open $(GCOV_DIR)/index.html || open $(GCOV_DIR)/index.html || echo "Please open $(GCOV_DIR)/index.html manually."
 
 delete:
 	@$(RM) settings.txt

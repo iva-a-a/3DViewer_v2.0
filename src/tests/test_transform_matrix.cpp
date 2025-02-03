@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <cmath>  // Для использования std::abs
+#include <cmath>
 #include <fstream>
 #include <vector>
 
@@ -9,10 +9,6 @@
 
 class TransformMatrixTest : public ::testing::Test {
  protected:
-  void SetUp() override {
-    // Дополнительная настройка, если требуется
-  }
-
   s21::TransformMatrix identityMatrix = s21::TransformMatrix();
 };
 
@@ -65,9 +61,9 @@ TEST_F(TransformMatrixTest, MultiplyMatrices) {
 // Тест на масштабирование
 TEST_F(TransformMatrixTest, Scaling) {
   s21::TransformMatrix scaleMatrix;
-  scaleMatrix(0, 0) = 2.0;  // Масштабирование по x
-  scaleMatrix(1, 1) = 3.0;  // Масштабирование по y
-  scaleMatrix(2, 2) = 4.0;  // Масштабирование по z
+  scaleMatrix(0, 0) = 2.0;
+  scaleMatrix(1, 1) = 3.0;
+  scaleMatrix(2, 2) = 4.0;
 
   s21::Vertex point(1.0, 1.0, 1.0);
   scaleMatrix.transformPoint(point);
@@ -96,4 +92,19 @@ TEST_F(TransformMatrixTest, InverseMatrix) {
   EXPECT_NEAR(invertibleMatrix(0, 0), 1.0, 1e-6);
   EXPECT_NEAR(invertibleMatrix(1, 1), 0.5, 1e-6);
   EXPECT_NEAR(invertibleMatrix(2, 2), 0.333333, 1e-6);
+}
+
+// Тест: Преобразование с нулевыми значениями
+TEST_F(TransformMatrixTest, TransformWithZeroValues) {
+  s21::TransformMatrix zeroMatrix;
+  zeroMatrix(0, 0) = 0.0;
+  zeroMatrix(1, 1) = 0.0;
+  zeroMatrix(2, 2) = 0.0;
+
+  s21::Vertex point(1.0, 1.0, 1.0);
+  zeroMatrix.transformPoint(point);
+
+  EXPECT_NEAR(point.x(), 0.0, 1e-6);
+  EXPECT_NEAR(point.y(), 0.0, 1e-6);
+  EXPECT_NEAR(point.z(), 0.0, 1e-6);
 }
