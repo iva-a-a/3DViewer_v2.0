@@ -1,4 +1,5 @@
-#include "test_3dviewer.h"
+#include <QString>
+#include <gtest/gtest.h>
 
 TEST(Tests1, TestReadFile) {
   s21::Parser model;

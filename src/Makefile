@@ -96,7 +96,7 @@ dist:
 	@echo -- Dist complete. Archive name '"$(TARGET)-$(VERSION).tar.gz"'.
 
 tests: $(OBJS)
-	$(CPP) $(CPPFLAGS) $(CPPFLAGS_TEST) $(TEST_SRC) $(OBJS) -o viewer_test $(LIBS)
+	@$(CPP) $(CPPFLAGS) $(CPPFLAGS_TEST) $(TEST_SRC) $(OBJS) -o viewer_test $(LIBS)
 	./viewer_test
 
 %.o: %.cpp
