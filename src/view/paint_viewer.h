@@ -242,7 +242,7 @@ class PaintViewer : public QMainWindow {
    */
   void recordFrame();
   /**
-   * @brief Обновление таймера при записи gif.
+   * @brief Обновление таймера записи gif при нажатии на кнопку записи.
    */
   void updateCountdown();
 };
