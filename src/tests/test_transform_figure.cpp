@@ -11,7 +11,7 @@
 #define EPS 1e-6
 
 class TransformFigureTest : public ::testing::Test {
-protected:
+ protected:
   void SetUp() override { testFileName = "./models_3d/cube.obj"; }
 
   QString testFileName;
@@ -19,7 +19,7 @@ protected:
 
 namespace s21 {
 class TestNormalizeParameters : public NormalizeParameters {
-public:
+ public:
   static Vertex TestGetMinCoord(const QVector<Vertex> &v) {
     return s21::NormalizeParameters::getMinCoord(v);
   }
@@ -36,7 +36,7 @@ public:
     s21::NormalizeParameters::setScaleVertex(v);
   }
 };
-} // namespace s21
+}  // namespace s21
 
 // Тест метода transform, который выполняет преобразование вершин
 TEST_F(TransformFigureTest, Transform) {

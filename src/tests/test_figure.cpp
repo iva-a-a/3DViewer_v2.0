@@ -9,7 +9,7 @@
 #include "../model/figure.h"
 
 class FigureTest : public ::testing::Test {
-protected:
+ protected:
   void SetUp() override { testFileName = "./models_3d/cube.obj"; }
 
   QString testFileName;
@@ -18,8 +18,8 @@ protected:
 // Тест конструктора класса Figure
 TEST_F(FigureTest, Constructor) {
   s21::Figure figure(testFileName);
-  ASSERT_EQ(figure.getVertices().size(), 8); // Проверка количества вершин
-  ASSERT_EQ(figure.getFacets().size(), 18);  // Проверка количества граней
+  ASSERT_EQ(figure.getVertices().size(), 8);  // Проверка количества вершин
+  ASSERT_EQ(figure.getFacets().size(), 18);   // Проверка количества граней
 }
 
 // Тест конструктора копирования класса Figure
@@ -86,8 +86,8 @@ TEST_F(FigureTest, Normalization) {
 TEST_F(FigureTest, GetVerticesAndFacets) {
   s21::Figure figure(testFileName);
 
-  ASSERT_EQ(figure.getVertices().size(), 8); // Проверка количества вершин
-  ASSERT_EQ(figure.getFacets().size(), 18);  // Проверка количества граней
+  ASSERT_EQ(figure.getVertices().size(), 8);
+  ASSERT_EQ(figure.getFacets().size(), 18);
 
   const auto &vertices = figure.getVertices();
   float epsilon = 0.000001f;
@@ -119,7 +119,6 @@ TEST_F(FigureTest, HandlesEmptyDataGracefully) {
 
 // Тест: Загрузка файла с дублирующимися гранями
 TEST_F(FigureTest, LoadFileWithDuplicatesTest) {
-
   QString duplicatesFile = "./models_3d/duplicates.obj";
   QFile file(duplicatesFile);
   if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {

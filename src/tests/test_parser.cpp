@@ -8,7 +8,7 @@
 #include "../model/parser.h"
 
 class ParserTest : public ::testing::Test {
-protected:
+ protected:
   void SetUp() override {
     validFileName = "./models_3d/cube.obj";
     emptyFileName = "./models_3d/empty.obj";
@@ -120,7 +120,7 @@ TEST_F(ParserTest, InvalidDataInFile) {
     QTextStream out(&file);
     out << "v 1.0 1.0 1.0\n";
     out << "v -1.0 -1.0 -1.0\n";
-    out << "f 1 2 3\n"; // Некорректные индексы граней
+    out << "f 1 2 3\n";  // Некорректные индексы граней
     file.close();
   } else {
     FAIL() << "Could not create invalid data file for testing.";
@@ -151,7 +151,7 @@ TEST_F(ParserTest, InvalidVertexDataInFile) {
   QFile file(invalidVertexFileName);
   if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
     QTextStream out(&file);
-    out << "v 1.0 abc 1.0\n"; // Некорректное значение
+    out << "v 1.0 abc 1.0\n";  // Некорректное значение
     file.close();
   } else {
     FAIL() << "Could not create invalid vertex file for testing.";
@@ -159,6 +159,6 @@ TEST_F(ParserTest, InvalidVertexDataInFile) {
 
   ASSERT_NO_THROW(s21::Parser::recordCoordFromFile(invalidVertexFileName,
                                                    vertices, facets));
-  ASSERT_TRUE(vertices.isEmpty()); // Ожидаем, что вершины не будут загружены
+  ASSERT_TRUE(vertices.isEmpty());  // Ожидаем, что вершины не будут загружены
   QFile::remove(invalidVertexFileName);
 }

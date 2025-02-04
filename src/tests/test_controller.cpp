@@ -1,8 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "../controller/controller.h"
 #include <QFile>
 #include <QTextStream>
+
+#include "../controller/controller.h"
 
 const QString testFileName = "./models_3d/cube.obj";
 const QString nonExistentFile = "./models_3d/non_existent.obj";
