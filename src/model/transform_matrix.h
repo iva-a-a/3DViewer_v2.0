@@ -40,6 +40,14 @@ class TransformMatrix {
   TransformMatrix operator*(const TransformMatrix &m);
 
   /**
+   * @brief Оператор присваивания (копирования) матриц трансформирования.
+   * @param m Ссылка на матрицу для копирования.
+   * @return Ссылка на текущий объект матрицы трансформирования после
+   * присваивания.
+   */
+  TransformMatrix &operator=(const TransformMatrix &m);
+
+  /**
    * @brief Оператор доступа к элементу матрицы.
    * @param row Индекс строки.
    * @param col Индекс столбца.

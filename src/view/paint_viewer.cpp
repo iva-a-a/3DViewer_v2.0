@@ -341,7 +341,7 @@ void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
     }
     image.save(fileName, imageFormat.toLatin1().constData());
     QMessageBox::information(this, "SAVED AS BMP/JPG ",
-                             "Изображение сохранено в " + fileName);
+                             "Изображение сохранено в папку saved_images/");
   } else {
     QMessageBox::warning(this, tr("Ошибка"), tr("Не удалось сохранить файл"));
   }
@@ -422,16 +422,24 @@ void PaintViewer::recordFrame() {
 
     QString gifFileName = QFileDialog::getSaveFileName(
         this, "Сохранить GIF", _outputDir, "GIF Files (*.gif)");
-    if (!gifFileName.isEmpty()) {
+
+    int error = gifFileName.isEmpty();
+    if (!error) {
+      if (!gifFileName.endsWith(".gif")) {
+        gifFileName += ".gif";
+      }
       QString gifCommand =
           QString("convert -delay 10 -loop 0 %1frame_*.png \"%2\"")
               .arg(_outputDir)
               .arg(gifFileName);
-      (void)system(gifCommand.toStdString().c_str());
+      error |= system(gifCommand.toStdString().c_str());
       QString cleanupCommand = QString("rm -f %1frame_*.png").arg(_outputDir);
-      (void)system(cleanupCommand.toStdString().c_str());
-      QMessageBox::information(this, "SAVED AS GIF",
-                               "Скринкаст сохранён в " + gifFileName);
+      error |= system(cleanupCommand.toStdString().c_str());
+      if (!error) {
+        QMessageBox::information(
+            this, "SAVED AS GIF",
+            "Скринкаст сохранён в папку saved_screencasts/");
+      }
     } else {
       QMessageBox::warning(this, tr("Ошибка"), tr("Не удалось сохранить файл"));
     }

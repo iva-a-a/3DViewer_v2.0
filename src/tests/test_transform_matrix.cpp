@@ -102,3 +102,18 @@ TEST_F(TransformMatrixTest, TransformWithZeroValues) {
   EXPECT_NEAR(point.y(), 0.0, 1e-6);
   EXPECT_NEAR(point.z(), 0.0, 1e-6);
 }
+
+TEST_F(TransformMatrixTest, OperatorCopy) {
+  s21::TransformMatrix m1;
+  m1(0, 0) = 1.0f;
+  m1(1, 1) = 2.0f;
+  m1(2, 2) = 3.0f;
+  s21::TransformMatrix m2;
+  m2(0, 0) = 4.0f;
+  m2(1, 1) = 5.0f;
+  m2(2, 2) = 6.0f;
+  m1 = m2;
+  EXPECT_NEAR(m1(0, 0), m2(0, 0), 1e-6);
+  EXPECT_NEAR(m1(1, 1), m2(1, 1), 1e-6);
+  EXPECT_NEAR(m1(2, 2), m2(2, 2), 1e-6);
+}

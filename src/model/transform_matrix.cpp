@@ -12,6 +12,11 @@ TransformMatrix TransformMatrix::operator*(const TransformMatrix &m) {
   return *this;
 }
 
+TransformMatrix &TransformMatrix::operator=(const TransformMatrix &m) {
+  this->_matrix = m._matrix;
+  return *this;
+}
+
 void TransformMatrix::transformPoint(Vertex &v) const {
   float x = v.x() * this->_matrix(0, 0) + v.y() * this->_matrix(1, 0) +
             v.z() * this->_matrix(2, 0) + this->_matrix(3, 0);

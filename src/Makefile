@@ -50,8 +50,8 @@ GCOV_DIR = gcov_report
 ALL_SRC = $(wildcard *.cpp *.h  */*.cpp */*.h */*/*.cpp */*/*.h)
 
 TEST_SRC = tests/main_test.cpp
-SRC = $(wildcard model/*.cpp controller/*.cpp model/s21_matrix/*.cpp)
-OBJS = $(SRC:.cpp=.o)
+SRC_TEST = $(wildcard model/*.cpp controller/*.cpp model/s21_matrix/*.cpp)
+OBJS_TEST = $(SRC_TEST:.cpp=.o)
 
 VERSION = 2.0
 
@@ -96,8 +96,8 @@ dist:
 	@$(RM) $(TARGET)-$(VERSION)
 	@echo -- Dist complete. Archive name '"$(TARGET)-$(VERSION).tar.gz"'.
 
-tests: $(OBJS)
-	@$(CPP) $(CPPFLAGS) $(CPPFLAGS_TEST) $(TEST_SRC) $(OBJS) -o viewer_test $(LIBS)
+tests: $(OBJS_TEST)
+	@$(CPP) $(CPPFLAGS) $(CPPFLAGS_TEST) $(TEST_SRC) $(OBJS_TEST) -o viewer_test $(LIBS)
 	./viewer_test
 
 %.o: %.cpp
@@ -107,7 +107,7 @@ build:
 	@if [ ! -d "$(BUILD_DIR)" ]; then \
 		mkdir $(BUILD_DIR); \
 	fi
-	@cd $(BUILD_DIR) && qmake ../.
+	@cd $(BUILD_DIR) && qmake6 ../.
 	@cd $(BUILD_DIR) && make
 	@clear
 	@echo -- Build complete. Build directory: $(BUILD_DIR).
