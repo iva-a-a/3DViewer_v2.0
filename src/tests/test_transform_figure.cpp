@@ -1,8 +1,3 @@
-#include <gtest/gtest.h>
-
-#include <QString>
-#include <QVector>
-#include <unordered_map>
 #include <unordered_set>
 
 #include "../model/figure.h"

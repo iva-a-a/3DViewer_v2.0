@@ -1,7 +1,4 @@
-#include <gtest/gtest.h>
-
 #include <QString>
-#include <QVector>
 
 #include "../model/transform_matrix_builder.h"
 

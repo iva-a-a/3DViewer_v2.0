@@ -1,10 +1,4 @@
-#include <gtest/gtest.h>
-
-#include <QDir>
-#include <QString>
 #include <QTextStream>
-#include <QVector>
-#include <unordered_map>
 
 #include "../model/figure.h"
 

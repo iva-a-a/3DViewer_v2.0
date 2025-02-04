@@ -1,9 +1,7 @@
-#include <gtest/gtest.h>
-
-#include <QFile>
 #include <QTextStream>
 
 #include "../controller/controller.h"
+
 #define STEP_MOVE 5
 
 const QString testFileName = "./models_3d/cube.obj";

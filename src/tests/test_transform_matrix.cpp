@@ -1,9 +1,3 @@
-#include <gtest/gtest.h>
-
-#include <cmath>
-#include <fstream>
-#include <vector>
-
 #include "../model/transform_matrix.h"
 #include "../model/vertex_edge.h"
 

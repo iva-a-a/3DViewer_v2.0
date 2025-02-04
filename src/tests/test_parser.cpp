@@ -1,9 +1,4 @@
-#include <gtest/gtest.h>
-
-#include <QFile>
-#include <QString>
 #include <QTextStream>
-#include <QVector>
 
 #include "../model/parser.h"
 

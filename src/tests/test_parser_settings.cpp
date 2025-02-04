@@ -1,9 +1,3 @@
-#include <gtest/gtest.h>
-
-#include <QColor>
-#include <QString>
-#include <fstream>
-
 #include "../controller/parser_settings.h"
 
 using namespace s21;
