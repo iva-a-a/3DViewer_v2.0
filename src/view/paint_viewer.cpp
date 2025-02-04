@@ -404,6 +404,7 @@ void PaintViewer::on_saveAsGif_pressed() {
     dir.mkpath(".");
   }
   _screencastTimer->start(100);
+  ui->saveAsGif->setEnabled(false);
 }
 
 void PaintViewer::recordFrame() {
@@ -434,19 +435,22 @@ void PaintViewer::recordFrame() {
     } else {
       QMessageBox::warning(this, tr("Ошибка"), tr("Не удалось сохранить файл"));
     }
+    ui->saveAsGif->setEnabled(true);
   }
 }
 
 void PaintViewer::updateCountdown() {
   static int countdown = 50;
-  if (countdown > 0) {
-    if (countdown % 10 == 0) {
-      ui->saveAsGif->setText(QString::number(countdown / 10));
+  if (!ui->saveAsGif->isEnabled()) {
+    if (countdown > 0) {
+      if (countdown % 10 == 0) {
+        ui->saveAsGif->setText(QString::number(countdown / 10));
+      }
+      countdown--;
     }
-    countdown--;
-  }
-  if (countdown == 0) {
-    ui->saveAsGif->setText("gif");
-    countdown = 50;
+    if (countdown == 0) {
+      ui->saveAsGif->setText("gif");
+      countdown = 50;
+    }
   }
 }
