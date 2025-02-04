@@ -44,6 +44,6 @@ class ParserSettings {
    * @param name Имя файла.
    * @return true - если файл существует, false - если не существует.
    */
-  static bool checkExistFile(const std::string name);
+  static bool checkExistFile(const std::string &name);
 };
 }  // namespace s21

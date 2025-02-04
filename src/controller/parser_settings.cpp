@@ -85,6 +85,6 @@ Parameters ParserSettings::getSettingsFromFile(RenderSetting *s) {
   file.close();
   return p;
 }
-bool ParserSettings::checkExistFile(const std::string name) {
+bool ParserSettings::checkExistFile(const std::string &name) {
   return std::filesystem::exists(name);
 }

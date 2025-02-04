@@ -4,6 +4,7 @@
 #include <QTextStream>
 
 #include "../controller/controller.h"
+#define STEP_MOVE 5
 
 const QString testFileName = "./models_3d/cube.obj";
 const QString nonExistentFile = "./models_3d/non_existent.obj";
@@ -50,6 +51,24 @@ TEST(FacadeTest, MoveFigureTest) {
   EXPECT_FLOAT_EQ(params->shift_z, move_z);
 }
 
+// Тест: Проверка координат после перемещения
+TEST(FacadeTest, MoveFigureTest2) {
+  s21::Facade facade;
+  facade.resetParam();
+  facade.loadFile(testFileName);
+
+  float move_x = 2.0f, move_y = 3.0f, move_z = -7.0f;
+  const auto &copy_vertices = facade.getFigure()->getVertices();
+  facade.moveFigure(move_x, move_y, move_z);
+
+  const auto &vertices = facade.getFigure()->getVertices();
+  for (long long i = 0; i < vertices.size(); i++) {
+    EXPECT_FLOAT_EQ(vertices[i].x(), copy_vertices[i].x() + move_x / STEP_MOVE);
+    EXPECT_FLOAT_EQ(vertices[i].y(), copy_vertices[i].y() + move_y / STEP_MOVE);
+    EXPECT_FLOAT_EQ(vertices[i].z(), copy_vertices[i].z() + move_z / STEP_MOVE);
+  }
+}
+
 // Тест: Вращение фигуры
 TEST(FacadeTest, RotateFigureTest) {
   s21::Facade facade;
@@ -64,6 +83,41 @@ TEST(FacadeTest, RotateFigureTest) {
   EXPECT_FLOAT_EQ(params->rotate_z, rotate_z);
 }
 
+// Тест: Проверка координат после вращения
+TEST(FacadeTest, RotateFigureTest2) {
+  s21::Facade facade;
+  facade.resetParam();
+  facade.loadFile(testFileName);
+  const auto &copy_vertices = facade.getFigure()->getVertices();
+
+  float rotate_x = 45.0f, rotate_y = 90.0f, rotate_z = 30.0f;
+  facade.rotateFigure(rotate_x, rotate_y, rotate_z);
+
+  const auto &vertices = facade.getFigure()->getVertices();
+  float a = rotate_x * M_PI / 180.0f;
+  float b = rotate_y * M_PI / 180.0f;
+  float c = rotate_z * M_PI / 180.0f;
+  for (long long i = 0; i < vertices.size(); i++) {
+    EXPECT_FLOAT_EQ(vertices[i].x(),
+                    copy_vertices[i].x() * cos(b) * cos(c) +
+                        copy_vertices[i].y() *
+                            (sin(a) * sin(b) * cos(c) + sin(c) * cos(a)) +
+                        copy_vertices[i].z() *
+                            (sin(a) * sin(c) - sin(b) * cos(a) * cos(c)));
+
+    EXPECT_FLOAT_EQ(vertices[i].y(),
+                    copy_vertices[i].x() * (-sin(c) * cos(b)) +
+                        copy_vertices[i].y() *
+                            (-sin(a) * sin(b) * sin(c) + cos(a) * cos(c)) +
+                        copy_vertices[i].z() *
+                            (sin(a) * cos(c) + sin(b) * sin(c) * cos(a)));
+    EXPECT_FLOAT_EQ(vertices[i].z(),
+                    copy_vertices[i].x() * sin(b) +
+                        copy_vertices[i].y() * (-sin(a) * cos(b)) +
+                        copy_vertices[i].z() * cos(a) * cos(b));
+  }
+}
+
 // Тест: Масштабирование фигуры
 TEST(FacadeTest, ScaleFigureTest) {
   s21::Facade facade;
@@ -74,6 +128,23 @@ TEST(FacadeTest, ScaleFigureTest) {
 
   s21::Parameters *params = facade.getParam();
   EXPECT_FLOAT_EQ(params->scale, scale);
+}
+
+// Тест: Проверка координат после масштабирования
+TEST(FacadeTest, ScaleFigureTest2) {
+  s21::Facade facade;
+  facade.resetParam();
+
+  float scale = 2.0f;
+  facade.loadFile(testFileName);
+  const auto &copy_vertices = facade.getFigure()->getVertices();
+  facade.scaleFigure(scale, scale, scale);
+  const auto &vertices = facade.getFigure()->getVertices();
+  for (long long i = 0; i < vertices.size(); i++) {
+    EXPECT_FLOAT_EQ(vertices[i].x(), copy_vertices[i].x() * scale);
+    EXPECT_FLOAT_EQ(vertices[i].y(), copy_vertices[i].y() * scale);
+    EXPECT_FLOAT_EQ(vertices[i].z(), copy_vertices[i].z() * scale);
+  }
 }
 
 // Тест: Получение фигуры
@@ -97,7 +168,6 @@ TEST(FacadeTest, GetSizeVerticesAndFacetsTest) {
 // Тест: Обработка загрузки несуществующего файла
 TEST(FacadeTest, LoadNonExistentFileTest) {
   s21::Facade facade;
-  QString nonExistentFile = "./models_3d/non_existent.obj";
   try {
     facade.loadFile(nonExistentFile);
     FAIL() << "Expected std::runtime_error";
