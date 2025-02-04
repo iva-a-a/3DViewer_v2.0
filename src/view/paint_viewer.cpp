@@ -25,15 +25,9 @@ PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
                          paint_model->onGetSizeVertices());
 
   _screencastTimer = new QTimer(this);
-  _frameCounter = 0;
-  _outputDir = "screencasts/";
   connect(_screencastTimer, &QTimer::timeout, this, &PaintViewer::recordFrame);
   connect(_screencastTimer, &QTimer::timeout, this,
           &PaintViewer::updateCountdown);
-  QDir dir(_outputDir);
-  if (!dir.exists()) {
-    dir.mkpath(".");
-  }
 };
 
 PaintViewer::~PaintViewer() {
@@ -346,6 +340,8 @@ void PaintViewer::on_saveAsBmpOrJpeg_pressed() {
       fileName += "." + imageFormat;
     }
     image.save(fileName, imageFormat.toLatin1().constData());
+    QMessageBox::information(this, "SAVED AS BMP/JPG ",
+                             "Изображение сохранено в " + fileName);
   } else {
     QMessageBox::warning(this, tr("Ошибка"), tr("Не удалось сохранить файл"));
   }
@@ -402,7 +398,7 @@ void PaintViewer::set_onOrOff_buttons(bool enabled) {
 
 void PaintViewer::on_saveAsGif_pressed() {
   _frameCounter = 0;
-  _outputDir = "screencasts/";
+  _outputDir = "saved_screencasts/";
   QDir dir(_outputDir);
   if (!dir.exists()) {
     dir.mkpath(".");
@@ -423,16 +419,21 @@ void PaintViewer::recordFrame() {
   } else {
     _screencastTimer->stop();
 
-    QString gifCommand =
-        QString("convert -delay 10 -loop 0 %1frame_*.png %1screencast.gif")
-            .arg(_outputDir);
-    (void)system(gifCommand.toStdString().c_str());
-
-    QString cleanupCommand = QString("rm -f %1frame_*.png").arg(_outputDir);
-    (void)system(cleanupCommand.toStdString().c_str());
-
-    QMessageBox::information(this, "Скринкаст",
-                             "Скринкаст сохранён в screencasts/screencast.gif");
+    QString gifFileName = QFileDialog::getSaveFileName(
+        this, "Сохранить GIF", _outputDir, "GIF Files (*.gif)");
+    if (!gifFileName.isEmpty()) {
+      QString gifCommand =
+          QString("convert -delay 10 -loop 0 %1frame_*.png \"%2\"")
+              .arg(_outputDir)
+              .arg(gifFileName);
+      (void)system(gifCommand.toStdString().c_str());
+      QString cleanupCommand = QString("rm -f %1frame_*.png").arg(_outputDir);
+      (void)system(cleanupCommand.toStdString().c_str());
+      QMessageBox::information(this, "SAVED AS GIF",
+                               "Скринкаст сохранён в " + gifFileName);
+    } else {
+      QMessageBox::warning(this, tr("Ошибка"), tr("Не удалось сохранить файл"));
+    }
   }
 }
 

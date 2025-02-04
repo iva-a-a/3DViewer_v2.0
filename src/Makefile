@@ -43,7 +43,8 @@ TARGET = 3d_viewer
 
 BUILD_DIR = build
 INSTALL_DIR = install
-SAVE_DIR = saved_images
+SAVE_IMAGE_DIR = saved_images
+SAVE_GIF_DIR = saved_screencasts
 GCOV_DIR = gcov_report
 
 ALL_SRC = $(wildcard *.cpp *.h  */*.cpp */*.h */*/*.cpp */*/*.h)
@@ -123,8 +124,11 @@ gcov_report: tests
 
 delete:
 	@$(RM) settings.txt
-	@if [ -d "$(SAVE_DIR)" ]; then \
-		$(RM) $(SAVE_DIR); \
+	@if [ -d "$(SAVE_IMAGE_DIR)" ]; then \
+		$(RM) $(SAVE_IMAGE_DIR); \
+	fi
+	@if [ -d "$(SAVE_GIF_DIR)" ]; then \
+		$(RM) $(SAVE_GIF_DIR); \
 	fi
 	@echo -- Delete complete. The settings file and saved images have been deleted.
 

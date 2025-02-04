@@ -235,7 +235,7 @@ class PaintViewer : public QMainWindow {
   QTimer *_screencastTimer;
   /** Счетчик кадров. */
   int _frameCounter;
-  /** Папка для временных файлов для gif. */
+  /** Папка для временных файлов для gif и для сохраненного gif изобажения. */
   QString _outputDir;
   /**
    * @brief Запись отдельного кадра для gif.
