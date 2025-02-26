@@ -3,10 +3,8 @@ CPPFLAGS = -Wall -Werror -Wextra -std=c++17
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage -coverage
 RM = rm -rf
 
-# Определяем переменную для операционной системы
 OS := $(shell uname)
 
-# Устанавливаем флаги в зависимости от операционной системы
 ifeq ($(OS),Linux)
     FLAGS_TEST = -fPIC -I/usr/include/x86_64-linux-gnu/qt6 \
 	-I/usr/include/x86_64-linux-gnu/qt6/QtCore \
