@@ -22,8 +22,8 @@ ifeq ($(OS),Darwin)
 	-I/opt/homebrew/include \
 	-I/opt/homebrew/lib/QtGui.framework/Headers \
 	-I/opt/homebrew/lib/QtWidgets.framework/Headers \
-	-I/opt/homebrew/Cellar/googletest/1.15.2/include \
-	-I/opt/homebrew/Cellar/googletest/1.15.2
+	-I/opt/homebrew/Cellar/googletest/1.16.0/include \
+	-I/opt/homebrew/Cellar/googletest/1.16.0
 
     LDFLAGS = -F/opt/homebrew/lib -framework QtWidgets \
 	-framework QtGui -framework AppKit \
@@ -32,7 +32,7 @@ ifeq ($(OS),Darwin)
 	-framework DiskArbitration \
 	-framework AGL \
 	-framework OpenGL \
-	-L/opt/homebrew/Cellar/googletest/1.15.2/lib
+	-L/opt/homebrew/Cellar/googletest/1.16.0/lib
 
 	LIBS = -lm  -lgtest -lgtest_main -pthread $(LDFLAGS)
 endif
