@@ -2,8 +2,6 @@
 
 #include "transform_matrix.h"
 
-namespace s21 {
-
 /**
  * @class TransformMatrixBuilder
  * @brief Класс для создания матриц движения.
@@ -48,5 +46,3 @@ class TransformMatrixBuilder {
    */
   static TransformMatrix createScaleMatrix(float a, float b, float c);
 };
-
-}  // namespace s21

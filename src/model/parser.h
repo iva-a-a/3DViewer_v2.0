@@ -5,8 +5,6 @@
 
 #include "transform_figure.h"
 
-namespace s21 {
-
 /**
  * @class Parser
  * @brief Класс для парсинга и сохранения вершин и граней .obj файла.
@@ -50,5 +48,3 @@ class Parser {
                                   QVector<Vertex> &vertices,
                                   QVector<Edge> &facets);
 };
-
-}  // namespace s21

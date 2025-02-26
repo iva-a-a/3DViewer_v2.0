@@ -1,7 +1,5 @@
 #include "paint_model.h"
 
-using namespace s21;
-
 /**
  * @def FOCUS
  * @brief Фокусное расстояние.

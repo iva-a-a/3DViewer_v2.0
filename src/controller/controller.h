@@ -2,8 +2,6 @@
 
 #include "../model/figure.h"
 
-namespace s21 {
-
 /**
  * @enum ProjectionType
  * @brief Тип проекции.
@@ -126,5 +124,3 @@ class Facade {
    */
   Parameters *getParam();
 };
-
-}  // namespace s21

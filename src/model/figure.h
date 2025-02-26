@@ -3,8 +3,6 @@
 #include "parser.h"
 #include "transform_matrix_builder.h"
 
-namespace s21 {
-
 /**
  * @class Figure
  * @brief Класс представляет фигуру, состоящую из вершин и граней.
@@ -61,5 +59,3 @@ class Figure {
    */
   const QVector<Edge> getFacets();
 };
-
-}  // namespace s21

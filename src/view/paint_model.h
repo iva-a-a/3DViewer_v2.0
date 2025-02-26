@@ -7,8 +7,6 @@
 
 #include "../controller/controller.h"
 
-namespace s21 {
-
 /**
  * @struct SettingVertex
  * @brief Настройки для отрисовки вершин.
@@ -168,4 +166,3 @@ class PaintModel : public QWidget {
    */
   void paintEvent(QPaintEvent *event) override;
 };
-}  // namespace s21

@@ -4,8 +4,6 @@
 
 #include "vertex_edge.h"
 
-namespace s21 {
-
 /**
  * @class NormalizeParameters
  * @brief Класс для нормализации вершин и удаления дублирующихся граней.
@@ -70,5 +68,3 @@ class NormalizeParameters {
    */
   static void remDuplicateFaces(QVector<Edge> &f);
 };
-
-}  // namespace s21

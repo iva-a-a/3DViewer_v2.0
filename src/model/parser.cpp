@@ -3,8 +3,6 @@
 #include <QRegularExpression>
 #include <QTextStream>
 
-using namespace s21;
-
 void Parser::recordCoordFromFile(const QString &filename,
                                  QVector<Vertex> &vertices,
                                  QVector<Edge> &facets) {

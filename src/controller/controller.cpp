@@ -8,8 +8,6 @@
 
 #include <cmath>
 
-using namespace s21;
-
 float Facade::degreesInRadians(float x) { return x * M_PI / 180.0f; }
 
 void Facade::resetParam() {

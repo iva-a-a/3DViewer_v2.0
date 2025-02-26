@@ -2,8 +2,6 @@
 
 #include "vertex_edge.h"
 
-using namespace s21;
-
 TransformMatrix::TransformMatrix(const TransformMatrix &m)
     : _matrix(m._matrix) {}
 

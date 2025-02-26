@@ -2,8 +2,6 @@
 
 #include <unordered_set>
 
-using namespace s21;
-
 Vertex NormalizeParameters::getMinCoord(const QVector<Vertex> &v) {
   Vertex minCoord;
 

@@ -39,7 +39,7 @@ Pазработана на языке C++ стандарта C++17.
  * Функция `main` является входной точкой для приложения 3D_VIEWER,
  * которое создает графический интерфейс для отображения и взаимодействия
  * с 3D-сценами. Использует классы из библиотеки Qt и пользовательский
- * класс `s21::Facade` для управления сценой и `s21::PaintViewer`
+ * класс `Facade` для управления сценой и `PaintViewer`
  * для отображения графического интерфейса.
  * @param argc Количество аргументов командной строки.
  * @param argv Массив строк, представляющих аргументы командной строки.
@@ -49,8 +49,8 @@ Pазработана на языке C++ стандарта C++17.
 #ifndef UNIT_TESTS
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  s21::Facade scene;
-  s21::PaintViewer window(nullptr, &scene);
+  Facade scene;
+  PaintViewer window(nullptr, &scene);
 
   window.resize(1580, 885);
   window.setWindowTitle("3D_VIEWER");

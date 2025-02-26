@@ -5,8 +5,6 @@
 
 #include "../controller/parser_settings.h"
 
-using namespace s21;
-
 PaintViewer::PaintViewer(QMainWindow *parent, Facade *c) : QMainWindow(parent) {
   ui = new Ui::MainWindow;
   ui->setupUi(this);

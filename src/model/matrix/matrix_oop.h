@@ -4,10 +4,10 @@
 #include <iostream>
 
 /**
- * @class S21Matrix
+ * @class Matrix
  * @brief Класс для работы с матрицами.
  */
-class S21Matrix {
+class Matrix {
  private:
   /** Количество строк матрицы. */
   int _rows;
@@ -32,14 +32,14 @@ class S21Matrix {
    * @param other Вторая матрица для сравнения.
    * @return true Если размеры матриц равны; false в противном случае.
    */
-  bool EqSizeMatrix(const S21Matrix &other);
+  bool EqSizeMatrix(const Matrix &other);
   /**
    * @brief Вычисление минора матрицы.
    * @param row_i Индекс строки, которую нужно удалить.
    * @param column_j Индекс столбца, который нужно удалить.
    * @return Возвращает новую матрицу, представляющую минор.
    */
-  S21Matrix MinorMatrix(int row_i, int column_j);
+  Matrix MinorMatrix(int row_i, int column_j);
   /**
    * @brief Проверка, является ли матрица квадратной.
    * @return true Если матрица квадратная; false в противном случае.
@@ -54,46 +54,46 @@ class S21Matrix {
 
  public:
   /**
-   * @brief Конструктор S21Matrix по умолчанию.
+   * @brief Конструктор Matrix по умолчанию.
    */
-  S21Matrix();
+  Matrix();
   /**
-   * @brief Конструктор S21Matrix с параметрами.
+   * @brief Конструктор Matrix с параметрами.
    * @param rows Количество строк.
    * @param cols Количество столбцов.
    */
-  S21Matrix(int rows, int cols);
+  Matrix(int rows, int cols);
   /**
-   * @brief Конструктор копирования S21Matrix.
-   * @param other Другой объект S21Matrix для копирования.
+   * @brief Конструктор копирования Matrix.
+   * @param other Другой объект Matrix для копирования.
    */
-  S21Matrix(const S21Matrix &other);
+  Matrix(const Matrix &other);
   /**
    * @brief Конструктор перемещения.
-   * @param other Другой объект S21Matrix для перемещения.
+   * @param other Другой объект Matrix для перемещения.
    */
-  S21Matrix(S21Matrix &&other);
+  Matrix(Matrix &&other);
   /**
-   * @brief Деструктор S21Matrix.
+   * @brief Деструктор Matrix.
    */
-  ~S21Matrix();
+  ~Matrix();
 
   /**
    * @brief Проверка на равенство матриц.
    * @param other Вторая матрица для сравнения.
    * @return true, если матрицы равны; false в противном случае.
    */
-  bool EqMatrix(const S21Matrix &other);
+  bool EqMatrix(const Matrix &other);
   /**
    * @brief Сложение матриц.
    * @param other Вторая матрица для сложения.
    */
-  void SumMatrix(const S21Matrix &other);
+  void SumMatrix(const Matrix &other);
   /**
    * @brief Вычитание матриц.
    * @param other Вторая матрица для вычитания.
    */
-  void SubMatrix(const S21Matrix &other);
+  void SubMatrix(const Matrix &other);
   /**
    * @brief Умножение матрицы на число.
    * @param num Число, на которое умножается матрица.
@@ -103,17 +103,17 @@ class S21Matrix {
    * @brief Умножение матриц.
    * @param other Вторая матрица для умножения.
    */
-  void MulMatrix(const S21Matrix &other);
+  void MulMatrix(const Matrix &other);
   /**
    * @brief Транспонирование матрицы.
    * @return Транспонированная матрица.
    */
-  S21Matrix Transpose();
+  Matrix Transpose();
   /**
    * @brief Вычисление матрицы алгебраических дополнений.
    * @return Матрица алгебраических дополнений.
    */
-  S21Matrix CalcComplements();
+  Matrix CalcComplements();
   /**
    * @brief Вычисление определителя матрицы.
    * @return Значение определителя.
@@ -123,27 +123,27 @@ class S21Matrix {
    * @brief Вычисление обратной матрицы.
    * @return Обратная матрица.
    */
-  S21Matrix InverseMatrix();
+  Matrix InverseMatrix();
 
   /**
    * @brief Оператор сложения матриц.
    * @param other Вторая матрица для сложения.
    * @return Результирующая матрица, представляющая собой сумму двух матриц.
    */
-  S21Matrix operator+(const S21Matrix &other);
+  Matrix operator+(const Matrix &other);
   /**
    * @brief Оператор вычитания матриц.
    * @param other Вторая матрица для вычитания.
    * @return Результирующая матрица, представляющая собой разность двух матриц.
    */
-  S21Matrix operator-(const S21Matrix &other);
+  Matrix operator-(const Matrix &other);
   /**
    * @brief Оператор умножения матриц.
    * @param other Вторая матрица для умножения.
    * @return Результирующая матрица, представляющая собой произведение двух
    * матриц.
    */
-  S21Matrix operator*(const S21Matrix &other);
+  Matrix operator*(const Matrix &other);
   /**
    * @brief Оператор умножения матрицы на число (слева).
    * @param num Число, на которое необходимо умножить матрицу.
@@ -151,7 +151,7 @@ class S21Matrix {
    * @return Результирующая матрица, представляющая собой произведение матрицы
    * на число слева.
    */
-  friend S21Matrix operator*(const double num, const S21Matrix &other);
+  friend Matrix operator*(const double num, const Matrix &other);
   /**
    * @brief Оператор умножения матрицы на число (справа).
    * @param num Число, на которое необходимо умножить матрицу.
@@ -159,49 +159,49 @@ class S21Matrix {
    * @return Результирующая матрица, представляющая собой произведение матрицы
    * на число справа.
    */
-  friend S21Matrix operator*(const S21Matrix &other, const double num);
+  friend Matrix operator*(const Matrix &other, const double num);
   /**
    * @brief Оператор сравнения матриц.
    * @param other Вторая матрица для сравнения.
    * @return Возвращает true, если матрицы равны; false в противном случае.
    */
-  bool operator==(const S21Matrix &other);
+  bool operator==(const Matrix &other);
   /**
    * @brief Оператор присваивания (копирования).
    * @param other Матрица, которую необходимо скопировать.
    * @return Ссылка на текущий объект матрицы после присваивания.
    */
-  S21Matrix &operator=(const S21Matrix &other);
+  Matrix &operator=(const Matrix &other);
   /**
    * @brief Оператор присваивания (перемещения).
    * @param other Матрица, которую необходимо переместить.
    * @return Ссылка на текущий объект матрицы после присваивания.
    */
-  S21Matrix &operator=(S21Matrix &&other);
+  Matrix &operator=(Matrix &&other);
   /**
    * @brief Оператор сложения с присваиванием.
    * @param other Вторая матрица, которую необходимо сложить с текущей.
    * @return Ссылка на текущий объект матрицы после операции.
    */
-  S21Matrix &operator+=(const S21Matrix &other);
+  Matrix &operator+=(const Matrix &other);
   /**
    * @brief Оператор вычитания с присваиванием.
    * @param other Матрица, которую необходимо вычесть из текущей.
    * @return Ссылка на текущий объект матрицы после операции.
    */
-  S21Matrix &operator-=(const S21Matrix &other);
+  Matrix &operator-=(const Matrix &other);
   /**
    * @brief Оператор умножения с присваиванием.
    * @param other Вторая матрица, которую необходимо умножить на текущую.
    * @return Ссылка на текущий объект матрицы после операции.
    */
-  S21Matrix &operator*=(const S21Matrix &other);
+  Matrix &operator*=(const Matrix &other);
   /**
    * @brief Оператор умножения на число с присваиванием.
    * @param num Число, на которое необходимо умножить матрицу.
    * @return Ссылка на текущий объект матрицы после операции.
    */
-  S21Matrix &operator*=(const double num);
+  Matrix &operator*=(const double num);
   /**
    * @brief Оператор доступа к элементам матрицы.
    * @param row Индекс строки.

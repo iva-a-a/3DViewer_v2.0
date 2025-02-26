@@ -1,8 +1,6 @@
 #pragma once
 
-#include "s21_matrix/s21_matrix_oop.h"
-
-namespace s21 {
+#include "matrix/matrix_oop.h"
 
 class Vertex;
 
@@ -13,13 +11,13 @@ class Vertex;
 class TransformMatrix {
  private:
   /** Матрица преобразования. */
-  S21Matrix _matrix;
+  Matrix _matrix;
 
  public:
   /**
    * @brief Конструктор класса TransformMatrix по умолчанию.
    */
-  TransformMatrix() : _matrix(S21Matrix(4, 4)) {}
+  TransformMatrix() : _matrix(Matrix(4, 4)) {}
 
   /**
    * @brief Конструктор копирования класса TransformMatrix.
@@ -66,5 +64,3 @@ class TransformMatrix {
    */
   void InverseTransformMatrix();
 };
-
-}  // namespace s21

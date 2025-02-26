@@ -2,8 +2,6 @@
 
 #include <unordered_map>
 
-using namespace s21;
-
 Figure::Figure(const QString &filename) {
   Parser::recordCoordFromFile(filename, vertices, facets);
   if (!vertices.isEmpty()) {

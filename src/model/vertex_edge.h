@@ -3,8 +3,6 @@
 
 #include "transform_matrix.h"
 
-namespace s21 {
-
 /**
  * @class Vertex
  * @brief Класс представления вершины.
@@ -97,5 +95,3 @@ class Edge {
     }
   };
 };
-
-}  // namespace s21

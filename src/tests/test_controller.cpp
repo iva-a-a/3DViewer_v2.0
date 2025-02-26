@@ -10,9 +10,9 @@ const QString invalidFileFormat = "./models_3d/invalid_format.txt";
 
 // Тест: Инициализация параметров
 TEST(FacadeTest, ResetParamTest) {
-  s21::Facade facade;
+  Facade facade;
   facade.resetParam();
-  s21::Parameters *params = facade.getParam();
+  Parameters *params = facade.getParam();
 
   EXPECT_FLOAT_EQ(params->scale, 1.0f);
   EXPECT_FLOAT_EQ(params->shift_x, 0.0f);
@@ -21,12 +21,12 @@ TEST(FacadeTest, ResetParamTest) {
   EXPECT_FLOAT_EQ(params->rotate_x, 0.0f);
   EXPECT_FLOAT_EQ(params->rotate_y, 0.0f);
   EXPECT_FLOAT_EQ(params->rotate_z, 0.0f);
-  EXPECT_EQ(params->type_projection, s21::ProjectionType::Parallel);
+  EXPECT_EQ(params->type_projection, ProjectionType::Parallel);
 }
 
 // Тест: Загрузка корректного файла
 TEST(FacadeTest, LoadFileTest) {
-  s21::Facade facade;
+  Facade facade;
 
   ASSERT_NO_THROW(facade.loadFile(testFileName));
 
@@ -37,13 +37,13 @@ TEST(FacadeTest, LoadFileTest) {
 
 // Тест: Перемещение фигуры
 TEST(FacadeTest, MoveFigureTest) {
-  s21::Facade facade;
+  Facade facade;
   facade.resetParam();
 
   float move_x = 10.0f, move_y = 20.0f, move_z = 30.0f;
   facade.moveFigure(move_x, move_y, move_z);
 
-  s21::Parameters *params = facade.getParam();
+  Parameters *params = facade.getParam();
   EXPECT_FLOAT_EQ(params->shift_x, move_x);
   EXPECT_FLOAT_EQ(params->shift_y, move_y);
   EXPECT_FLOAT_EQ(params->shift_z, move_z);
@@ -51,7 +51,7 @@ TEST(FacadeTest, MoveFigureTest) {
 
 // Тест: Проверка координат после перемещения
 TEST(FacadeTest, MoveFigureTest2) {
-  s21::Facade facade;
+  Facade facade;
   facade.resetParam();
   facade.loadFile(testFileName);
 
@@ -69,13 +69,13 @@ TEST(FacadeTest, MoveFigureTest2) {
 
 // Тест: Вращение фигуры
 TEST(FacadeTest, RotateFigureTest) {
-  s21::Facade facade;
+  Facade facade;
   facade.resetParam();
 
   float rotate_x = 45.0f, rotate_y = 90.0f, rotate_z = 180.0f;
   facade.rotateFigure(rotate_x, rotate_y, rotate_z);
 
-  s21::Parameters *params = facade.getParam();
+  Parameters *params = facade.getParam();
   EXPECT_FLOAT_EQ(params->rotate_x, rotate_x);
   EXPECT_FLOAT_EQ(params->rotate_y, rotate_y);
   EXPECT_FLOAT_EQ(params->rotate_z, rotate_z);
@@ -83,7 +83,7 @@ TEST(FacadeTest, RotateFigureTest) {
 
 // Тест: Проверка координат после вращения
 TEST(FacadeTest, RotateFigureTest2) {
-  s21::Facade facade;
+  Facade facade;
   facade.resetParam();
   facade.loadFile(testFileName);
   const auto &copy_vertices = facade.getFigure()->getVertices();
@@ -118,19 +118,19 @@ TEST(FacadeTest, RotateFigureTest2) {
 
 // Тест: Масштабирование фигуры
 TEST(FacadeTest, ScaleFigureTest) {
-  s21::Facade facade;
+  Facade facade;
   facade.resetParam();
 
   float scale = 2.0f;
   facade.scaleFigure(scale, scale, scale);
 
-  s21::Parameters *params = facade.getParam();
+  Parameters *params = facade.getParam();
   EXPECT_FLOAT_EQ(params->scale, scale);
 }
 
 // Тест: Проверка координат после масштабирования
 TEST(FacadeTest, ScaleFigureTest2) {
-  s21::Facade facade;
+  Facade facade;
   facade.resetParam();
 
   float scale = 2.0f;
@@ -147,7 +147,7 @@ TEST(FacadeTest, ScaleFigureTest2) {
 
 // Тест: Получение фигуры
 TEST(FacadeTest, GetFigureTest) {
-  s21::Facade facade;
+  Facade facade;
   facade.resetParam();
 
   EXPECT_NE(facade.getFigure(), nullptr);
@@ -155,7 +155,7 @@ TEST(FacadeTest, GetFigureTest) {
 
 // Тест: Размеры вершин и граней
 TEST(FacadeTest, GetSizeVerticesAndFacetsTest) {
-  s21::Facade facade;
+  Facade facade;
 
   ASSERT_NO_THROW(facade.loadFile(testFileName));
 
@@ -165,7 +165,7 @@ TEST(FacadeTest, GetSizeVerticesAndFacetsTest) {
 
 // Тест: Обработка загрузки несуществующего файла
 TEST(FacadeTest, LoadNonExistentFileTest) {
-  s21::Facade facade;
+  Facade facade;
   try {
     facade.loadFile(nonExistentFile);
     FAIL() << "Expected std::runtime_error";
@@ -178,7 +178,7 @@ TEST(FacadeTest, LoadNonExistentFileTest) {
 
 // Тест: Обработка файла с неправильным форматом
 TEST(FacadeTest, LoadInvalidFileFormatTest) {
-  s21::Facade facade;
+  Facade facade;
   QFile file(invalidFileFormat);
   if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
     QTextStream out(&file);
@@ -197,21 +197,21 @@ TEST(FacadeTest, LoadInvalidFileFormatTest) {
 
 // Тест: Изменение типа проекции
 TEST(FacadeTest, ChangeProjectionTypeTest) {
-  s21::Facade facade;
+  Facade facade;
   facade.resetParam();
 
-  EXPECT_EQ(facade.getParam()->type_projection, s21::ProjectionType::Parallel);
+  EXPECT_EQ(facade.getParam()->type_projection, ProjectionType::Parallel);
 
-  facade.getParam()->type_projection = s21::ProjectionType::Central;
-  EXPECT_EQ(facade.getParam()->type_projection, s21::ProjectionType::Central);
+  facade.getParam()->type_projection = ProjectionType::Central;
+  EXPECT_EQ(facade.getParam()->type_projection, ProjectionType::Central);
 
-  facade.getParam()->type_projection = s21::ProjectionType::Parallel;
-  EXPECT_EQ(facade.getParam()->type_projection, s21::ProjectionType::Parallel);
+  facade.getParam()->type_projection = ProjectionType::Parallel;
+  EXPECT_EQ(facade.getParam()->type_projection, ProjectionType::Parallel);
 }
 
 // Тест: Обработка пустого файла
 TEST(FacadeTest, LoadEmptyFileTest) {
-  s21::Facade facade;
+  Facade facade;
   QString emptyFileName = "./models_3d/empty.obj";
   QFile file(emptyFileName);
   if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
@@ -228,12 +228,12 @@ TEST(FacadeTest, LoadEmptyFileTest) {
 
 // Тест: Перемещение с нулевыми значениями
 TEST(FacadeTest, MoveFigureWithZeroValues) {
-  s21::Facade facade;
+  Facade facade;
   facade.resetParam();
 
   facade.moveFigure(0.0f, 0.0f, 0.0f);
 
-  s21::Parameters *params = facade.getParam();
+  Parameters *params = facade.getParam();
   EXPECT_FLOAT_EQ(params->shift_x, 0.0f);
   EXPECT_FLOAT_EQ(params->shift_y, 0.0f);
   EXPECT_FLOAT_EQ(params->shift_z, 0.0f);
@@ -241,7 +241,7 @@ TEST(FacadeTest, MoveFigureWithZeroValues) {
 
 // Тест: Загрузка файла с большим количеством вершин и граней
 TEST(FacadeTest, LoadLargeFileTest) {
-  s21::Facade facade;
+  Facade facade;
   QString largeFileName = "./models_3d/dog.obj";
 
   ASSERT_NO_THROW(facade.loadFile(largeFileName));
@@ -253,7 +253,7 @@ TEST(FacadeTest, LoadLargeFileTest) {
 // Тест: Загрузка файла с некорректными данными (отсутствующие вершины или
 // грани)
 TEST(FacadeTest, LoadFileWithMissingDataTest) {
-  s21::Facade facade;
+  Facade facade;
   QString invalidDataFile = "./models_3d/empty.obj";
   QFile file(invalidDataFile);
   if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {

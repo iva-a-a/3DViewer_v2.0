@@ -11,23 +11,23 @@ class FigureTest : public ::testing::Test {
 
 // Тест конструктора класса Figure
 TEST_F(FigureTest, Constructor) {
-  s21::Figure figure(testFileName);
+  Figure figure(testFileName);
   ASSERT_EQ(figure.getVertices().size(), 8);  // Проверка количества вершин
   ASSERT_EQ(figure.getFacets().size(), 18);   // Проверка количества граней
 }
 
 // Тест конструктора копирования класса Figure
 TEST_F(FigureTest, CopyConstructor) {
-  s21::Figure figure(testFileName);
-  s21::Figure copiedFigure = figure;
+  Figure figure(testFileName);
+  Figure copiedFigure = figure;
   ASSERT_EQ(copiedFigure.getVertices().size(), figure.getVertices().size());
   ASSERT_EQ(copiedFigure.getFacets().size(), figure.getFacets().size());
 }
 
 // Тест оператора присваивания класса Figure
 TEST_F(FigureTest, AssignmentOperator) {
-  s21::Figure figure(testFileName);
-  s21::Figure assignedFigure(testFileName);
+  Figure figure(testFileName);
+  Figure assignedFigure(testFileName);
   assignedFigure = figure;
 
   ASSERT_EQ(assignedFigure.getVertices().size(), figure.getVertices().size());
@@ -36,10 +36,10 @@ TEST_F(FigureTest, AssignmentOperator) {
 
 // Тест метода transform, который выполняет преобразование вершин
 TEST_F(FigureTest, Transform) {
-  s21::Figure figure(testFileName);
+  Figure figure(testFileName);
   int originalVertexCount = figure.getVertices().size();
 
-  s21::TransformMatrix transformMatrix;
+  TransformMatrix transformMatrix;
   figure.transform(transformMatrix);
 
   ASSERT_EQ(figure.getVertices().size(), originalVertexCount);
@@ -50,7 +50,7 @@ TEST_F(FigureTest, HandlesInvalidFileGracefully) {
   QString invalidFileName = "./models_3d/invalid.obj";
 
   try {
-    s21::Figure figure(invalidFileName);
+    Figure figure(invalidFileName);
     EXPECT_EQ(figure.getVertices().size(), 0u);
     EXPECT_EQ(figure.getFacets().size(), 0u);
     FAIL() << "Expected std::runtime_error";
@@ -63,7 +63,7 @@ TEST_F(FigureTest, HandlesInvalidFileGracefully) {
 
 // Тест: Нормализация вершин при создании объекта Figure
 TEST_F(FigureTest, Normalization) {
-  s21::Figure figure(testFileName);
+  Figure figure(testFileName);
 
   bool normalizationApplied = false;
   for (const auto &vertex : figure.getVertices()) {
@@ -78,7 +78,7 @@ TEST_F(FigureTest, Normalization) {
 
 // Тест: Проверка методов getVertices и getFacets
 TEST_F(FigureTest, GetVerticesAndFacets) {
-  s21::Figure figure(testFileName);
+  Figure figure(testFileName);
 
   ASSERT_EQ(figure.getVertices().size(), 8);
   ASSERT_EQ(figure.getFacets().size(), 18);
@@ -104,7 +104,7 @@ TEST_F(FigureTest, HandlesEmptyDataGracefully) {
     FAIL() << "Could not create empty file for testing.";
   }
   EXPECT_NO_THROW({
-    s21::Figure figure(emptyFileName);
+    Figure figure(emptyFileName);
     EXPECT_EQ(figure.getVertices().size(), 0u);
     EXPECT_EQ(figure.getFacets().size(), 0u);
   });
@@ -154,7 +154,7 @@ TEST_F(FigureTest, LoadFileWithDuplicatesTest) {
   } else {
     FAIL() << "Could not create unrecognized lines file for testing.";
   }
-  s21::Figure figure(duplicatesFile);
+  Figure figure(duplicatesFile);
   EXPECT_EQ(figure.getFacets().size(), 18);
   QFile::remove(duplicatesFile);
 }

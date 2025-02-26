@@ -31,7 +31,7 @@ HEADERS +=  model/figure.h \
             model/transform_matrix.h \
             view/paint_viewer.h \
             view/paint_model.h \
-            model/s21_matrix/s21_matrix_oop.h \
+            model/matrix/matrix_oop.h \
             controller/controller.h \
             controller/parser_settings.h
 
@@ -44,7 +44,7 @@ SOURCES += main.cpp \
            model/transform_figure.cpp \
            model/transform_matrix_builder.cpp \
            model/transform_matrix.cpp \
-           model/s21_matrix/s21_matrix_oop.cpp \
+           model/matrix/matrix_oop.cpp \
            controller/controller.cpp \
            controller/parser_settings.cpp
 

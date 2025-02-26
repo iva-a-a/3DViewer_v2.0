@@ -5,7 +5,6 @@
 #include "../view/paint_model.h"
 #include "controller.h"
 
-namespace s21 {
 /**
  * @class ParserSettings
  * @brief Предназначен для сохранения и получения настроек фигуры и отрисовки.
@@ -46,4 +45,3 @@ class ParserSettings {
    */
   static bool checkExistFile(const std::string &name);
 };
-}  // namespace s21

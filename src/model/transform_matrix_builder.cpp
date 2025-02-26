@@ -1,7 +1,5 @@
 #include "transform_matrix_builder.h"
 
-using namespace s21;
-
 TransformMatrix TransformMatrixBuilder::createRotateMatrix(float a, float b,
                                                            float c) {
   TransformMatrix matrix;

@@ -21,8 +21,6 @@ class MainWindow;
 }  // namespace Ui
 QT_END_NAMESPACE
 
-namespace s21 {
-
 /**
  * @class PaintViewer
  * @brief Представляет окно для рисования.
@@ -246,4 +244,3 @@ class PaintViewer : public QMainWindow {
    */
   void updateCountdown();
 };
-}  // namespace s21

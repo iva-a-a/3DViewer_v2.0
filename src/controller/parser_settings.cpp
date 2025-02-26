@@ -3,8 +3,6 @@
 #include <fstream>
 #include <iostream>
 
-using namespace s21;
-
 void ParserSettings::saveSettingsToFile(Parameters *p, RenderSetting *s) {
   std::ofstream file(filename);
   file.clear();

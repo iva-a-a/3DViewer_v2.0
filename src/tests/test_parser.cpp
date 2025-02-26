@@ -19,11 +19,10 @@ class ParserTest : public ::testing::Test {
 
 // Тест на чтение координат вершин и граней из файла
 TEST_F(ParserTest, RecordCoordFromFile) {
-  QVector<s21::Vertex> vertices;
-  QVector<s21::Edge> facets;
+  QVector<Vertex> vertices;
+  QVector<Edge> facets;
 
-  ASSERT_NO_THROW(
-      s21::Parser::recordCoordFromFile(validFileName, vertices, facets));
+  ASSERT_NO_THROW(Parser::recordCoordFromFile(validFileName, vertices, facets));
 
   ASSERT_EQ(vertices.size(), 8);
   EXPECT_FLOAT_EQ(vertices[0].x(), 1.0);
@@ -35,11 +34,11 @@ TEST_F(ParserTest, RecordCoordFromFile) {
 
 // Тест проверяет обработку отсутствующего файла
 TEST_F(ParserTest, FileNotFound) {
-  QVector<s21::Vertex> vertices;
-  QVector<s21::Edge> facets;
+  QVector<Vertex> vertices;
+  QVector<Edge> facets;
 
   try {
-    s21::Parser::recordCoordFromFile(nonExistentFileName, vertices, facets);
+    Parser::recordCoordFromFile(nonExistentFileName, vertices, facets);
     FAIL() << "Expected std::runtime_error";
   } catch (const std::runtime_error &e) {
     EXPECT_STREQ(e.what(), "Cannot open file: ./models_3d/nonexistent.obj");
@@ -50,8 +49,8 @@ TEST_F(ParserTest, FileNotFound) {
 
 // Тест проверяет обработку пустого файла
 TEST_F(ParserTest, EmptyFile) {
-  QVector<s21::Vertex> vertices;
-  QVector<s21::Edge> facets;
+  QVector<Vertex> vertices;
+  QVector<Edge> facets;
 
   QFile file(emptyFileName);
   if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
@@ -60,8 +59,7 @@ TEST_F(ParserTest, EmptyFile) {
     FAIL() << "Could not create empty file for testing.";
   }
 
-  ASSERT_NO_THROW(
-      s21::Parser::recordCoordFromFile(emptyFileName, vertices, facets));
+  ASSERT_NO_THROW(Parser::recordCoordFromFile(emptyFileName, vertices, facets));
   ASSERT_TRUE(vertices.isEmpty());
   ASSERT_TRUE(facets.isEmpty());
   QFile::remove(emptyFileName);
@@ -69,8 +67,8 @@ TEST_F(ParserTest, EmptyFile) {
 
 // Тест проверяет обработку файла с нераспознанными строками
 TEST_F(ParserTest, UnrecognizedLinesInFile) {
-  QVector<s21::Vertex> vertices;
-  QVector<s21::Edge> facets;
+  QVector<Vertex> vertices;
+  QVector<Edge> facets;
 
   QFile file(unrecognizedLinesFileName);
   if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
@@ -84,8 +82,8 @@ TEST_F(ParserTest, UnrecognizedLinesInFile) {
     FAIL() << "Could not create unrecognized lines file for testing.";
   }
 
-  ASSERT_NO_THROW(s21::Parser::recordCoordFromFile(unrecognizedLinesFileName,
-                                                   vertices, facets));
+  ASSERT_NO_THROW(
+      Parser::recordCoordFromFile(unrecognizedLinesFileName, vertices, facets));
 
   ASSERT_EQ(vertices.size(), 3);
   EXPECT_FLOAT_EQ(vertices[0].x(), 1.0);
@@ -106,8 +104,8 @@ TEST_F(ParserTest, UnrecognizedLinesInFile) {
 
 // Тест: Обработка файла с некорректными данными
 TEST_F(ParserTest, InvalidDataInFile) {
-  QVector<s21::Vertex> vertices;
-  QVector<s21::Edge> facets;
+  QVector<Vertex> vertices;
+  QVector<Edge> facets;
 
   QString invalidDataFileName = "./models_3d/invalid_data.obj";
   QFile file(invalidDataFileName);
@@ -122,7 +120,7 @@ TEST_F(ParserTest, InvalidDataInFile) {
   }
 
   ASSERT_NO_THROW(
-      s21::Parser::recordCoordFromFile(invalidDataFileName, vertices, facets));
+      Parser::recordCoordFromFile(invalidDataFileName, vertices, facets));
 
   ASSERT_EQ(vertices.size(), 2);
   EXPECT_FLOAT_EQ(vertices[0].x(), 1.0);
@@ -139,8 +137,8 @@ TEST_F(ParserTest, InvalidDataInFile) {
 
 // Тест: Обработка файла с некорректными значениями вершин
 TEST_F(ParserTest, InvalidVertexDataInFile) {
-  QVector<s21::Vertex> vertices;
-  QVector<s21::Edge> facets;
+  QVector<Vertex> vertices;
+  QVector<Edge> facets;
 
   QString invalidVertexFileName = "./models_3d/invalid_vertex.obj";
   QFile file(invalidVertexFileName);
@@ -152,8 +150,8 @@ TEST_F(ParserTest, InvalidVertexDataInFile) {
     FAIL() << "Could not create invalid vertex file for testing.";
   }
 
-  ASSERT_NO_THROW(s21::Parser::recordCoordFromFile(invalidVertexFileName,
-                                                   vertices, facets));
+  ASSERT_NO_THROW(
+      Parser::recordCoordFromFile(invalidVertexFileName, vertices, facets));
   ASSERT_TRUE(vertices.isEmpty());  // Ожидаем, что вершины не будут загружены
   QFile::remove(invalidVertexFileName);
 }

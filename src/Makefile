@@ -50,7 +50,7 @@ GCOV_DIR = gcov_report
 ALL_SRC = $(wildcard *.cpp *.h  */*.cpp */*.h */*/*.cpp */*/*.h)
 
 TEST_SRC = tests/main_test.cpp
-SRC_TEST = $(wildcard model/*.cpp controller/*.cpp model/s21_matrix/*.cpp)
+SRC_TEST = $(wildcard model/*.cpp controller/*.cpp model/matrix/*.cpp)
 OBJS_TEST = $(SRC_TEST:.cpp=.o)
 
 VERSION = 2.0

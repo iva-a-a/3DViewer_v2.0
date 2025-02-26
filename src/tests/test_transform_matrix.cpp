@@ -3,12 +3,12 @@
 
 class TransformMatrixTest : public ::testing::Test {
  protected:
-  s21::TransformMatrix identityMatrix = s21::TransformMatrix();
+  TransformMatrix identityMatrix = TransformMatrix();
 };
 
 // Тест на умножение матриц
 TEST_F(TransformMatrixTest, MultiplyMatrices) {
-  s21::TransformMatrix m1;
+  TransformMatrix m1;
   m1(0, 0) = 1;
   m1(0, 1) = 2;
   m1(0, 2) = 3;
@@ -26,7 +26,7 @@ TEST_F(TransformMatrixTest, MultiplyMatrices) {
   m1(3, 2) = 15;
   m1(3, 3) = 16;
 
-  s21::TransformMatrix m2;
+  TransformMatrix m2;
   m2(0, 0) = 16;
   m2(0, 1) = 15;
   m2(0, 2) = 14;
@@ -44,7 +44,7 @@ TEST_F(TransformMatrixTest, MultiplyMatrices) {
   m2(3, 2) = 2;
   m2(3, 3) = 1;
 
-  s21::TransformMatrix result = m1 * m2;
+  TransformMatrix result = m1 * m2;
 
   EXPECT_NEAR(result(0, 0), 80, 1e-6);
   EXPECT_NEAR(result(0, 1), 70, 1e-6);
@@ -54,12 +54,12 @@ TEST_F(TransformMatrixTest, MultiplyMatrices) {
 
 // Тест на масштабирование
 TEST_F(TransformMatrixTest, Scaling) {
-  s21::TransformMatrix scaleMatrix;
+  TransformMatrix scaleMatrix;
   scaleMatrix(0, 0) = 2.0;
   scaleMatrix(1, 1) = 3.0;
   scaleMatrix(2, 2) = 4.0;
 
-  s21::Vertex point(1.0, 1.0, 1.0);
+  Vertex point(1.0, 1.0, 1.0);
   scaleMatrix.transformPoint(point);
 
   EXPECT_NEAR(point.x(), 2.0, 1e-6);
@@ -75,7 +75,7 @@ TEST_F(TransformMatrixTest, AccessMatrixElements) {
 
 // Тест на корректность инверсии
 TEST_F(TransformMatrixTest, InverseMatrix) {
-  s21::TransformMatrix invertibleMatrix;
+  TransformMatrix invertibleMatrix;
   invertibleMatrix(0, 0) = 1;
   invertibleMatrix(1, 1) = 2;
   invertibleMatrix(2, 2) = 3;
@@ -90,12 +90,12 @@ TEST_F(TransformMatrixTest, InverseMatrix) {
 
 // Тест: Преобразование с нулевыми значениями
 TEST_F(TransformMatrixTest, TransformWithZeroValues) {
-  s21::TransformMatrix zeroMatrix;
+  TransformMatrix zeroMatrix;
   zeroMatrix(0, 0) = 0.0;
   zeroMatrix(1, 1) = 0.0;
   zeroMatrix(2, 2) = 0.0;
 
-  s21::Vertex point(1.0, 1.0, 1.0);
+  Vertex point(1.0, 1.0, 1.0);
   zeroMatrix.transformPoint(point);
 
   EXPECT_NEAR(point.x(), 0.0, 1e-6);
@@ -104,11 +104,11 @@ TEST_F(TransformMatrixTest, TransformWithZeroValues) {
 }
 
 TEST_F(TransformMatrixTest, OperatorCopy) {
-  s21::TransformMatrix m1;
+  TransformMatrix m1;
   m1(0, 0) = 1.0f;
   m1(1, 1) = 2.0f;
   m1(2, 2) = 3.0f;
-  s21::TransformMatrix m2;
+  TransformMatrix m2;
   m2(0, 0) = 4.0f;
   m2(1, 1) = 5.0f;
   m2(2, 2) = 6.0f;
