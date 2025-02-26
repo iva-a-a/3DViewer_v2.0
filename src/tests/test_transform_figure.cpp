@@ -12,7 +12,6 @@ class TransformFigureTest : public ::testing::Test {
   QString testFileName;
 };
 
-namespace s21 {
 class TestNormalizeParameters : public NormalizeParameters {
  public:
   static Vertex TestGetMinCoord(const QVector<Vertex> &v) {
@@ -31,7 +30,6 @@ class TestNormalizeParameters : public NormalizeParameters {
     NormalizeParameters::setScaleVertex(v);
   }
 };
-}  // namespace s21
 
 // Тест метода transform, который выполняет преобразование вершин
 TEST_F(TransformFigureTest, Transform) {

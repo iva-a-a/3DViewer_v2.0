@@ -1,7 +1,5 @@
 #include "../controller/parser_settings.h"
 
-using namespace s21;
-
 Parameters CreateTestParameters() {
   Parameters p;
   p.filename = "test_file.obj";
